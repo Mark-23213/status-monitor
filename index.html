@@ -123,7 +123,7 @@
     <h1>Монитор статусов</h1>
     <p class="subtitle">Обновляется в реальном времени</p>
 
-    <div id="auth-screen">
+    <div id="auth-screen" style="display:none">
       <div class="auth-card">
         <div class="auth-tabs">
           <button class="auth-tab active" onclick="switchTab('login')">Войти</button>
@@ -278,23 +278,29 @@
     }
 
     async function loadMessages() {
-      const { data } = await db.from('messages').select('*').order('created_at').limit(100);
-      const box = document.getElementById('chat-messages');
-      if (!data?.length) { box.innerHTML='<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
-      box.innerHTML = data.map(buildMsgHtml).join('');
-      box.scrollTop = box.scrollHeight;
+      try {
+        const { data, error } = await db.from('messages').select('*').order('created_at').limit(100);
+        const box = document.getElementById('chat-messages');
+        if(error) { console.error('Chat load error:', error); box.innerHTML='<div class="chat-empty">⚠️ Чат недоступен. Проверь таблицу messages в Supabase.</div>'; return; }
+        if (!data?.length) { box.innerHTML='<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
+        box.innerHTML = data.map(buildMsgHtml).join('');
+        box.scrollTop = box.scrollHeight;
+      } catch(e) { console.error('Chat error:', e); }
     }
 
     function subscribeChat() {
       if (chatSubscribed) return; chatSubscribed = true;
-      db.channel('messages-rt')
+      const ch = db.channel('messages-rt')
         .on('postgres_changes', { event:'INSERT', schema:'public', table:'messages' }, p => {
           const box = document.getElementById('chat-messages');
           const empty = box.querySelector('.chat-empty');
           if (empty) empty.remove();
           box.insertAdjacentHTML('beforeend', buildMsgHtml(p.new));
           box.scrollTop = box.scrollHeight;
-        }).subscribe();
+        });
+      ch.subscribe((status) => {
+        if(status === 'CHANNEL_ERROR') { chatSubscribed = false; console.warn('Chat channel error, will retry...'); }
+      });
     }
 
     async function sendMessage() {
@@ -302,7 +308,8 @@
       const text = input.value.trim();
       if (!text || !myId) return;
       input.value = '';
-      await db.from('messages').insert({ user_id: myId, username: myName, avatar_url: myAvatar||null, text });
+      const { error } = await db.from('messages').insert({ user_id: myId, username: myName, avatar_url: myAvatar||null, text });
+      if(error) { console.error('Send error:', error); input.value = text; alert('Ошибка отправки: ' + error.message); }
     }
 
     // AUTH
@@ -425,19 +432,20 @@
       subscribeChat();
     }
 
+    let loginInProgress = false;
+
     db.auth.onAuthStateChange(async (event, session) => {
-      if(event==='SIGNED_IN'&&session?.user) await onLogin(session.user);
-      else if(event==='SIGNED_OUT'){
+      if((event==='SIGNED_IN' || event==='INITIAL_SESSION') && session?.user) {
+        if(loginInProgress) return;
+        loginInProgress = true;
+        await onLogin(session.user);
+        loginInProgress = false;
+      } else if(event==='SIGNED_OUT' || (event==='INITIAL_SESSION' && !session)) {
+        myId=null; myName=''; myAvatar=''; rtSubscribed=false; chatSubscribed=false;
         document.getElementById('auth-screen').style.display='flex';
         document.getElementById('app-screen').style.display='none';
       }
     });
-
-    (async()=>{
-      const {data:{session}}=await db.auth.getSession();
-      if(session?.user) await onLogin(session.user);
-      else document.getElementById('auth-screen').style.display='flex';
-    })();
   </script>
 </body>
 </html>
