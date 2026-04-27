@@ -11,8 +11,7 @@
     h1 { text-align: center; font-size: 2rem; margin-bottom: 6px; color: #3ecf8e; }
     .subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
     .container { max-width: 620px; margin: 0 auto; }
-
-    #auth-screen { display: flex; flex-direction: column; align-items: center; }
+    #auth-screen { display: none; flex-direction: column; align-items: center; }
     .auth-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 400px; }
     .auth-tabs { display: flex; background: #111; border-radius: 10px; padding: 4px; margin-bottom: 28px; }
     .auth-tab { flex: 1; padding: 9px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 0.9rem; transition: all 0.2s; }
@@ -31,7 +30,6 @@
     .auth-msg { border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
     .auth-msg.error { background:#ff444422; border:1px solid #ff4444; color:#ff6666; }
     .auth-msg.success { background:#3ecf8e22; border:1px solid #3ecf8e; color:#3ecf8e; }
-
     #app-screen { display: none; }
     .user-bar { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
     .user-bar-left { display: flex; align-items: center; gap: 12px; }
@@ -41,8 +39,7 @@
     .user-email { font-size: 0.78rem; color: #666; }
     .logout-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #333; background: transparent; color: #888; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
     .logout-btn:hover { border-color: #ff4444; color: #ff4444; }
-
-    .online-indicator { background: #1a1a1a; border: 1px solid #3ecf8e33; border-radius: 12px; padding: 16px 22px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .online-indicator { background: #1a1a1a; border: 1px solid #3ecf8e33; border-radius: 12px; padding: 16px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
     .online-left { display: flex; align-items: center; gap: 14px; }
     .online-circle { width: 52px; height: 52px; border-radius: 50%; background: #3ecf8e15; border: 2px solid #3ecf8e44; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: #3ecf8e; }
     .online-text-main { font-size: 1rem; font-weight: 600; color: #e0e0e0; }
@@ -50,25 +47,6 @@
     .online-avatars { display: flex; }
     .mini-avatar { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 2px solid #3ecf8e; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: #3ecf8e; margin-left: -8px; flex-shrink: 0; }
     .mini-avatar:first-child { margin-left: 0; }
-
-    .study-timer { background: #1a1a1a; border: 1px solid #f59e0b33; border-radius: 12px; padding: 16px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
-    .timer-left { display: flex; align-items: center; gap: 14px; }
-    .timer-icon { font-size: 2rem; }
-    .timer-label { font-size: 0.78rem; color: #888; margin-bottom: 4px; }
-    .timer-value { font-size: 1.6rem; font-weight: 700; color: #f59e0b; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
-    .timer-value.running { animation: timerBlink 1.2s ease-in-out infinite; }
-    @keyframes timerBlink { 0%,100%{opacity:1} 50%{opacity:0.6} }
-    .timer-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
-    .timer-badge.on { background:#f59e0b22; border:1px solid #f59e0b55; color:#f59e0b; }
-    .timer-badge.off { background:#222; border:1px solid #333; color:#555; }
-
-    .my-panel { background: #1a1a1a; border: 1px solid #3ecf8e44; border-radius: 12px; padding: 22px; margin-bottom: 20px; }
-    .my-panel h2 { font-size: 1rem; color: #3ecf8e; margin-bottom: 14px; }
-    .status-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn { padding: 8px 18px; border-radius: 8px; border: 1px solid #333; background: #222; color: #ddd; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
-    .btn:hover { border-color: #3ecf8e; color: #3ecf8e; }
-    .btn.active { background: #3ecf8e22; border-color: #3ecf8e; color: #3ecf8e; }
-
     .section-title { font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
     .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; transition: border-color 0.2s; }
     .card:hover { border-color: #3ecf8e44; }
@@ -81,11 +59,7 @@
     .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .dot.online { background: #3ecf8e; box-shadow: 0 0 6px #3ecf8e; }
     .dot.offline { background: #555; }
-    .dot.studying { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
-    .dot.away { background: #a78bfa; box-shadow: 0 0 6px #a78bfa; }
-    .dot.other { background: #60a5fa; }
-
-    .chat-box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; margin-top: 24px; overflow: hidden; }
+    .chat-box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; margin-top: 8px; overflow: hidden; }
     .chat-header { padding: 14px 20px; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 10px; }
     .chat-header-dot { width: 8px; height: 8px; border-radius: 50%; background: #3ecf8e; box-shadow: 0 0 6px #3ecf8e; animation: pulse 1.5s infinite; }
     .chat-title { font-weight: 600; font-size: 0.95rem; color: #3ecf8e; }
@@ -95,8 +69,7 @@
     .chat-msg { display: flex; gap: 10px; align-items: flex-start; animation: msgIn 0.2s ease-out; }
     @keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
     .chat-msg.mine { flex-direction: row-reverse; }
-    .chat-msg-avatar { width: 32px; height: 32px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #3ecf8e; flex-shrink: 0; border: 1px solid #3ecf8e33; overflow: hidden; }
-    .chat-msg-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .chat-msg-avatar { width: 32px; height: 32px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #3ecf8e; flex-shrink: 0; border: 1px solid #3ecf8e33; }
     .chat-msg-body { max-width: 75%; }
     .chat-msg-name { font-size: 0.72rem; color: #666; margin-bottom: 3px; }
     .chat-msg.mine .chat-msg-name { text-align: right; }
@@ -111,7 +84,6 @@
     .chat-send-btn { padding: 10px 18px; background: #3ecf8e; color: #000; border: none; border-radius: 9px; font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
     .chat-send-btn:hover { background: #2eb87a; }
     .chat-empty { text-align: center; color: #444; padding: 40px 20px; font-size: 0.85rem; }
-
     .realtime-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #3ecf8e; background: #3ecf8e11; border: 1px solid #3ecf8e33; border-radius: 20px; padding: 4px 10px; margin-bottom: 24px; }
     .pulse { width: 7px; height: 7px; border-radius: 50%; background: #3ecf8e; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
@@ -123,7 +95,7 @@
     <h1>Монитор статусов</h1>
     <p class="subtitle">Обновляется в реальном времени</p>
 
-    <div id="auth-screen" style="display:none">
+    <div id="auth-screen">
       <div class="auth-card">
         <div class="auth-tabs">
           <button class="auth-tab active" onclick="switchTab('login')">Войти</button>
@@ -163,7 +135,6 @@
         </div>
         <button class="logout-btn" onclick="signOut()">Выйти</button>
       </div>
-
       <div class="online-indicator">
         <div class="online-left">
           <div class="online-circle" id="online-count">0</div>
@@ -174,31 +145,8 @@
         </div>
         <div class="online-avatars" id="online-avatars"></div>
       </div>
-
-      <div class="study-timer">
-        <div class="timer-left">
-          <div class="timer-icon">📚</div>
-          <div>
-            <div class="timer-label">Время в учёбе (сегодня)</div>
-            <div class="timer-value" id="timer-val">00:00:00</div>
-          </div>
-        </div>
-        <div class="timer-badge off" id="timer-badge">Не учусь</div>
-      </div>
-
-      <div class="my-panel">
-        <h2 id="my-panel-title">Мой статус</h2>
-        <div class="status-buttons">
-          <button class="btn" onclick="setStatus('Online')">🟢 Online</button>
-          <button class="btn" onclick="setStatus('Offline')">⚫ Offline</button>
-          <button class="btn" onclick="setStatus('Studying')">📚 Studying</button>
-          <button class="btn" onclick="setStatus('Away')">🌙 Away</button>
-        </div>
-      </div>
-
       <div class="section-title">Все пользователи</div>
       <div id="users-list"><div class="msg">Загрузка...</div></div>
-
       <div class="chat-box">
         <div class="chat-header">
           <div class="chat-header-dot"></div>
@@ -221,42 +169,51 @@
     const { createClient } = supabase;
     const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    let myId = null, myName = '', myAvatar = '';
-    let studySecs = 0, studyInterval = null, studying = false;
+    let myId = null, myName = '';
     let rtSubscribed = false, chatSubscribed = false;
+    let loginInProgress = false;
 
-    // STUDY TIMER
-    const todayKey = () => `study_${myId}_${new Date().toDateString()}`;
-    const fmt = s => [Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(n=>String(n).padStart(2,'0')).join(':');
-
-    function renderTimer() {
-      const val = document.getElementById('timer-val');
-      const badge = document.getElementById('timer-badge');
-      if (!val) return;
-      val.textContent = fmt(studySecs);
-      if (studying) { val.classList.add('running'); badge.textContent='📚 Учусь сейчас'; badge.className='timer-badge on'; }
-      else { val.classList.remove('running'); badge.textContent='Не учусь'; badge.className='timer-badge off'; }
-    }
-
-    function startStudy() {
-      if (studying) return;
-      studying = true;
-      studyInterval = setInterval(() => { studySecs++; if(myId) localStorage.setItem(todayKey(), studySecs); renderTimer(); }, 1000);
-      renderTimer();
-    }
-
-    function stopStudy() {
-      if (!studying) return;
-      studying = false; clearInterval(studyInterval); studyInterval = null; renderTimer();
-    }
-
-    // ONLINE INDICATOR
+    // ONLINE COUNTER
     function renderOnline(users) {
-      const online = users.filter(u => ['online','studying'].includes((u.status||'').toLowerCase()));
+      const online = users.filter(u => (u.status||'').toLowerCase() === 'online');
       document.getElementById('online-count').textContent = online.length;
-      document.getElementById('online-sub').textContent = `из ${users.length} пользователей`;
+      document.getElementById('online-sub').textContent = 'из ' + users.length + ' пользователей';
       document.getElementById('online-avatars').innerHTML = online.slice(0,6).map(u =>
-        `<div class="mini-avatar" title="${u.username||'?'}">${(u.username||'?')[0].toUpperCase()}</div>`).join('');
+        '<div class="mini-avatar" title="' + (u.username||'?') + '">' + (u.username||'?')[0].toUpperCase() + '</div>'
+      ).join('');
+    }
+
+    // USER LIST
+    function renderUsers(users) {
+      const list = document.getElementById('users-list');
+      if (!users || !users.length) { list.innerHTML = '<div class="msg">Нет пользователей</div>'; return; }
+      renderOnline(users);
+      list.innerHTML = users.map(function(u) {
+        const isOnline = (u.status||'').toLowerCase() === 'online';
+        const avHtml = u.avatar_url
+          ? '<img src="' + u.avatar_url + '" alt="' + (u.username||'?')[0] + '">'
+          : (u.username||'?')[0].toUpperCase();
+        return '<div class="card ' + (u.id===myId?'me':'') + '">' +
+          '<div class="avatar">' + avHtml + '</div>' +
+          '<div class="info">' +
+            '<div class="username">' + (u.username||'Без имени') + (u.id===myId?' <span style="color:#3ecf8e;font-size:.75rem">(я)</span>':'') + '</div>' +
+            '<div class="status-text">' + (isOnline ? '🟢 Online' : '⚫ Offline') + '</div>' +
+          '</div>' +
+          '<div class="dot ' + (isOnline?'online':'offline') + '"></div>' +
+        '</div>';
+      }).join('');
+    }
+
+    async function loadUsers() {
+      const { data } = await db.from('profiles').select('*').order('username');
+      if (data) renderUsers(data);
+    }
+
+    function subscribeRealtime() {
+      if (rtSubscribed) return; rtSubscribed = true;
+      db.channel('profiles-rt')
+        .on('postgres_changes', { event:'*', schema:'public', table:'profiles' }, loadUsers)
+        .subscribe();
     }
 
     // CHAT
@@ -266,23 +223,26 @@
     function buildMsgHtml(msg) {
       const isMine = msg.user_id === myId;
       const initial = (msg.username||'?')[0].toUpperCase();
-      const avHtml = msg.avatar_url ? `<img src="${msg.avatar_url}" alt="${initial}">` : initial;
-      return `<div class="chat-msg ${isMine?'mine':'theirs'}">
-        <div class="chat-msg-avatar">${avHtml}</div>
-        <div class="chat-msg-body">
-          <div class="chat-msg-name">${isMine?'Вы':escapeHtml(msg.username||'?')}</div>
-          <div class="chat-msg-bubble">${escapeHtml(msg.text)}</div>
-          <div class="chat-msg-time">${timeStr(msg.created_at)}</div>
-        </div>
-      </div>`;
+      return '<div class="chat-msg ' + (isMine?'mine':'theirs') + '">' +
+        '<div class="chat-msg-avatar">' + initial + '</div>' +
+        '<div class="chat-msg-body">' +
+          '<div class="chat-msg-name">' + (isMine ? 'Вы' : escapeHtml(msg.username||'?')) + '</div>' +
+          '<div class="chat-msg-bubble">' + escapeHtml(msg.text) + '</div>' +
+          '<div class="chat-msg-time">' + timeStr(msg.created_at) + '</div>' +
+        '</div>' +
+      '</div>';
     }
 
     async function loadMessages() {
       try {
         const { data, error } = await db.from('messages').select('*').order('created_at').limit(100);
         const box = document.getElementById('chat-messages');
-        if(error) { console.error('Chat load error:', error); box.innerHTML='<div class="chat-empty">⚠️ Чат недоступен. Проверь таблицу messages в Supabase.</div>'; return; }
-        if (!data?.length) { box.innerHTML='<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
+        if (error) {
+          console.error('Chat load error:', error);
+          box.innerHTML = '<div class="chat-empty">⚠️ Ошибка чата: ' + error.message + '</div>';
+          return;
+        }
+        if (!data || !data.length) { box.innerHTML = '<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
         box.innerHTML = data.map(buildMsgHtml).join('');
         box.scrollTop = box.scrollHeight;
       } catch(e) { console.error('Chat error:', e); }
@@ -290,17 +250,17 @@
 
     function subscribeChat() {
       if (chatSubscribed) return; chatSubscribed = true;
-      const ch = db.channel('messages-rt')
-        .on('postgres_changes', { event:'INSERT', schema:'public', table:'messages' }, p => {
+      db.channel('messages-rt')
+        .on('postgres_changes', { event:'INSERT', schema:'public', table:'messages' }, function(p) {
           const box = document.getElementById('chat-messages');
           const empty = box.querySelector('.chat-empty');
           if (empty) empty.remove();
           box.insertAdjacentHTML('beforeend', buildMsgHtml(p.new));
           box.scrollTop = box.scrollHeight;
+        })
+        .subscribe(function(status) {
+          if (status === 'CHANNEL_ERROR') { chatSubscribed = false; }
         });
-      ch.subscribe((status) => {
-        if(status === 'CHANNEL_ERROR') { chatSubscribed = false; console.warn('Chat channel error, will retry...'); }
-      });
     }
 
     async function sendMessage() {
@@ -308,37 +268,44 @@
       const text = input.value.trim();
       if (!text || !myId) return;
       input.value = '';
-      const { error } = await db.from('messages').insert({ user_id: myId, username: myName, avatar_url: myAvatar||null, text });
-      if(error) { console.error('Send error:', error); input.value = text; alert('Ошибка отправки: ' + error.message); }
+      // Только поля которые есть в таблице: user_id, username, text
+      const { error } = await db.from('messages').insert({ user_id: myId, username: myName, text: text });
+      if (error) {
+        console.error('Send error:', error);
+        input.value = text;
+        alert('Ошибка отправки: ' + error.message);
+      }
     }
 
     // AUTH
     function switchTab(tab) {
-      document.getElementById('login-form').style.display = tab==='login'?'block':'none';
-      document.getElementById('register-form').style.display = tab==='register'?'block':'none';
-      document.querySelectorAll('.auth-tab').forEach((b,i) => b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
+      document.getElementById('login-form').style.display = tab==='login' ? 'block' : 'none';
+      document.getElementById('register-form').style.display = tab==='register' ? 'block' : 'none';
+      document.querySelectorAll('.auth-tab').forEach(function(b,i) {
+        b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register'));
+      });
       hideMsg();
     }
-    function showMsg(t,type){ const e=document.getElementById('auth-msg'); e.textContent=t; e.className='auth-msg '+type; e.style.display='block'; }
+    function showMsg(t,type){ var e=document.getElementById('auth-msg'); e.textContent=t; e.className='auth-msg '+type; e.style.display='block'; }
     function hideMsg(){ document.getElementById('auth-msg').style.display='none'; }
 
     async function signInEmail() {
-      const email=document.getElementById('login-email').value.trim();
-      const pass=document.getElementById('login-password').value;
-      if(!email||!pass) return showMsg('Заполни все поля','error');
-      const {error}=await db.auth.signInWithPassword({email,password:pass});
-      if(error) showMsg('Неверный email или пароль','error');
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
+      if (!email||!pass) return showMsg('Заполни все поля','error');
+      const { error } = await db.auth.signInWithPassword({email: email, password: pass});
+      if (error) showMsg('Неверный email или пароль','error');
     }
 
     async function signUpEmail() {
-      const name=document.getElementById('reg-name').value.trim();
-      const email=document.getElementById('reg-email').value.trim();
-      const pass=document.getElementById('reg-password').value;
-      if(!name||!email||!pass) return showMsg('Заполни все поля','error');
-      if(pass.length<6) return showMsg('Пароль минимум 6 символов','error');
-      const {data,error}=await db.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
-      if(error) return showMsg(error.message,'error');
-      if(!data.session) showMsg('Письмо отправлено! Проверь почту.','success');
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-password').value;
+      if (!name||!email||!pass) return showMsg('Заполни все поля','error');
+      if (pass.length<6) return showMsg('Пароль минимум 6 символов','error');
+      const { data, error } = await db.auth.signUp({email: email, password: pass, options:{data:{full_name:name}}});
+      if (error) return showMsg(error.message,'error');
+      if (!data.session) showMsg('Письмо отправлено! Проверь почту.','success');
     }
 
     async function signInGoogle() {
@@ -346,104 +313,62 @@
     }
 
     async function signOut() {
-      stopStudy();
-      if(myId) await db.from('profiles').update({status:'Offline'}).eq('id',myId);
+      if (myId) await db.from('profiles').update({ status: 'Offline' }).eq('id', myId);
       await db.auth.signOut();
-      myId=null; myName=''; myAvatar=''; rtSubscribed=false; chatSubscribed=false; studySecs=0;
-      document.getElementById('auth-screen').style.display='flex';
-      document.getElementById('app-screen').style.display='none';
-      document.getElementById('login-email').value='';
-      document.getElementById('login-password').value='';
+      myId = null; myName = '';
+      rtSubscribed = false; chatSubscribed = false;
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('app-screen').style.display = 'none';
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-password').value = '';
       switchTab('login');
     }
 
     async function ensureProfile(user) {
-      const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
-      const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
-      const {data} = await db.from('profiles').select('id').eq('id',user.id).single();
-      if(!data) await db.from('profiles').insert({id:user.id,username:name,status:'Online',avatar_url:avatar});
-      else await db.from('profiles').update({status:'Online',avatar_url:avatar}).eq('id',user.id);
-      myId=user.id; myName=name; myAvatar=avatar;
+      const name = user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name) || user.email.split('@')[0] || 'User';
+      const avatar = user.user_metadata && (user.user_metadata.avatar_url || user.user_metadata.picture) || '';
+      const { data } = await db.from('profiles').select('id').eq('id', user.id).single();
+      if (!data) {
+        await db.from('profiles').insert({ id: user.id, username: name, status: 'Online', avatar_url: avatar });
+      } else {
+        await db.from('profiles').update({ status: 'Online', avatar_url: avatar }).eq('id', user.id);
+      }
+      myId = user.id;
+      myName = name;
     }
 
     function updateHeader(user) {
-      const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
-      const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
-      document.getElementById('header-name').textContent=name;
-      document.getElementById('header-email').textContent=user.email||'';
-      document.getElementById('my-panel-title').textContent=`Мой статус (${name})`;
-      const av=document.getElementById('header-avatar');
-      av.innerHTML=avatar?`<img src="${avatar}" alt="${name[0]}">`:name[0].toUpperCase();
-    }
-
-    function dotClass(s){ return {online:'online',offline:'offline',studying:'studying',away:'away'}[(s||'').toLowerCase()]||'other'; }
-
-    function renderUsers(users) {
-      const list=document.getElementById('users-list');
-      if(!users?.length){list.innerHTML='<div class="msg">Нет пользователей</div>';return;}
-      renderOnline(users);
-      const me=users.find(u=>u.id===myId);
-      if(me){
-        const ns=me.status?.toLowerCase()==='studying';
-        if(ns&&!studying) startStudy();
-        else if(!ns&&studying) stopStudy();
-        document.querySelectorAll('.btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().includes(me.status)));
-      }
-      list.innerHTML=users.map(u=>{
-        const avHtml=u.avatar_url?`<img src="${u.avatar_url}" alt="${(u.username||'?')[0]}">`:(u.username||'?')[0].toUpperCase();
-        return `<div class="card ${u.id===myId?'me':''}">
-          <div class="avatar">${avHtml}</div>
-          <div class="info">
-            <div class="username">${u.username||'Без имени'}${u.id===myId?' <span style="color:#3ecf8e;font-size:.75rem">(я)</span>':''}</div>
-            <div class="status-text">${u.status||'Нет статуса'}</div>
-          </div>
-          <div class="dot ${dotClass(u.status)}"></div>
-        </div>`;
-      }).join('');
-    }
-
-    async function loadUsers() {
-      const {data}=await db.from('profiles').select('*').order('username');
-      if(data) renderUsers(data);
-    }
-
-    async function setStatus(status) {
-      if(!myId) return;
-      await db.from('profiles').update({status}).eq('id',myId);
-    }
-
-    function subscribeRealtime() {
-      if(rtSubscribed) return; rtSubscribed=true;
-      db.channel('profiles-rt')
-        .on('postgres_changes',{event:'*',schema:'public',table:'profiles'},loadUsers)
-        .subscribe();
+      const name = user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name) || user.email.split('@')[0] || 'User';
+      const avatar = user.user_metadata && (user.user_metadata.avatar_url || user.user_metadata.picture) || '';
+      document.getElementById('header-name').textContent = name;
+      document.getElementById('header-email').textContent = user.email || '';
+      const av = document.getElementById('header-avatar');
+      av.innerHTML = avatar ? '<img src="' + avatar + '" alt="' + name[0] + '">' : name[0].toUpperCase();
     }
 
     async function onLogin(user) {
       await ensureProfile(user);
       updateHeader(user);
-      studySecs=parseInt(localStorage.getItem(todayKey())||'0',10);
-      renderTimer();
-      document.getElementById('auth-screen').style.display='none';
-      document.getElementById('app-screen').style.display='block';
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display = 'block';
       await loadUsers();
       subscribeRealtime();
       await loadMessages();
       subscribeChat();
     }
 
-    let loginInProgress = false;
-
-    db.auth.onAuthStateChange(async (event, session) => {
-      if((event==='SIGNED_IN' || event==='INITIAL_SESSION') && session?.user) {
-        if(loginInProgress) return;
+    // Слушаем изменение состояния авторизации
+    db.auth.onAuthStateChange(async function(event, session) {
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session && session.user) {
+        if (loginInProgress) return;
         loginInProgress = true;
         await onLogin(session.user);
         loginInProgress = false;
-      } else if(event==='SIGNED_OUT' || (event==='INITIAL_SESSION' && !session)) {
-        myId=null; myName=''; myAvatar=''; rtSubscribed=false; chatSubscribed=false;
-        document.getElementById('auth-screen').style.display='flex';
-        document.getElementById('app-screen').style.display='none';
+      } else if (event === 'SIGNED_OUT' || (event === 'INITIAL_SESSION' && !session)) {
+        myId = null; myName = '';
+        rtSubscribed = false; chatSubscribed = false;
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('app-screen').style.display = 'none';
       }
     });
   </script>
