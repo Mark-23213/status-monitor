@@ -7,138 +7,96 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f0f0f;
-      color: #e0e0e0;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; min-height: 100vh; padding: 40px 20px; }
     h1 { text-align: center; font-size: 2rem; margin-bottom: 6px; color: #3ecf8e; }
     .subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
     .container { max-width: 600px; margin: 0 auto; }
 
-    /* AUTH */
     #auth-screen { display: flex; flex-direction: column; align-items: center; }
-    .auth-card {
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 16px;
-      padding: 36px 32px;
-      width: 100%;
-      max-width: 400px;
-    }
-    .auth-tabs {
-      display: flex;
-      background: #111;
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 28px;
-    }
-    .auth-tab {
-      flex: 1; padding: 9px;
-      border: none; background: transparent;
-      color: #666; cursor: pointer;
-      border-radius: 8px; font-size: 0.9rem;
-      transition: all 0.2s;
-    }
+    .auth-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 400px; }
+    .auth-tabs { display: flex; background: #111; border-radius: 10px; padding: 4px; margin-bottom: 28px; }
+    .auth-tab { flex: 1; padding: 9px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 0.9rem; transition: all 0.2s; }
     .auth-tab.active { background: #2a2a2a; color: #3ecf8e; font-weight: 600; }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 6px; }
-    .form-group input {
-      width: 100%; padding: 11px 14px;
-      background: #111; border: 1px solid #2a2a2a;
-      border-radius: 9px; color: #e0e0e0;
-      font-size: 0.95rem; outline: none;
-      transition: border-color 0.2s;
-    }
+    .form-group input { width: 100%; padding: 11px 14px; background: #111; border: 1px solid #2a2a2a; border-radius: 9px; color: #e0e0e0; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
     .form-group input:focus { border-color: #3ecf8e; }
-    .submit-btn {
-      width: 100%; padding: 12px;
-      background: #3ecf8e; color: #000;
-      border: none; border-radius: 9px;
-      font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; margin-top: 4px;
-    }
+    .submit-btn { width: 100%; padding: 12px; background: #3ecf8e; color: #000; border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
     .submit-btn:hover { background: #2eb87a; }
-    .divider {
-      display: flex; align-items: center; gap: 12px;
-      margin: 20px 0; color: #444; font-size: 0.8rem;
-    }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #444; font-size: 0.8rem; }
     .divider::before, .divider::after { content:''; flex:1; height:1px; background:#2a2a2a; }
-    .google-btn {
-      display: inline-flex; align-items: center;
-      justify-content: center; gap: 10px;
-      width: 100%; padding: 11px;
-      background: #fff; color: #333;
-      border: none; border-radius: 9px;
-      font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; transition: all 0.2s;
-    }
+    .google-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 11px; background: #fff; color: #333; border: none; border-radius: 9px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .google-btn:hover { background: #f0f0f0; }
     .google-btn svg { width: 18px; height: 18px; }
-    .auth-msg {
-      border-radius: 8px; padding: 10px 14px;
-      font-size: 0.85rem; margin-bottom: 16px; display: none;
-    }
+    .auth-msg { border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
     .auth-msg.error { background:#ff444422; border:1px solid #ff4444; color:#ff6666; }
     .auth-msg.success { background:#3ecf8e22; border:1px solid #3ecf8e; color:#3ecf8e; }
 
-    /* APP */
     #app-screen { display: none; }
-    .user-bar {
-      background: #1a1a1a; border: 1px solid #2a2a2a;
-      border-radius: 12px; padding: 14px 20px;
-      margin-bottom: 20px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .user-bar { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
     .user-bar-left { display: flex; align-items: center; gap: 12px; }
-    .user-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: #2a2a2a;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: bold; color: #3ecf8e; font-size: 1rem;
-      border: 2px solid #3ecf8e44; flex-shrink: 0; overflow: hidden;
-    }
+    .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #3ecf8e; font-size: 1rem; border: 2px solid #3ecf8e44; flex-shrink: 0; overflow: hidden; }
     .user-avatar img { width:100%; height:100%; object-fit:cover; }
     .user-name { font-weight: 600; font-size: 0.95rem; }
     .user-email { font-size: 0.78rem; color: #666; }
-    .logout-btn {
-      padding: 6px 14px; border-radius: 8px;
-      border: 1px solid #333; background: transparent;
-      color: #888; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
-    }
+    .logout-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #333; background: transparent; color: #888; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
     .logout-btn:hover { border-color: #ff4444; color: #ff4444; }
-    .my-panel {
-      background: #1a1a1a; border: 1px solid #3ecf8e44;
-      border-radius: 12px; padding: 22px; margin-bottom: 20px;
+
+    /* ── ONLINE INDICATOR ── */
+    .online-indicator {
+      background: #1a1a1a; border: 1px solid #3ecf8e33;
+      border-radius: 12px; padding: 16px 22px; margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: space-between;
     }
+    .online-left { display: flex; align-items: center; gap: 14px; }
+    .online-circle {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #3ecf8e15; border: 2px solid #3ecf8e44;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 800; color: #3ecf8e;
+    }
+    .online-text-main { font-size: 1rem; font-weight: 600; color: #e0e0e0; }
+    .online-text-sub { font-size: 0.78rem; color: #666; margin-top: 2px; }
+    .online-avatars { display: flex; }
+    .mini-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #2a2a2a; border: 2px solid #3ecf8e;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; color: #3ecf8e;
+      margin-left: -8px; flex-shrink: 0;
+    }
+    .mini-avatar:first-child { margin-left: 0; }
+
+    /* ── STUDY TIMER ── */
+    .study-timer {
+      background: #1a1a1a; border: 1px solid #f59e0b33;
+      border-radius: 12px; padding: 16px 22px; margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .timer-left { display: flex; align-items: center; gap: 14px; }
+    .timer-icon { font-size: 2rem; }
+    .timer-label { font-size: 0.78rem; color: #888; margin-bottom: 4px; }
+    .timer-value {
+      font-size: 1.6rem; font-weight: 700; color: #f59e0b;
+      font-variant-numeric: tabular-nums; letter-spacing: 2px;
+    }
+    .timer-value.running { animation: blink 1.2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.6} }
+    .timer-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .timer-badge.on  { background:#f59e0b22; border:1px solid #f59e0b55; color:#f59e0b; }
+    .timer-badge.off { background:#222; border:1px solid #333; color:#555; }
+
+    .my-panel { background: #1a1a1a; border: 1px solid #3ecf8e44; border-radius: 12px; padding: 22px; margin-bottom: 20px; }
     .my-panel h2 { font-size: 1rem; color: #3ecf8e; margin-bottom: 14px; }
     .status-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn {
-      padding: 8px 18px; border-radius: 8px;
-      border: 1px solid #333; background: #222;
-      color: #ddd; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
-    }
+    .btn { padding: 8px 18px; border-radius: 8px; border: 1px solid #333; background: #222; color: #ddd; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
     .btn:hover { border-color: #3ecf8e; color: #3ecf8e; }
     .btn.active { background: #3ecf8e22; border-color: #3ecf8e; color: #3ecf8e; }
-    .section-title {
-      font-size: 0.8rem; color: #555;
-      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
-    }
-    .card {
-      background: #1a1a1a; border: 1px solid #2a2a2a;
-      border-radius: 12px; padding: 18px 22px; margin-bottom: 12px;
-      display: flex; align-items: center; gap: 16px; transition: border-color 0.2s;
-    }
+    .section-title { font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+    .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; transition: border-color 0.2s; }
     .card:hover { border-color: #3ecf8e44; }
     .card.me { border-color: #3ecf8e33; }
-    .avatar {
-      width: 46px; height: 46px; border-radius: 50%;
-      background: #2a2a2a;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; font-weight: bold; color: #3ecf8e; flex-shrink: 0;
-    }
+    .avatar { width: 46px; height: 46px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; color: #3ecf8e; flex-shrink: 0; }
     .info { flex: 1; }
     .username { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
     .status-text { font-size: 0.85rem; color: #aaa; }
@@ -148,16 +106,8 @@
     .dot.studying { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
     .dot.away     { background: #a78bfa; box-shadow: 0 0 6px #a78bfa; }
     .dot.other    { background: #60a5fa; }
-    .realtime-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 0.75rem; color: #3ecf8e;
-      background: #3ecf8e11; border: 1px solid #3ecf8e33;
-      border-radius: 20px; padding: 4px 10px; margin-bottom: 24px;
-    }
-    .pulse {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: #3ecf8e; animation: pulse 1.5s infinite;
-    }
+    .realtime-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #3ecf8e; background: #3ecf8e11; border: 1px solid #3ecf8e33; border-radius: 20px; padding: 4px 10px; margin-bottom: 24px; }
+    .pulse { width: 7px; height: 7px; border-radius: 50%; background: #3ecf8e; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .msg { text-align: center; color: #555; padding: 30px; }
   </style>
@@ -174,41 +124,18 @@
           <button class="auth-tab active" onclick="switchTab('login')">Войти</button>
           <button class="auth-tab" onclick="switchTab('register')">Регистрация</button>
         </div>
-
         <div id="auth-msg" class="auth-msg"></div>
-
-        <!-- Login -->
         <div id="login-form">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="login-email" placeholder="your@email.com" />
-          </div>
-          <div class="form-group">
-            <label>Пароль</label>
-            <input type="password" id="login-password" placeholder="••••••••"
-              onkeydown="if(event.key==='Enter') signInEmail()" />
-          </div>
+          <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="your@email.com"/></div>
+          <div class="form-group"><label>Пароль</label><input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')signInEmail()"/></div>
           <button class="submit-btn" onclick="signInEmail()">Войти</button>
         </div>
-
-        <!-- Register -->
         <div id="register-form" style="display:none">
-          <div class="form-group">
-            <label>Имя пользователя</label>
-            <input type="text" id="reg-name" placeholder="Как тебя зовут?" />
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="reg-email" placeholder="your@email.com" />
-          </div>
-          <div class="form-group">
-            <label>Пароль</label>
-            <input type="password" id="reg-password" placeholder="Минимум 6 символов"
-              onkeydown="if(event.key==='Enter') signUpEmail()" />
-          </div>
+          <div class="form-group"><label>Имя пользователя</label><input type="text" id="reg-name" placeholder="Как тебя зовут?"/></div>
+          <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="your@email.com"/></div>
+          <div class="form-group"><label>Пароль</label><input type="password" id="reg-password" placeholder="Минимум 6 символов" onkeydown="if(event.key==='Enter')signUpEmail()"/></div>
           <button class="submit-btn" onclick="signUpEmail()">Зарегистрироваться</button>
         </div>
-
         <div class="divider">или</div>
         <button class="google-btn" onclick="signInGoogle()">
           <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.3 0-9.7-3.3-11.3-8H6.4C9.7 35.6 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.3 4.2-4.1 5.6l6.2 5.2C37.1 39 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
@@ -219,7 +146,7 @@
 
     <!-- APP -->
     <div id="app-screen">
-      <div style="text-align:center; margin-bottom:24px;">
+      <div style="text-align:center;margin-bottom:24px;">
         <span class="realtime-badge"><span class="pulse"></span>Realtime подключён</span>
       </div>
 
@@ -232,6 +159,30 @@
           </div>
         </div>
         <button class="logout-btn" onclick="signOut()">Выйти</button>
+      </div>
+
+      <!-- ONLINE INDICATOR -->
+      <div class="online-indicator">
+        <div class="online-left">
+          <div class="online-circle" id="online-count">0</div>
+          <div>
+            <div class="online-text-main">Сейчас онлайн</div>
+            <div class="online-text-sub" id="online-sub">из всех пользователей</div>
+          </div>
+        </div>
+        <div class="online-avatars" id="online-avatars"></div>
+      </div>
+
+      <!-- STUDY TIMER -->
+      <div class="study-timer">
+        <div class="timer-left">
+          <div class="timer-icon">📚</div>
+          <div>
+            <div class="timer-label">Время в учёбе (сегодня)</div>
+            <div class="timer-value" id="timer-val">00:00:00</div>
+          </div>
+        </div>
+        <div class="timer-badge off" id="timer-badge">Не учусь</div>
       </div>
 
       <div class="my-panel">
@@ -256,90 +207,147 @@
     const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let myId = null;
+    let studySecs = 0;
+    let studyInterval = null;
+    let studying = false;
+    let rtSubscribed = false;
 
+    // ── STUDY TIMER ────────────────────────────────────────────
+    const todayKey = () => `study_${myId}_${new Date().toDateString()}`;
+
+    function fmt(s) {
+      return [Math.floor(s/3600), Math.floor(s%3600/60), s%60]
+        .map(n => String(n).padStart(2,'0')).join(':');
+    }
+
+    function renderTimer() {
+      const val = document.getElementById('timer-val');
+      const badge = document.getElementById('timer-badge');
+      if (!val) return;
+      val.textContent = fmt(studySecs);
+      if (studying) {
+        val.classList.add('running');
+        badge.textContent = '📚 Учусь сейчас';
+        badge.className = 'timer-badge on';
+      } else {
+        val.classList.remove('running');
+        badge.textContent = 'Не учусь';
+        badge.className = 'timer-badge off';
+      }
+    }
+
+    function startStudy() {
+      if (studying) return;
+      studying = true;
+      studyInterval = setInterval(() => {
+        studySecs++;
+        localStorage.setItem(todayKey(), studySecs);
+        renderTimer();
+      }, 1000);
+      renderTimer();
+    }
+
+    function stopStudy() {
+      if (!studying) return;
+      studying = false;
+      clearInterval(studyInterval);
+      studyInterval = null;
+      renderTimer();
+    }
+
+    // ── ONLINE INDICATOR ───────────────────────────────────────
+    function renderOnline(users) {
+      const online = users.filter(u => ['online','studying'].includes((u.status||'').toLowerCase()));
+      const total = users.length;
+      document.getElementById('online-count').textContent = online.length;
+      document.getElementById('online-sub').textContent = `из ${total} пользователей`;
+      const avatarsEl = document.getElementById('online-avatars');
+      avatarsEl.innerHTML = online.slice(0, 6).map(u =>
+        `<div class="mini-avatar" title="${u.username||'?'}">${(u.username||'?')[0].toUpperCase()}</div>`
+      ).join('');
+    }
+
+    // ── AUTH ───────────────────────────────────────────────────
     function switchTab(tab) {
-      document.getElementById('login-form').style.display    = tab === 'login' ? 'block' : 'none';
-      document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-      document.querySelectorAll('.auth-tab').forEach((b, i) => {
-        b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register'));
-      });
+      document.getElementById('login-form').style.display    = tab==='login' ? 'block' : 'none';
+      document.getElementById('register-form').style.display = tab==='register' ? 'block' : 'none';
+      document.querySelectorAll('.auth-tab').forEach((b,i) =>
+        b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
       hideMsg();
     }
-
-    function showMsg(text, type) {
-      const el = document.getElementById('auth-msg');
-      el.textContent = text;
-      el.className = 'auth-msg ' + type;
-      el.style.display = 'block';
-    }
-    function hideMsg() { document.getElementById('auth-msg').style.display = 'none'; }
+    function showMsg(t,type){ const e=document.getElementById('auth-msg'); e.textContent=t; e.className='auth-msg '+type; e.style.display='block'; }
+    function hideMsg(){ document.getElementById('auth-msg').style.display='none'; }
 
     async function signInEmail() {
-      const email    = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value;
-      if (!email || !password) return showMsg('Заполни все поля', 'error');
-      const { error } = await db.auth.signInWithPassword({ email, password });
-      if (error) showMsg('Неверный email или пароль', 'error');
+      const email=document.getElementById('login-email').value.trim();
+      const pass=document.getElementById('login-password').value;
+      if(!email||!pass) return showMsg('Заполни все поля','error');
+      const {error}=await db.auth.signInWithPassword({email,password:pass});
+      if(error) showMsg('Неверный email или пароль','error');
     }
 
     async function signUpEmail() {
-      const name     = document.getElementById('reg-name').value.trim();
-      const email    = document.getElementById('reg-email').value.trim();
-      const password = document.getElementById('reg-password').value;
-      if (!name || !email || !password) return showMsg('Заполни все поля', 'error');
-      if (password.length < 6) return showMsg('Пароль минимум 6 символов', 'error');
-
-      const { data, error } = await db.auth.signUp({
-        email, password,
-        options: { data: { full_name: name } }
-      });
-      if (error) return showMsg(error.message, 'error');
-      if (!data.session) showMsg('Проверь почту — отправили письмо для подтверждения!', 'success');
+      const name=document.getElementById('reg-name').value.trim();
+      const email=document.getElementById('reg-email').value.trim();
+      const pass=document.getElementById('reg-password').value;
+      if(!name||!email||!pass) return showMsg('Заполни все поля','error');
+      if(pass.length<6) return showMsg('Пароль минимум 6 символов','error');
+      const {data,error}=await db.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+      if(error) return showMsg(error.message,'error');
+      if(!data.session) showMsg('Проверь почту — письмо отправлено!','success');
     }
 
     async function signInGoogle() {
-      await db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } });
+      await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
     }
 
     async function signOut() {
+      stopStudy();
       await db.auth.signOut();
-      myId = null;
-      rtSubscribed = false;
-      document.getElementById('auth-screen').style.display = 'flex';
-      document.getElementById('app-screen').style.display  = 'none';
-      document.getElementById('users-list').innerHTML = '<div class="msg">Загрузка...</div>';
-      // Clear form fields
-      document.getElementById('login-email').value = '';
-      document.getElementById('login-password').value = '';
+      myId=null; rtSubscribed=false; studySecs=0;
+      document.getElementById('auth-screen').style.display='flex';
+      document.getElementById('app-screen').style.display='none';
+      document.getElementById('users-list').innerHTML='<div class="msg">Загрузка...</div>';
+      document.getElementById('login-email').value='';
+      document.getElementById('login-password').value='';
       switchTab('login');
     }
 
     async function ensureProfile(user) {
-      const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
-      const { data } = await db.from('profiles').select('id').eq('id', user.id).single();
-      if (!data) await db.from('profiles').insert({ id: user.id, username: name, status: 'Online' });
-      myId = user.id;
+      const name=user.user_metadata?.full_name||user.email?.split('@')[0]||'User';
+      const {data}=await db.from('profiles').select('id').eq('id',user.id).single();
+      if(!data) await db.from('profiles').insert({id:user.id,username:name,status:'Online'});
+      myId=user.id;
     }
 
     function updateHeader(user) {
-      const name  = user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
-      const email = user.email || '';
-      const avatar = user.user_metadata?.avatar_url;
-      document.getElementById('header-name').textContent  = name;
-      document.getElementById('header-email').textContent = email;
-      document.getElementById('my-panel-title').textContent = `Мой статус (${name})`;
-      const el = document.getElementById('header-avatar');
-      el.innerHTML = avatar ? `<img src="${avatar}" alt="${name}">` : name[0].toUpperCase();
+      const name=user.user_metadata?.full_name||user.email?.split('@')[0]||'User';
+      document.getElementById('header-name').textContent=name;
+      document.getElementById('header-email').textContent=user.email||'';
+      document.getElementById('my-panel-title').textContent=`Мой статус (${name})`;
+      const av=document.getElementById('header-avatar');
+      const pic=user.user_metadata?.avatar_url;
+      av.innerHTML=pic?`<img src="${pic}" alt="${name}">`:`${name[0].toUpperCase()}`;
     }
 
-    function dotClass(s) {
-      return { online:'online', offline:'offline', studying:'studying', away:'away' }[(s||'').toLowerCase()] || 'other';
-    }
+    function dotClass(s){ return {online:'online',offline:'offline',studying:'studying',away:'away'}[(s||'').toLowerCase()]||'other'; }
 
     function renderUsers(users) {
-      const list = document.getElementById('users-list');
-      if (!users?.length) { list.innerHTML = '<div class="msg">Нет пользователей</div>'; return; }
-      list.innerHTML = users.map(u => `
+      const list=document.getElementById('users-list');
+      if(!users?.length){ list.innerHTML='<div class="msg">Нет пользователей</div>'; return; }
+
+      renderOnline(users);
+
+      const me=users.find(u=>u.id===myId);
+      if(me){
+        const nowStudying=me.status?.toLowerCase()==='studying';
+        if(nowStudying&&!studying) startStudy();
+        else if(!nowStudying&&studying) stopStudy();
+        document.querySelectorAll('.btn').forEach(b=>
+          b.classList.toggle('active', b.textContent.trim().includes(me.status)));
+      }
+
+      list.innerHTML=users.map(u=>`
         <div class="card ${u.id===myId?'me':''}">
           <div class="avatar">${(u.username||'?')[0].toUpperCase()}</div>
           <div class="info">
@@ -348,47 +356,44 @@
           </div>
           <div class="dot ${dotClass(u.status)}"></div>
         </div>`).join('');
-      const me = users.find(u => u.id === myId);
-      if (me) document.querySelectorAll('.btn').forEach(b => {
-        b.classList.toggle('active', b.textContent.trim().includes(me.status));
-      });
     }
 
     async function loadUsers() {
-      const { data } = await db.from('profiles').select('*').order('username');
-      if (data) renderUsers(data);
+      const {data}=await db.from('profiles').select('*').order('username');
+      if(data) renderUsers(data);
     }
 
     async function setStatus(status) {
-      if (!myId) return;
-      await db.from('profiles').update({ status }).eq('id', myId);
+      if(!myId) return;
+      await db.from('profiles').update({status}).eq('id',myId);
     }
 
-    let rtSubscribed = false;
     function subscribeRealtime() {
-      if (rtSubscribed) return;
-      rtSubscribed = true;
+      if(rtSubscribed) return;
+      rtSubscribed=true;
       db.channel('profiles-rt')
-        .on('postgres_changes', { event:'*', schema:'public', table:'profiles' }, loadUsers)
+        .on('postgres_changes',{event:'*',schema:'public',table:'profiles'},loadUsers)
         .subscribe();
     }
 
     async function onLogin(user) {
       await ensureProfile(user);
       updateHeader(user);
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('app-screen').style.display  = 'block';
+      studySecs=parseInt(localStorage.getItem(todayKey())||'0',10);
+      renderTimer();
+      document.getElementById('auth-screen').style.display='none';
+      document.getElementById('app-screen').style.display='block';
       loadUsers();
       subscribeRealtime();
     }
 
     db.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) await onLogin(session.user);
+      if(session?.user) await onLogin(session.user);
     });
 
     (async () => {
-      const { data: { session } } = await db.auth.getSession();
-      if (session?.user) await onLogin(session.user);
+      const {data:{session}}=await db.auth.getSession();
+      if(session?.user) await onLogin(session.user);
     })();
   </script>
 </body>
