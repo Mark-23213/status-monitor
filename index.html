@@ -172,6 +172,7 @@
     let myId = null, myName = '';
     let rtSubscribed = false, chatSubscribed = false;
     let loginInProgress = false;
+    let gotSession = false;
 
     // ONLINE COUNTER
     function renderOnline(users) {
@@ -373,22 +374,23 @@
       console.log('Auth event:', event, session ? 'has session' : 'no session');
 
       if (session && session.user) {
-        // Любое событие с сессией — входим
+        // Флаг ставим СИНХРОННО — до любых async-операций
+        gotSession = true;
         if (loginInProgress) return;
         loginInProgress = true;
         await onLogin(session.user);
         loginInProgress = false;
 
       } else if (event === 'SIGNED_OUT') {
-        // Явный выход — сразу показываем экран входа
+        gotSession = false;
         showAuthScreen();
 
       } else if (event === 'INITIAL_SESSION' && !session) {
-        // После OAuth-редиректа INITIAL_SESSION(null) может прийти раньше SIGNED_IN.
-        // Ждём 800мс — если за это время SIGNED_IN не пришёл, показываем экран входа.
+        // После OAuth-редиректа INITIAL_SESSION(null) приходит раньше SIGNED_IN.
+        // Ждём — если SIGNED_IN придёт, gotSession будет true и экран не скроем.
         setTimeout(function() {
-          if (!myId) showAuthScreen();
-        }, 800);
+          if (!gotSession) showAuthScreen();
+        }, 1200);
       }
     });
   </script>
