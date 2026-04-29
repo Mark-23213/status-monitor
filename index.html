@@ -204,8 +204,11 @@
       }).join('');
     }
 
+    let pollInterval = null;
+
     async function loadUsers() {
-      const { data } = await db.from('profiles').select('*').order('username');
+      const { data, error } = await db.from('profiles').select('*').order('username');
+      if (error) { console.error('loadUsers error:', error); return; }
       if (data) renderUsers(data);
     }
 
@@ -213,7 +216,9 @@
       if (rtSubscribed) return; rtSubscribed = true;
       db.channel('profiles-rt')
         .on('postgres_changes', { event:'*', schema:'public', table:'profiles' }, loadUsers)
-        .subscribe();
+        .subscribe(function(status) { console.log('Profiles RT:', status); });
+      if (pollInterval) clearInterval(pollInterval);
+      pollInterval = setInterval(loadUsers, 5000);
     }
 
     // CHAT
@@ -317,6 +322,7 @@
       await db.auth.signOut();
       myId = null; myName = '';
       rtSubscribed = false; chatSubscribed = false;
+      if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
       document.getElementById('auth-screen').style.display = 'flex';
       document.getElementById('app-screen').style.display = 'none';
       document.getElementById('login-email').value = '';
