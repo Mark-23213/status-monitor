@@ -266,24 +266,25 @@
       myName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
       const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
 
-      // Один upsert вместо select+insert
-      const { error } = await db.from('profiles').upsert(
-        { id: myId, username: myName, status: 'Online', avatar_url: avatar },
-        { onConflict: 'id' }
-      );
-      if (error) console.error('Profile upsert error:', error);
-
-      // Обновить шапку
+      // Шапка + показать приложение СРАЗУ, не ждём БД
       document.getElementById('hdr-name').textContent = myName;
       document.getElementById('hdr-email').textContent = user.email || '';
       const av = document.getElementById('hdr-avatar');
       av.innerHTML = avatar ? `<img src="${avatar}" alt="${myName[0]}">` : myName[0].toUpperCase();
-
       showApp();
-      await loadUsers();
-      await loadMessages();
-      subscribeProfiles();
-      subscribeMessages();
+
+      // БД-запросы после показа UI — каждый в try/catch
+      try {
+        await db.from('profiles').upsert(
+          { id: myId, username: myName, status: 'Online', avatar_url: avatar },
+          { onConflict: 'id' }
+        );
+      } catch(e) { console.error('upsert:', e); }
+
+      try { await loadUsers(); } catch(e) { console.error('loadUsers:', e); }
+      try { await loadMessages(); } catch(e) { console.error('loadMessages:', e); }
+      try { subscribeProfiles(); } catch(e) {}
+      try { subscribeMessages(); } catch(e) {}
 
       if (pollTimer) clearInterval(pollTimer);
       pollTimer = setInterval(loadUsers, 5000);
