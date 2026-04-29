@@ -322,9 +322,7 @@
       await db.auth.signOut();
       myId = null; myName = '';
       rtSubscribed = false; chatSubscribed = false;
-      if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
-      document.getElementById('auth-screen').style.display = 'flex';
-      document.getElementById('app-screen').style.display = 'none';
+      showAuthScreen();
       document.getElementById('login-email').value = '';
       document.getElementById('login-password').value = '';
       switchTab('login');
@@ -363,18 +361,34 @@
       subscribeChat();
     }
 
-    // Слушаем изменение состояния авторизации
+    function showAuthScreen() {
+      myId = null; myName = '';
+      rtSubscribed = false; chatSubscribed = false;
+      if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('app-screen').style.display = 'none';
+    }
+
     db.auth.onAuthStateChange(async function(event, session) {
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session && session.user) {
+      console.log('Auth event:', event, session ? 'has session' : 'no session');
+
+      if (session && session.user) {
+        // Любое событие с сессией — входим
         if (loginInProgress) return;
         loginInProgress = true;
         await onLogin(session.user);
         loginInProgress = false;
-      } else if (event === 'SIGNED_OUT' || (event === 'INITIAL_SESSION' && !session)) {
-        myId = null; myName = '';
-        rtSubscribed = false; chatSubscribed = false;
-        document.getElementById('auth-screen').style.display = 'flex';
-        document.getElementById('app-screen').style.display = 'none';
+
+      } else if (event === 'SIGNED_OUT') {
+        // Явный выход — сразу показываем экран входа
+        showAuthScreen();
+
+      } else if (event === 'INITIAL_SESSION' && !session) {
+        // После OAuth-редиректа INITIAL_SESSION(null) может прийти раньше SIGNED_IN.
+        // Ждём 800мс — если за это время SIGNED_IN не пришёл, показываем экран входа.
+        setTimeout(function() {
+          if (!myId) showAuthScreen();
+        }, 800);
       }
     });
   </script>
