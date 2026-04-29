@@ -330,16 +330,22 @@
     }
 
     async function ensureProfile(user) {
-      const name = user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name) || user.email.split('@')[0] || 'User';
-      const avatar = user.user_metadata && (user.user_metadata.avatar_url || user.user_metadata.picture) || '';
-      const { data } = await db.from('profiles').select('id').eq('id', user.id).single();
-      if (!data) {
-        await db.from('profiles').insert({ id: user.id, username: name, status: 'Online', avatar_url: avatar });
-      } else {
-        await db.from('profiles').update({ status: 'Online', avatar_url: avatar }).eq('id', user.id);
-      }
+      const name = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || (user.email ? user.email.split('@')[0] : 'User');
+      const avatar = (user.user_metadata && (user.user_metadata.avatar_url || user.user_metadata.picture)) || '';
+      // Ставим myId/myName сразу, даже если DB-запросы упадут
       myId = user.id;
       myName = name;
+      try {
+        const { data, error } = await db.from('profiles').select('id').eq('id', user.id).maybeSingle();
+        if (error) { console.error('profiles select error:', error); return; }
+        if (!data) {
+          const ins = await db.from('profiles').insert({ id: user.id, username: name, status: 'Online', avatar_url: avatar });
+          if (ins.error) console.error('profiles insert error:', ins.error);
+        } else {
+          const upd = await db.from('profiles').update({ status: 'Online', avatar_url: avatar }).eq('id', user.id);
+          if (upd.error) console.error('profiles update error:', upd.error);
+        }
+      } catch(e) { console.error('ensureProfile exception:', e); }
     }
 
     function updateHeader(user) {
@@ -352,14 +358,21 @@
     }
 
     async function onLogin(user) {
-      await ensureProfile(user);
-      updateHeader(user);
+      try {
+        await ensureProfile(user);
+      } catch(e) {
+        console.error('ensureProfile failed:', e);
+        // Даже если профиль не создался — всё равно показываем приложение
+        myId = user.id;
+        myName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || (user.email ? user.email.split('@')[0] : 'User');
+      }
+      try { updateHeader(user); } catch(e) { console.error('updateHeader:', e); }
       document.getElementById('auth-screen').style.display = 'none';
       document.getElementById('app-screen').style.display = 'block';
-      await loadUsers();
-      subscribeRealtime();
-      await loadMessages();
-      subscribeChat();
+      try { await loadUsers(); } catch(e) { console.error('loadUsers:', e); }
+      try { subscribeRealtime(); } catch(e) { console.error('subscribeRealtime:', e); }
+      try { await loadMessages(); } catch(e) { console.error('loadMessages:', e); }
+      try { subscribeChat(); } catch(e) { console.error('subscribeChat:', e); }
     }
 
     function showAuthScreen() {
