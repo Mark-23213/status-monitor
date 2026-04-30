@@ -1,419 +1,576 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Монитор статусов</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; min-height: 100vh; padding: 40px 20px; }
-    h1 { text-align: center; font-size: 2rem; margin-bottom: 6px; color: #3ecf8e; }
-    .subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
-    .container { max-width: 620px; margin: 0 auto; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:#e0e0e0;min-height:100vh;padding:40px 20px}
+    h1{text-align:center;font-size:2rem;margin-bottom:6px;color:#3ecf8e}
+    .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.9rem}
+    .container{max-width:620px;margin:0 auto}
 
     /* AUTH */
-    #auth-screen { display: flex; flex-direction: column; align-items: center; }
-    .auth-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 400px; }
-    .auth-tabs { display: flex; background: #111; border-radius: 10px; padding: 4px; margin-bottom: 28px; }
-    .auth-tab { flex: 1; padding: 9px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 8px; font-size: 0.9rem; transition: all 0.2s; }
-    .auth-tab.active { background: #2a2a2a; color: #3ecf8e; font-weight: 600; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 6px; }
-    .form-group input { width: 100%; padding: 11px 14px; background: #111; border: 1px solid #2a2a2a; border-radius: 9px; color: #e0e0e0; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-    .form-group input:focus { border-color: #3ecf8e; }
-    .submit-btn { width: 100%; padding: 12px; background: #3ecf8e; color: #000; border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
-    .submit-btn:hover { background: #2eb87a; }
-    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #444; font-size: 0.8rem; }
-    .divider::before, .divider::after { content:''; flex:1; height:1px; background:#2a2a2a; }
-    .google-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 11px; background: #fff; color: #333; border: none; border-radius: 9px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .google-btn:hover { background: #f0f0f0; }
-    .google-btn svg { width: 18px; height: 18px; }
-    .auth-msg { border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
-    .auth-msg.error { background:#ff444422; border:1px solid #ff4444; color:#ff6666; display:block; }
-    .auth-msg.success { background:#3ecf8e22; border:1px solid #3ecf8e; color:#3ecf8e; display:block; }
+    #auth-screen{display:flex;flex-direction:column;align-items:center}
+    .auth-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;padding:36px 32px;width:100%;max-width:400px}
+    .auth-tabs{display:flex;background:#111;border-radius:10px;padding:4px;margin-bottom:28px}
+    .auth-tab{flex:1;padding:9px;border:none;background:transparent;color:#666;cursor:pointer;border-radius:8px;font-size:.9rem;transition:all .2s}
+    .auth-tab.active{background:#2a2a2a;color:#3ecf8e;font-weight:600}
+    .form-group{margin-bottom:16px}
+    .form-group label{display:block;font-size:.8rem;color:#888;margin-bottom:6px}
+    .form-group input{width:100%;padding:11px 14px;background:#111;border:1px solid #2a2a2a;border-radius:9px;color:#e0e0e0;font-size:.95rem;outline:none;transition:border-color .2s}
+    .form-group input:focus{border-color:#3ecf8e}
+    .submit-btn{width:100%;padding:12px;background:#3ecf8e;color:#000;border:none;border-radius:9px;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px}
+    .submit-btn:hover{background:#2eb87a}
+    .submit-btn:disabled{opacity:.6;cursor:not-allowed}
+    .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#444;font-size:.8rem}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:#2a2a2a}
+    .google-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:11px;background:#fff;color:#333;border:none;border-radius:9px;font-size:.9rem;font-weight:600;cursor:pointer}
+    .google-btn:hover{background:#f0f0f0}
+    .google-btn svg{width:18px;height:18px}
+    .auth-msg{border-radius:8px;padding:10px 14px;font-size:.85rem;margin-bottom:16px;display:none}
+    .auth-msg.error{background:#ff444422;border:1px solid #ff4444;color:#ff6666;display:block}
+    .auth-msg.success{background:#3ecf8e22;border:1px solid #3ecf8e;color:#3ecf8e;display:block}
 
     /* APP */
-    #app-screen { display: none; }
-    .user-bar { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-    .user-bar-left { display: flex; align-items: center; gap: 12px; }
-    .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #3ecf8e; font-size: 1rem; border: 2px solid #3ecf8e44; flex-shrink: 0; overflow: hidden; }
-    .user-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
-    .user-name { font-weight: 600; font-size: 0.95rem; }
-    .user-email { font-size: 0.78rem; color: #666; }
-    .logout-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid #444; background: transparent; color: #aaa; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
-    .logout-btn:hover { border-color: #ff4444; color: #ff4444; }
-    .online-indicator { background: #1a1a1a; border: 1px solid #3ecf8e33; border-radius: 12px; padding: 16px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
-    .online-left { display: flex; align-items: center; gap: 14px; }
-    .online-circle { width: 52px; height: 52px; border-radius: 50%; background: #3ecf8e15; border: 2px solid #3ecf8e44; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: #3ecf8e; }
-    .online-text-main { font-size: 1rem; font-weight: 600; }
-    .online-text-sub { font-size: 0.78rem; color: #666; margin-top: 2px; }
-    .online-avatars { display: flex; }
-    .mini-avatar { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 2px solid #3ecf8e; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: #3ecf8e; margin-left: -8px; flex-shrink: 0; }
-    .mini-avatar:first-child { margin-left: 0; }
-    .section-title { font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; transition: border-color 0.2s; }
-    .card:hover { border-color: #3ecf8e44; }
-    .card.me { border-color: #3ecf8e33; }
-    .avatar { width: 46px; height: 46px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; color: #3ecf8e; flex-shrink: 0; overflow: hidden; }
-    .avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
-    .info { flex: 1; }
-    .uname { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
-    .status-text { font-size: 0.85rem; color: #aaa; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .dot.online { background: #3ecf8e; box-shadow: 0 0 6px #3ecf8e; }
-    .dot.offline { background: #555; }
+    #app-screen{display:none}
+    .user-bar{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+    .user-bar-left{display:flex;align-items:center;gap:12px}
+    .user-avatar{width:38px;height:38px;border-radius:50%;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#3ecf8e;font-size:1rem;border:2px solid #3ecf8e44;flex-shrink:0;overflow:hidden}
+    .user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    .user-name{font-weight:600;font-size:.95rem}
+    .user-email{font-size:.78rem;color:#666}
+    .logout-btn{padding:7px 16px;border-radius:8px;border:1px solid #444;background:transparent;color:#aaa;cursor:pointer;font-size:.85rem;transition:all .2s}
+    .logout-btn:hover{border-color:#ff4444;color:#ff4444}
 
-    /* CHAT */
-    .chat-box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; margin-top: 8px; overflow: hidden; }
-    .chat-header { padding: 14px 20px; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 10px; }
-    .chat-header-dot { width: 8px; height: 8px; border-radius: 50%; background: #3ecf8e; box-shadow: 0 0 6px #3ecf8e; animation: pulse 1.5s infinite; }
-    .chat-title { font-weight: 600; font-size: 0.95rem; color: #3ecf8e; }
-    .chat-messages { height: 300px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-    .chat-msg { display: flex; gap: 10px; align-items: flex-start; animation: msgIn 0.2s ease-out; }
-    @keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-    .chat-msg.mine { flex-direction: row-reverse; }
-    .chat-msg-avatar { width: 32px; height: 32px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #3ecf8e; flex-shrink: 0; border: 1px solid #3ecf8e33; }
-    .chat-msg-body { max-width: 75%; }
-    .chat-msg-name { font-size: 0.72rem; color: #666; margin-bottom: 3px; }
-    .chat-msg.mine .chat-msg-name { text-align: right; }
-    .chat-msg-bubble { padding: 9px 13px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4; word-break: break-word; }
-    .chat-msg.mine .chat-msg-bubble { background: #3ecf8e; color: #000; border-bottom-right-radius: 3px; }
-    .chat-msg.theirs .chat-msg-bubble { background: #2a2a2a; color: #e0e0e0; border-bottom-left-radius: 3px; }
-    .chat-msg-time { font-size: 0.68rem; color: #555; margin-top: 3px; }
-    .chat-msg.mine .chat-msg-time { text-align: right; }
-    .chat-input-row { display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid #2a2a2a; background: #111; }
-    .chat-input { flex: 1; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 9px; color: #e0e0e0; padding: 10px 14px; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-    .chat-input:focus { border-color: #3ecf8e; }
-    .chat-send-btn { padding: 10px 18px; background: #3ecf8e; color: #000; border: none; border-radius: 9px; font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
-    .chat-send-btn:hover { background: #2eb87a; }
-    .chat-empty { text-align: center; color: #444; padding: 40px 20px; font-size: 0.85rem; }
+    /* МОЙ СТАТУС + ТАЙМЕР */
+    .my-status-card{background:#1a1a1a;border:1px solid #3ecf8e33;border-radius:14px;padding:20px 22px;margin-bottom:20px}
+    .my-status-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .my-status-label{font-size:.78rem;color:#555;text-transform:uppercase;letter-spacing:1px}
+    .current-status-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:20px;font-size:.85rem;font-weight:600;border:1px solid}
+    .timer-display{font-size:2.2rem;font-weight:800;color:#3ecf8e;font-variant-numeric:tabular-nums;letter-spacing:2px;margin-bottom:4px;line-height:1}
+    .timer-sub{font-size:.75rem;color:#555;margin-bottom:16px}
+    .status-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .status-btn{padding:8px 16px;border-radius:10px;border:1px solid #2a2a2a;background:#111;color:#aaa;cursor:pointer;font-size:.85rem;font-weight:500;transition:all .2s;display:flex;align-items:center;gap:6px}
+    .status-btn:hover{border-color:#3ecf8e55;color:#e0e0e0}
+    .status-btn.active{font-weight:700;border-width:2px}
+    .status-btn.active.s-online{background:#3ecf8e15;border-color:#3ecf8e;color:#3ecf8e}
+    .status-btn.active.s-studying{background:#3b82f615;border-color:#3b82f6;color:#3b82f6}
+    .status-btn.active.s-away{background:#f59e0b15;border-color:#f59e0b;color:#f59e0b}
+    .status-btn.active.s-offline{background:#6b728015;border-color:#6b7280;color:#6b7280}
 
-    /* MISC */
-    .realtime-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #3ecf8e; background: #3ecf8e11; border: 1px solid #3ecf8e33; border-radius: 20px; padding: 4px 10px; margin-bottom: 24px; }
-    .pulse { width: 7px; height: 7px; border-radius: 50%; background: #3ecf8e; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .msg { text-align: center; color: #555; padding: 30px; }
-    #loading { text-align: center; color: #555; padding: 60px 20px; font-size: 0.9rem; }
+    /* СЧЁТЧИК ОНЛАЙН */
+    .online-indicator{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+    .online-left{display:flex;align-items:center;gap:14px}
+    .online-circle{width:52px;height:52px;border-radius:50%;background:#3ecf8e15;border:2px solid #3ecf8e44;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#3ecf8e}
+    .online-text-main{font-size:1rem;font-weight:600}
+    .online-text-sub{font-size:.78rem;color:#666;margin-top:2px}
+    .online-avatars{display:flex}
+    .mini-avatar{width:30px;height:30px;border-radius:50%;background:#2a2a2a;border:2px solid #3ecf8e;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#3ecf8e;margin-left:-8px;flex-shrink:0}
+    .mini-avatar:first-child{margin-left:0}
+
+    /* ПОЛЬЗОВАТЕЛИ */
+    .section-title{font-size:.8rem;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:border-color .2s}
+    .card:hover{border-color:#3ecf8e33}
+    .card.me{border-color:#3ecf8e44}
+    .avatar{width:44px;height:44px;border-radius:50%;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:bold;color:#3ecf8e;flex-shrink:0;overflow:hidden}
+    .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    .info{flex:1;min-width:0}
+    .uname{font-weight:600;font-size:.95rem;margin-bottom:3px}
+    .status-row{display:flex;align-items:center;gap:6px;font-size:.82rem}
+    .sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .sdot.online{background:#3ecf8e;box-shadow:0 0 5px #3ecf8e}
+    .sdot.studying{background:#3b82f6;box-shadow:0 0 5px #3b82f6}
+    .sdot.away{background:#f59e0b;box-shadow:0 0 5px #f59e0b}
+    .sdot.offline{background:#555}
+    .card-timer{font-size:.78rem;color:#555;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+    /* ЧАТ */
+    .chat-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;margin-top:8px;overflow:hidden}
+    .chat-header{padding:14px 20px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;gap:10px}
+    .chat-header-dot{width:8px;height:8px;border-radius:50%;background:#3ecf8e;box-shadow:0 0 6px #3ecf8e;animation:pulse 1.5s infinite}
+    .chat-title{font-weight:600;font-size:.95rem;color:#3ecf8e}
+    .chat-messages{height:300px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+    .chat-messages::-webkit-scrollbar{width:4px}
+    .chat-messages::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+    .chat-msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn .2s ease-out}
+    @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .chat-msg.mine{flex-direction:row-reverse}
+    .chat-msg-avatar{width:32px;height:32px;border-radius:50%;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#3ecf8e;flex-shrink:0;border:1px solid #3ecf8e33}
+    .chat-msg-body{max-width:75%}
+    .chat-msg-name{font-size:.72rem;color:#666;margin-bottom:3px}
+    .chat-msg.mine .chat-msg-name{text-align:right}
+    .chat-msg-bubble{padding:9px 13px;border-radius:12px;font-size:.9rem;line-height:1.4;word-break:break-word}
+    .chat-msg.mine .chat-msg-bubble{background:#3ecf8e;color:#000;border-bottom-right-radius:3px}
+    .chat-msg.theirs .chat-msg-bubble{background:#2a2a2a;color:#e0e0e0;border-bottom-left-radius:3px}
+    .chat-msg-time{font-size:.68rem;color:#555;margin-top:3px}
+    .chat-msg.mine .chat-msg-time{text-align:right}
+    .chat-input-row{display:flex;gap:10px;padding:14px 16px;border-top:1px solid #2a2a2a;background:#111}
+    .chat-input{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:9px;color:#e0e0e0;padding:10px 14px;font-size:.9rem;outline:none;transition:border-color .2s}
+    .chat-input:focus{border-color:#3ecf8e}
+    .chat-send-btn{padding:10px 18px;background:#3ecf8e;color:#000;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-size:.85rem}
+    .chat-send-btn:hover{background:#2eb87a}
+    .chat-empty{text-align:center;color:#444;padding:40px 20px;font-size:.85rem}
+
+    .realtime-badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;color:#3ecf8e;background:#3ecf8e11;border:1px solid #3ecf8e33;border-radius:20px;padding:4px 10px;margin-bottom:24px}
+    .pulse{width:7px;height:7px;border-radius:50%;background:#3ecf8e;animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .msg{text-align:center;color:#555;padding:30px}
+    #loading{text-align:center;color:#555;padding:60px 20px;font-size:.9rem}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Монитор статусов</h1>
-    <p class="subtitle">Обновляется в реальном времени</p>
+<div class="container">
+  <h1>Монитор статусов</h1>
+  <p class="subtitle">Обновляется в реальном времени</p>
 
-    <div id="loading">Подключение...</div>
+  <div id="loading">Подключение...</div>
 
-    <div id="auth-screen" style="display:none">
-      <div class="auth-card">
-        <div class="auth-tabs">
-          <button class="auth-tab active" onclick="switchTab('login')">Войти</button>
-          <button class="auth-tab" onclick="switchTab('register')">Регистрация</button>
-        </div>
-        <div id="auth-msg" class="auth-msg"></div>
-
-        <div id="login-form">
-          <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="your@email.com"/></div>
-          <div class="form-group"><label>Пароль</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-          <button class="submit-btn" id="login-btn" onclick="doLogin()">Войти</button>
-        </div>
-
-        <div id="register-form" style="display:none">
-          <div class="form-group"><label>Имя пользователя</label><input type="text" id="reg-name" placeholder="Как тебя зовут?"/></div>
-          <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="your@email.com"/></div>
-          <div class="form-group"><label>Пароль</label><input type="password" id="reg-pass" placeholder="Минимум 6 символов" onkeydown="if(event.key==='Enter')doRegister()"/></div>
-          <button class="submit-btn" id="reg-btn" onclick="doRegister()">Зарегистрироваться</button>
-        </div>
-
-        <div class="divider">или</div>
-        <button class="google-btn" onclick="doGoogle()">
-          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.3 0-9.7-3.3-11.3-8H6.4C9.7 35.6 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.3 4.2-4.1 5.6l6.2 5.2C37.1 39 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
-          Войти через Google
-        </button>
+  <!-- AUTH -->
+  <div id="auth-screen" style="display:none">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Войти</button>
+        <button class="auth-tab" onclick="switchTab('register')">Регистрация</button>
       </div>
-    </div>
-
-    <div id="app-screen" style="display:none">
-      <div style="text-align:center;margin-bottom:24px;">
-        <span class="realtime-badge"><span class="pulse"></span>Realtime подключён</span>
+      <div id="auth-msg" class="auth-msg"></div>
+      <div id="login-form">
+        <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label>Пароль</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <button class="submit-btn" id="login-btn" onclick="doLogin()">Войти</button>
       </div>
-      <div class="user-bar">
-        <div class="user-bar-left">
-          <div class="user-avatar" id="hdr-avatar">?</div>
-          <div>
-            <div class="user-name" id="hdr-name">...</div>
-            <div class="user-email" id="hdr-email">...</div>
-          </div>
-        </div>
-        <button class="logout-btn" onclick="doLogout()">Выйти</button>
+      <div id="register-form" style="display:none">
+        <div class="form-group"><label>Имя пользователя</label><input type="text" id="reg-name" placeholder="Как тебя зовут?"/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label>Пароль</label><input type="password" id="reg-pass" placeholder="Минимум 6 символов" onkeydown="if(event.key==='Enter')doRegister()"/></div>
+        <button class="submit-btn" id="reg-btn" onclick="doRegister()">Зарегистрироваться</button>
       </div>
-      <div class="online-indicator">
-        <div class="online-left">
-          <div class="online-circle" id="online-count">0</div>
-          <div>
-            <div class="online-text-main">Сейчас онлайн</div>
-            <div class="online-text-sub" id="online-sub">из 0 пользователей</div>
-          </div>
-        </div>
-        <div class="online-avatars" id="online-avatars"></div>
-      </div>
-      <div class="section-title">Все пользователи</div>
-      <div id="users-list"><div class="msg">Загрузка...</div></div>
-      <div class="chat-box">
-        <div class="chat-header">
-          <div class="chat-header-dot"></div>
-          <div class="chat-title">Общий чат</div>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-          <div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>
-        </div>
-        <div class="chat-input-row">
-          <input class="chat-input" id="chat-input" placeholder="Написать сообщение..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-          <button class="chat-send-btn" onclick="sendMsg()">Отправить</button>
-        </div>
-      </div>
+      <div class="divider">или</div>
+      <button class="google-btn" onclick="doGoogle()">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.3 0-9.7-3.3-11.3-8H6.4C9.7 35.6 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.3 4.2-4.1 5.6l6.2 5.2C37.1 39 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Войти через Google
+      </button>
     </div>
   </div>
 
-  <script>
-    const SUPABASE_URL = 'https://lbsnhkenepmhigbofqae.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxic25oa2VuZXBtaGlnYm9mcWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjI0ODgsImV4cCI6MjA5MTE5ODQ4OH0.42Cd7d5v6gVe4dP-LwQbamsu3AC4ghT8x_jfte5SG2I';
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  <!-- APP -->
+  <div id="app-screen" style="display:none">
+    <div style="text-align:center;margin-bottom:24px">
+      <span class="realtime-badge"><span class="pulse"></span>Realtime подключён</span>
+    </div>
 
-    let myId = null, myName = '';
-    let pollTimer = null, profilesChannel = null, messagesChannel = null;
-
-    // ── ЭКРАНЫ ──────────────────────────────────────────────────
-    function showLoading() {
-      document.getElementById('loading').style.display = 'block';
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('app-screen').style.display = 'none';
-    }
-    function showAuth() {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-      document.getElementById('app-screen').style.display = 'none';
-    }
-    function showApp() {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('app-screen').style.display = 'block';
-    }
-
-    // ── AUTH UI ──────────────────────────────────────────────────
-    function switchTab(tab) {
-      document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
-      document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-      document.querySelectorAll('.auth-tab').forEach((b, i) => {
-        b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
-      });
-      hideMsg();
-    }
-    function showMsg(text, type) {
-      const el = document.getElementById('auth-msg');
-      el.textContent = text;
-      el.className = 'auth-msg ' + type;
-    }
-    function hideMsg() { document.getElementById('auth-msg').className = 'auth-msg'; }
-
-    // ── AUTH ACTIONS ─────────────────────────────────────────────
-    async function doLogin() {
-      const email = document.getElementById('login-email').value.trim();
-      const pass = document.getElementById('login-pass').value;
-      if (!email || !pass) return showMsg('Заполни все поля', 'error');
-      const btn = document.getElementById('login-btn');
-      btn.disabled = true; btn.textContent = 'Входим...';
-      const { error } = await db.auth.signInWithPassword({ email, password: pass });
-      btn.disabled = false; btn.textContent = 'Войти';
-      if (error) showMsg('Неверный email или пароль', 'error');
-    }
-
-    async function doRegister() {
-      const name = document.getElementById('reg-name').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
-      const pass = document.getElementById('reg-pass').value;
-      if (!name || !email || !pass) return showMsg('Заполни все поля', 'error');
-      if (pass.length < 6) return showMsg('Пароль минимум 6 символов', 'error');
-      const btn = document.getElementById('reg-btn');
-      btn.disabled = true; btn.textContent = 'Регистрируем...';
-      const { data, error } = await db.auth.signUp({
-        email, password: pass,
-        options: { data: { full_name: name } }
-      });
-      btn.disabled = false; btn.textContent = 'Зарегистрироваться';
-      if (error) return showMsg(error.message, 'error');
-      if (!data.session) showMsg('Письмо отправлено! Проверь почту.', 'success');
-    }
-
-    async function doGoogle() {
-      await db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } });
-    }
-
-    async function doLogout() {
-      if (myId) {
-        await db.from('profiles').update({ status: 'Offline' }).eq('id', myId);
-      }
-      cleanup();
-      await db.auth.signOut();
-    }
-
-    // ── ВХОД В ПРИЛОЖЕНИЕ ────────────────────────────────────────
-    async function onLogin(user) {
-      myId = user.id;
-      myName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
-      const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
-
-      // Шапка + показать приложение СРАЗУ, не ждём БД
-      document.getElementById('hdr-name').textContent = myName;
-      document.getElementById('hdr-email').textContent = user.email || '';
-      const av = document.getElementById('hdr-avatar');
-      av.innerHTML = avatar ? `<img src="${avatar}" alt="${myName[0]}">` : myName[0].toUpperCase();
-      showApp();
-
-      // БД-запросы после показа UI — каждый в try/catch
-      try {
-        await db.from('profiles').upsert(
-          { id: myId, username: myName, status: 'Online', avatar_url: avatar },
-          { onConflict: 'id' }
-        );
-      } catch(e) { console.error('upsert:', e); }
-
-      try { await loadUsers(); } catch(e) { console.error('loadUsers:', e); }
-      try { await loadMessages(); } catch(e) { console.error('loadMessages:', e); }
-      try { subscribeProfiles(); } catch(e) {}
-      try { subscribeMessages(); } catch(e) {}
-
-      if (pollTimer) clearInterval(pollTimer);
-      pollTimer = setInterval(loadUsers, 5000);
-    }
-
-    function cleanup() {
-      myId = null; myName = '';
-      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-      if (profilesChannel) { db.removeChannel(profilesChannel); profilesChannel = null; }
-      if (messagesChannel) { db.removeChannel(messagesChannel); messagesChannel = null; }
-    }
-
-    // ── ПОЛЬЗОВАТЕЛИ ─────────────────────────────────────────────
-    async function loadUsers() {
-      const { data, error } = await db.from('profiles').select('*').order('username');
-      if (error) { console.error('loadUsers:', error); return; }
-      if (data) renderUsers(data);
-    }
-
-    function renderUsers(users) {
-      const online = users.filter(u => u.status === 'Online');
-      document.getElementById('online-count').textContent = online.length;
-      document.getElementById('online-sub').textContent = `из ${users.length} пользователей`;
-      document.getElementById('online-avatars').innerHTML = online.slice(0, 6).map(u =>
-        `<div class="mini-avatar" title="${u.username||'?'}">${(u.username||'?')[0].toUpperCase()}</div>`
-      ).join('');
-
-      const list = document.getElementById('users-list');
-      if (!users.length) { list.innerHTML = '<div class="msg">Нет пользователей</div>'; return; }
-      list.innerHTML = users.map(u => {
-        const isOnline = u.status === 'Online';
-        const av = u.avatar_url
-          ? `<img src="${u.avatar_url}" alt="${(u.username||'?')[0]}">`
-          : (u.username||'?')[0].toUpperCase();
-        const meTag = u.id === myId ? ' <span style="color:#3ecf8e;font-size:.75rem">(я)</span>' : '';
-        return `<div class="card ${u.id === myId ? 'me' : ''}">
-          <div class="avatar">${av}</div>
-          <div class="info">
-            <div class="uname">${u.username||'Без имени'}${meTag}</div>
-            <div class="status-text">${isOnline ? '🟢 Online' : '⚫ Offline'}</div>
-          </div>
-          <div class="dot ${isOnline ? 'online' : 'offline'}"></div>
-        </div>`;
-      }).join('');
-    }
-
-    function subscribeProfiles() {
-      if (profilesChannel) return;
-      profilesChannel = db.channel('profiles-rt')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, loadUsers)
-        .subscribe(s => console.log('Profiles RT:', s));
-    }
-
-    // ── ЧАТ ──────────────────────────────────────────────────────
-    const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const timeStr = ts => new Date(ts).toLocaleTimeString('ru', { hour:'2-digit', minute:'2-digit' });
-
-    function buildMsg(msg) {
-      const mine = msg.user_id === myId;
-      return `<div class="chat-msg ${mine ? 'mine' : 'theirs'}">
-        <div class="chat-msg-avatar">${(msg.username||'?')[0].toUpperCase()}</div>
-        <div class="chat-msg-body">
-          <div class="chat-msg-name">${mine ? 'Вы' : esc(msg.username||'?')}</div>
-          <div class="chat-msg-bubble">${esc(msg.text)}</div>
-          <div class="chat-msg-time">${timeStr(msg.created_at)}</div>
+    <!-- Шапка -->
+    <div class="user-bar">
+      <div class="user-bar-left">
+        <div class="user-avatar" id="hdr-avatar">?</div>
+        <div>
+          <div class="user-name" id="hdr-name">...</div>
+          <div class="user-email" id="hdr-email">...</div>
         </div>
-      </div>`;
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Выйти</button>
+    </div>
+
+    <!-- МОЙ СТАТУС + ТАЙМЕР -->
+    <div class="my-status-card">
+      <div class="my-status-top">
+        <span class="my-status-label">Мой статус</span>
+        <span class="current-status-badge" id="cur-badge">🟢 Online</span>
+      </div>
+      <div class="timer-display" id="my-timer">00:00:00</div>
+      <div class="timer-sub" id="timer-sub">Время в активном статусе</div>
+      <div class="status-btns">
+        <button class="status-btn s-online active" onclick="setStatus('Online')">🟢 Онлайн</button>
+        <button class="status-btn s-studying" onclick="setStatus('Studying')">📚 Учёба</button>
+        <button class="status-btn s-away" onclick="setStatus('Away')">🌙 Отошёл</button>
+        <button class="status-btn s-offline" onclick="setStatus('Offline')">⚫ Оффлайн</button>
+      </div>
+    </div>
+
+    <!-- Онлайн счётчик -->
+    <div class="online-indicator">
+      <div class="online-left">
+        <div class="online-circle" id="online-count">0</div>
+        <div>
+          <div class="online-text-main">Активных пользователей</div>
+          <div class="online-text-sub" id="online-sub">из 0 пользователей</div>
+        </div>
+      </div>
+      <div class="online-avatars" id="online-avatars"></div>
+    </div>
+
+    <div class="section-title">Все пользователи</div>
+    <div id="users-list"><div class="msg">Загрузка...</div></div>
+
+    <!-- Чат -->
+    <div class="chat-box">
+      <div class="chat-header">
+        <div class="chat-header-dot"></div>
+        <div class="chat-title">Общий чат</div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" placeholder="Написать сообщение..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button class="chat-send-btn" onclick="sendMsg()">Отправить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://lbsnhkenepmhigbofqae.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxic25oa2VuZXBtaGlnYm9mcWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjI0ODgsImV4cCI6MjA5MTE5ODQ4OH0.42Cd7d5v6gVe4dP-LwQbamsu3AC4ghT8x_jfte5SG2I';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let myId = null, myName = '', myStatus = 'Online';
+  let pollTimer = null, profilesChannel = null, messagesChannel = null;
+
+  // ТАЙМЕР
+  // Статусы при которых таймер ИДЁТ
+  const TIMER_ACTIVE = ['Online', 'Studying'];
+  let timerSeconds = 0;      // накоплено сек за прошлые сессии (из БД)
+  let timerStartedAt = null; // когда начался текущий отрезок (Date)
+  let timerInterval = null;
+
+  function timerRunning() { return TIMER_ACTIVE.includes(myStatus); }
+
+  function getTotalSeconds() {
+    let total = timerSeconds;
+    if (timerRunning() && timerStartedAt) {
+      total += Math.floor((Date.now() - timerStartedAt) / 1000);
     }
+    return total;
+  }
 
-    async function loadMessages() {
-      const { data, error } = await db.from('messages').select('*').order('created_at').limit(100);
-      const box = document.getElementById('chat-messages');
-      if (error) { box.innerHTML = `<div class="chat-empty">⚠️ ${error.message}</div>`; return; }
-      if (!data?.length) { box.innerHTML = '<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
-      box.innerHTML = data.map(buildMsg).join('');
-      box.scrollTop = box.scrollHeight;
+  function formatTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+
+  function tickTimer() {
+    document.getElementById('my-timer').textContent = formatTime(getTotalSeconds());
+  }
+
+  function startTimerTick() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(tickTimer, 1000);
+    tickTimer();
+  }
+
+  // Вызывается при смене статуса — сохраняет накопленное и перезапускает/останавливает
+  async function flushTimer() {
+    if (timerStartedAt && TIMER_ACTIVE.includes(myStatus)) {
+      // Текущий статус активный — накапливаем до сейчас
+      timerSeconds += Math.floor((Date.now() - timerStartedAt) / 1000);
+      timerStartedAt = Date.now();
+    } else if (timerStartedAt && !TIMER_ACTIVE.includes(myStatus)) {
+      // Переходим в пассивный — фиксируем время
+      timerSeconds += Math.floor((Date.now() - timerStartedAt) / 1000);
+      timerStartedAt = null;
     }
-
-    function subscribeMessages() {
-      if (messagesChannel) return;
-      messagesChannel = db.channel('messages-rt')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-          const box = document.getElementById('chat-messages');
-          const empty = box.querySelector('.chat-empty');
-          if (empty) empty.remove();
-          box.insertAdjacentHTML('beforeend', buildMsg(payload.new));
-          box.scrollTop = box.scrollHeight;
-        })
-        .subscribe();
+    // Сохраняем в БД
+    if (myId) {
+      await db.from('profiles').update({
+        timer_seconds: timerSeconds,
+        timer_started_at: timerRunning() ? new Date().toISOString() : null
+      }).eq('id', myId);
     }
+  }
 
-    async function sendMsg() {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text || !myId) return;
-      input.value = '';
-      const { error } = await db.from('messages').insert({ user_id: myId, username: myName, text });
-      if (error) { console.error('Send error:', error); input.value = text; }
+  // СТАТУСЫ
+  const STATUS_META = {
+    'Online':   { label: '🟢 Онлайн',  cls: 'online',   timerOn: true  },
+    'Studying': { label: '📚 Учёба',   cls: 'studying', timerOn: true  },
+    'Away':     { label: '🌙 Отошёл',  cls: 'away',     timerOn: false },
+    'Offline':  { label: '⚫ Оффлайн', cls: 'offline',  timerOn: false },
+  };
+
+  async function setStatus(status) {
+    const prev = myStatus;
+    myStatus = status;
+
+    // Обновить кнопки
+    document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+    const map = { Online:'s-online', Studying:'s-studying', Away:'s-away', Offline:'s-offline' };
+    document.querySelector('.status-btn.' + map[status]).classList.add('active');
+
+    // Бейдж
+    const m = STATUS_META[status];
+    const badge = document.getElementById('cur-badge');
+    badge.textContent = m.label;
+    badge.style.color = m.timerOn ? (status==='Studying' ? '#3b82f6' : '#3ecf8e') : (status==='Away' ? '#f59e0b' : '#6b7280');
+    badge.style.borderColor = badge.style.color;
+    badge.style.background = badge.style.color + '15';
+
+    // Подсказка под таймером
+    document.getElementById('timer-sub').textContent = m.timerOn
+      ? '⏱ Таймер идёт'
+      : (status === 'Away' ? '⏸ Таймер на паузе' : '⏹ Таймер остановлен');
+
+    // Сохранить время и обновить timerStartedAt
+    await flushTimer();
+    if (m.timerOn && !timerStartedAt) timerStartedAt = Date.now();
+    if (!m.timerOn) timerStartedAt = null;
+
+    // Обновить статус в БД
+    await db.from('profiles').update({ status }).eq('id', myId);
+  }
+
+  // ЭКРАНЫ
+  function showLoading() {
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'none';
+  }
+  function showAuth() {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('app-screen').style.display = 'none';
+  }
+  function showApp() {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'block';
+  }
+
+  // AUTH UI
+  function switchTab(tab) {
+    document.getElementById('login-form').style.display = tab==='login' ? 'block' : 'none';
+    document.getElementById('register-form').style.display = tab==='register' ? 'block' : 'none';
+    document.querySelectorAll('.auth-tab').forEach((b,i) =>
+      b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
+    hideMsg();
+  }
+  function showMsg(t,type){const e=document.getElementById('auth-msg');e.textContent=t;e.className='auth-msg '+type;}
+  function hideMsg(){document.getElementById('auth-msg').className='auth-msg';}
+
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    if (!email||!pass) return showMsg('Заполни все поля','error');
+    const btn = document.getElementById('login-btn');
+    btn.disabled=true; btn.textContent='Входим...';
+    const {error} = await db.auth.signInWithPassword({email, password:pass});
+    btn.disabled=false; btn.textContent='Войти';
+    if (error) showMsg('Неверный email или пароль','error');
+  }
+
+  async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    if (!name||!email||!pass) return showMsg('Заполни все поля','error');
+    if (pass.length<6) return showMsg('Пароль минимум 6 символов','error');
+    const btn = document.getElementById('reg-btn');
+    btn.disabled=true; btn.textContent='Регистрируем...';
+    const {data,error} = await db.auth.signUp({email, password:pass, options:{data:{full_name:name}}});
+    btn.disabled=false; btn.textContent='Зарегистрироваться';
+    if (error) return showMsg(error.message,'error');
+    if (!data.session) showMsg('Письмо отправлено! Проверь почту.','success');
+  }
+
+  async function doGoogle() {
+    await db.auth.signInWithOAuth({provider:'google', options:{redirectTo:window.location.href}});
+  }
+
+  async function doLogout() {
+    if (myId) {
+      timerSeconds = getTotalSeconds();
+      timerStartedAt = null;
+      await db.from('profiles').update({
+        status:'Offline', timer_seconds:timerSeconds, timer_started_at:null
+      }).eq('id', myId);
     }
+    cleanup();
+    await db.auth.signOut();
+  }
 
-    // ── OFFLINE ПРИ ЗАКРЫТИИ ВКЛАДКИ ─────────────────────────────
-    window.addEventListener('beforeunload', () => {
-      if (!myId) return;
-      fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${myId}`, {
-        method: 'PATCH',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ status: 'Offline' }),
-        keepalive: true
-      });
-    });
+  // ВХОД
+  async function onLogin(user) {
+    myId = user.id;
+    myName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
+    const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
 
-    // ── AUTH STATE ────────────────────────────────────────────────
-    db.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth event:', event);
-      if (event === 'INITIAL_SESSION') {
-        if (session?.user) await onLogin(session.user);
-        else showAuth();
-      } else if (event === 'SIGNED_IN') {
-        if (session?.user) await onLogin(session.user);
-      } else if (event === 'SIGNED_OUT') {
-        cleanup();
-        showAuth();
+    document.getElementById('hdr-name').textContent = myName;
+    document.getElementById('hdr-email').textContent = user.email || '';
+    const av = document.getElementById('hdr-avatar');
+    av.innerHTML = avatar ? `<img src="${avatar}" alt="${myName[0]}">` : myName[0].toUpperCase();
+    showApp();
+
+    // Загрузить профиль (timer_seconds из БД)
+    try {
+      const {data} = await db.from('profiles').select('timer_seconds, timer_started_at, status').eq('id', myId).single();
+      if (data) {
+        timerSeconds = data.timer_seconds || 0;
+        // Если был активный сеанс — прибавить пропущенное время
+        if (data.timer_started_at && TIMER_ACTIVE.includes(data.status||'Online')) {
+          timerSeconds += Math.floor((Date.now() - new Date(data.timer_started_at).getTime()) / 1000);
+        }
       }
+    } catch(e) { timerSeconds = 0; }
+
+    // Upsert профиля — Online
+    myStatus = 'Online';
+    timerStartedAt = Date.now();
+    try {
+      await db.from('profiles').upsert({
+        id:myId, username:myName, status:'Online',
+        avatar_url:avatar, timer_seconds:timerSeconds,
+        timer_started_at: new Date().toISOString()
+      }, {onConflict:'id'});
+    } catch(e) { console.error('upsert:', e); }
+
+    startTimerTick();
+    try { await loadUsers(); } catch(e) {}
+    try { await loadMessages(); } catch(e) {}
+    try { subscribeProfiles(); } catch(e) {}
+    try { subscribeMessages(); } catch(e) {}
+
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(loadUsers, 5000);
+  }
+
+  function cleanup() {
+    myId=null; myName=''; myStatus='Online';
+    timerSeconds=0; timerStartedAt=null;
+    if (timerInterval) { clearInterval(timerInterval); timerInterval=null; }
+    if (pollTimer) { clearInterval(pollTimer); pollTimer=null; }
+    if (profilesChannel) { db.removeChannel(profilesChannel); profilesChannel=null; }
+    if (messagesChannel) { db.removeChannel(messagesChannel); messagesChannel=null; }
+  }
+
+  // ПОЛЬЗОВАТЕЛИ
+  function fmtCardTimer(u) {
+    let sec = u.timer_seconds || 0;
+    if (TIMER_ACTIVE.includes(u.status) && u.timer_started_at) {
+      sec += Math.floor((Date.now() - new Date(u.timer_started_at).getTime()) / 1000);
+    }
+    if (sec < 60) return sec + 'с';
+    if (sec < 3600) return Math.floor(sec/60) + 'м';
+    return Math.floor(sec/3600) + 'ч ' + Math.floor((sec%3600)/60) + 'м';
+  }
+
+  function renderUsers(users) {
+    const active = users.filter(u => u.status !== 'Offline');
+    document.getElementById('online-count').textContent = active.length;
+    document.getElementById('online-sub').textContent = `из ${users.length} пользователей`;
+    document.getElementById('online-avatars').innerHTML = active.slice(0,6).map(u =>
+      `<div class="mini-avatar" title="${u.username||'?'}">${(u.username||'?')[0].toUpperCase()}</div>`
+    ).join('');
+
+    const list = document.getElementById('users-list');
+    if (!users.length) { list.innerHTML='<div class="msg">Нет пользователей</div>'; return; }
+    list.innerHTML = users.map(u => {
+      const m = STATUS_META[u.status] || STATUS_META['Offline'];
+      const av = u.avatar_url
+        ? `<img src="${u.avatar_url}" alt="${(u.username||'?')[0]}">`
+        : (u.username||'?')[0].toUpperCase();
+      const meTag = u.id===myId ? ' <span style="color:#3ecf8e;font-size:.72rem">(я)</span>' : '';
+      const timeStr = fmtCardTimer(u);
+      return `<div class="card ${u.id===myId?'me':''}">
+        <div class="avatar">${av}</div>
+        <div class="info">
+          <div class="uname">${u.username||'Без имени'}${meTag}</div>
+          <div class="status-row">
+            <span class="sdot ${m.cls}"></span>
+            <span style="color:#aaa">${m.label}</span>
+          </div>
+        </div>
+        <div class="card-timer" title="Активное время">⏱ ${timeStr}</div>
+      </div>`;
+    }).join('');
+  }
+
+  async function loadUsers() {
+    const {data,error} = await db.from('profiles').select('*').order('username');
+    if (error) { console.error('loadUsers:', error); return; }
+    if (data) renderUsers(data);
+  }
+
+  function subscribeProfiles() {
+    if (profilesChannel) return;
+    profilesChannel = db.channel('profiles-rt')
+      .on('postgres_changes', {event:'*', schema:'public', table:'profiles'}, loadUsers)
+      .subscribe(s => console.log('Profiles RT:', s));
+  }
+
+  // ЧАТ
+  const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const timeStr = ts => new Date(ts).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+
+  function buildMsg(msg) {
+    const mine = msg.user_id === myId;
+    return `<div class="chat-msg ${mine?'mine':'theirs'}">
+      <div class="chat-msg-avatar">${(msg.username||'?')[0].toUpperCase()}</div>
+      <div class="chat-msg-body">
+        <div class="chat-msg-name">${mine ? 'Вы' : esc(msg.username||'?')}</div>
+        <div class="chat-msg-bubble">${esc(msg.text)}</div>
+        <div class="chat-msg-time">${timeStr(msg.created_at)}</div>
+      </div>
+    </div>`;
+  }
+
+  async function loadMessages() {
+    const {data,error} = await db.from('messages').select('*').order('created_at').limit(100);
+    const box = document.getElementById('chat-messages');
+    if (error) { box.innerHTML=`<div class="chat-empty">⚠️ ${error.message}</div>`; return; }
+    if (!data?.length) { box.innerHTML='<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
+    box.innerHTML = data.map(buildMsg).join('');
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function subscribeMessages() {
+    if (messagesChannel) return;
+    messagesChannel = db.channel('messages-rt')
+      .on('postgres_changes', {event:'INSERT', schema:'public', table:'messages'}, payload => {
+        const box = document.getElementById('chat-messages');
+        const empty = box.querySelector('.chat-empty');
+        if (empty) empty.remove();
+        box.insertAdjacentHTML('beforeend', buildMsg(payload.new));
+        box.scrollTop = box.scrollHeight;
+      }).subscribe();
+  }
+
+  async function sendMsg() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text||!myId) return;
+    input.value = '';
+    const {error} = await db.from('messages').insert({user_id:myId, username:myName, text});
+    if (error) { console.error('Send error:', error); input.value=text; }
+  }
+
+  // OFFLINE при закрытии вкладки
+  window.addEventListener('beforeunload', () => {
+    if (!myId) return;
+    const total = getTotalSeconds();
+    fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${myId}`, {
+      method:'PATCH',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body: JSON.stringify({status:'Offline', timer_seconds:total, timer_started_at:null}),
+      keepalive:true
     });
-  </script>
+  });
+
+  // AUTH STATE
+  db.auth.onAuthStateChange(async (event, session) => {
+    console.log('Auth event:', event);
+    if (event === 'INITIAL_SESSION') {
+      if (session?.user) await onLogin(session.user);
+      else showAuth();
+    } else if (event === 'SIGNED_IN') {
+      if (session?.user && !myId) await onLogin(session.user);
+    } else if (event === 'SIGNED_OUT') {
+      cleanup(); showAuth();
+    }
+  });
+</script>
 </body>
 </html>
