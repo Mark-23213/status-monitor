@@ -61,6 +61,14 @@
     .status-btn.active.s-away{background:#f59e0b15;border-color:#f59e0b;color:#f59e0b}
     .status-btn.active.s-offline{background:#6b728015;border-color:#6b7280;color:#6b7280}
 
+    /* МОИ ДОСТИЖЕНИЯ (мини) */
+    .my-achievements-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid #2a2a2a}
+    .ach-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.78rem;font-weight:600;border:1px solid;animation:achPop .3s ease-out}
+    @keyframes achPop{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+    .ach-badge.common{background:#3ecf8e15;border-color:#3ecf8e55;color:#3ecf8e}
+    .ach-badge.epic{background:#a855f715;border-color:#a855f755;color:#a855f7}
+    .ach-badge.legendary{background:#f59e0b15;border-color:#f59e0b55;color:#f59e0b}
+
     /* СЧЁТЧИК ОНЛАЙН */
     .online-indicator{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
     .online-left{display:flex;align-items:center;gap:14px}
@@ -70,6 +78,11 @@
     .online-avatars{display:flex}
     .mini-avatar{width:30px;height:30px;border-radius:50%;background:#2a2a2a;border:2px solid #3ecf8e;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#3ecf8e;margin-left:-8px;flex-shrink:0}
     .mini-avatar:first-child{margin-left:0}
+
+    /* ТАБЫ */
+    .tabs{display:flex;background:#111;border-radius:10px;padding:4px;margin-bottom:16px;gap:2px}
+    .tab-btn{flex:1;padding:9px;border:none;background:transparent;color:#666;cursor:pointer;border-radius:8px;font-size:.85rem;transition:all .2s;font-weight:500}
+    .tab-btn.active{background:#2a2a2a;color:#3ecf8e;font-weight:600}
 
     /* ПОЛЬЗОВАТЕЛИ */
     .section-title{font-size:.8rem;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
@@ -87,6 +100,37 @@
     .sdot.away{background:#f59e0b;box-shadow:0 0 5px #f59e0b}
     .sdot.offline{background:#555}
     .card-timer{font-size:.78rem;color:#555;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+    /* РЕЙТИНГ */
+    .rating-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:border-color .2s}
+    .rating-card:hover{border-color:#3ecf8e33}
+    .rating-card.me{border-color:#3ecf8e44}
+    .rank-num{width:32px;text-align:center;font-size:1.1rem;font-weight:800;flex-shrink:0}
+    .rank-1{color:#f59e0b}
+    .rank-2{color:#9ca3af}
+    .rank-3{color:#cd7c2f}
+    .rank-other{color:#555}
+    .rating-info{flex:1;min-width:0}
+    .rating-name{font-weight:600;font-size:.95rem;margin-bottom:3px}
+    .rating-achs{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+    .rating-ach-icon{font-size:1rem}
+    .rating-time{font-size:.85rem;color:#3ecf8e;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+    /* ДОСТИЖЕНИЯ - полная таблица */
+    .ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .ach-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;transition:all .2s;position:relative;overflow:hidden}
+    .ach-card.unlocked{border-color:#3ecf8e33}
+    .ach-card.unlocked.epic{border-color:#a855f733}
+    .ach-card.unlocked.legendary{border-color:#f59e0b55;background:#f59e0b08}
+    .ach-card.locked{opacity:.45;filter:grayscale(1)}
+    .ach-icon{font-size:1.6rem;line-height:1}
+    .ach-name{font-weight:700;font-size:.88rem}
+    .ach-desc{font-size:.75rem;color:#666;line-height:1.4}
+    .ach-rarity{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:2px}
+    .ach-rarity.common{color:#3ecf8e}
+    .ach-rarity.epic{color:#a855f7}
+    .ach-rarity.legendary{color:#f59e0b}
+    .ach-locked-icon{position:absolute;top:10px;right:10px;font-size:.9rem;opacity:.4}
 
     /* ЧАТ */
     .chat-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;margin-top:8px;overflow:hidden}
@@ -115,11 +159,21 @@
     .chat-send-btn:hover{background:#2eb87a}
     .chat-empty{text-align:center;color:#444;padding:40px 20px;font-size:.85rem}
 
+    /* УВЕДОМЛЕНИЕ О ДОСТИЖЕНИИ */
+    #ach-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a1a1a;border:1px solid #3ecf8e;border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:12px;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px #0008;min-width:260px}
+    #ach-toast.show{transform:translateX(-50%) translateY(0)}
+    .toast-icon{font-size:1.8rem}
+    .toast-label{font-size:.7rem;color:#3ecf8e;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+    .toast-name{font-size:.95rem;font-weight:700;color:#e0e0e0}
+    .toast-desc{font-size:.78rem;color:#888;margin-top:1px}
+
     .realtime-badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;color:#3ecf8e;background:#3ecf8e11;border:1px solid #3ecf8e33;border-radius:20px;padding:4px 10px;margin-bottom:24px}
     .pulse{width:7px;height:7px;border-radius:50%;background:#3ecf8e;animation:pulse 1.5s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
     .msg{text-align:center;color:#555;padding:30px}
     #loading{text-align:center;color:#555;padding:60px 20px;font-size:.9rem}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
   </style>
 </head>
 <body>
@@ -188,6 +242,7 @@
         <button class="status-btn s-away" onclick="setStatus('Away')">🌙 Отошёл</button>
         <button class="status-btn s-offline" onclick="setStatus('Offline')">⚫ Оффлайн</button>
       </div>
+      <div class="my-achievements-row" id="my-ach-row"></div>
     </div>
 
     <!-- Онлайн счётчик -->
@@ -202,23 +257,58 @@
       <div class="online-avatars" id="online-avatars"></div>
     </div>
 
-    <div class="section-title">Все пользователи</div>
-    <div id="users-list"><div class="msg">Загрузка...</div></div>
+    <!-- ТАБЫ -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchMainTab('users')">👥 Участники</button>
+      <button class="tab-btn" onclick="switchMainTab('rating')">🏆 Рейтинг</button>
+      <button class="tab-btn" onclick="switchMainTab('achievements')">🎖 Достижения</button>
+      <button class="tab-btn" onclick="switchMainTab('chat')">💬 Чат</button>
+    </div>
+
+    <!-- Участники -->
+    <div class="tab-panel active" id="panel-users">
+      <div class="section-title">Все пользователи</div>
+      <div id="users-list"><div class="msg">Загрузка...</div></div>
+    </div>
+
+    <!-- Рейтинг -->
+    <div class="tab-panel" id="panel-rating">
+      <div class="section-title">Топ студентов по времени учёбы</div>
+      <div id="rating-list"><div class="msg">Загрузка...</div></div>
+    </div>
+
+    <!-- Достижения -->
+    <div class="tab-panel" id="panel-achievements">
+      <div class="section-title">Мои достижения</div>
+      <div class="ach-grid" id="ach-grid"></div>
+    </div>
 
     <!-- Чат -->
-    <div class="chat-box">
-      <div class="chat-header">
-        <div class="chat-header-dot"></div>
-        <div class="chat-title">Общий чат</div>
-      </div>
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>
-      </div>
-      <div class="chat-input-row">
-        <input class="chat-input" id="chat-input" placeholder="Написать сообщение..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-        <button class="chat-send-btn" onclick="sendMsg()">Отправить</button>
+    <div class="tab-panel" id="panel-chat">
+      <div class="chat-box">
+        <div class="chat-header">
+          <div class="chat-header-dot"></div>
+          <div class="chat-title">Общий чат</div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="chat-input" placeholder="Написать сообщение..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button class="chat-send-btn" onclick="sendMsg()">Отправить</button>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Уведомление о достижении -->
+<div id="ach-toast">
+  <div class="toast-icon" id="toast-icon">🏆</div>
+  <div>
+    <div class="toast-label">Новое достижение!</div>
+    <div class="toast-name" id="toast-name"></div>
+    <div class="toast-desc" id="toast-desc"></div>
   </div>
 </div>
 
@@ -229,13 +319,104 @@
 
   let myId = null, myName = '', myStatus = 'Online';
   let pollTimer = null, profilesChannel = null, messagesChannel = null;
+  let myUnlockedAchs = new Set();
+  let myMsgCount = 0;
+  let loginHour = new Date().getHours();
 
-  // ТАЙМЕР
-  // Статусы при которых таймер ИДЁТ
+  // ===== ДОСТИЖЕНИЯ =====
+  const ALL_ACHIEVEMENTS = [
+    { code: 'first_step',   icon: '🌱', name: 'Первый шаг',     desc: 'Провёл первую учёбную сессию',          rarity: 'common',    check: (p,a,msgs) => (p.timer_seconds||0) > 0 },
+    { code: 'early_bird',   icon: '🐦', name: 'Ранняя пташка',  desc: 'Зашёл в систему до 8:00',               rarity: 'common',    check: (p,a,msgs) => loginHour < 8 },
+    { code: 'comeback',     icon: '🔄', name: 'Возвращение',    desc: 'Вернулся к учёбе после перерыва',        rarity: 'common',    check: (p,a,msgs) => myUnlockedAchs.has('first_step') },
+    { code: 'activist',     icon: '💬', name: 'Активист',       desc: 'Написал 20 сообщений в общем чате',      rarity: 'common',    check: (p,a,msgs) => (msgs||0) >= 20 },
+    { code: 'marathoner',   icon: '🏃', name: 'Марафонец',      desc: 'Учился более 2 часов за один раз',       rarity: 'epic',      check: (p,a,msgs) => false }, // проверяется отдельно при сессии
+    { code: 'company_soul', icon: '🎉', name: 'Душа компании',  desc: 'Написал 50 сообщений в общем чате',      rarity: 'epic',      check: (p,a,msgs) => (msgs||0) >= 50 },
+    { code: 'dedication',   icon: '🎯', name: 'Дедикация',      desc: 'Суммарно 10 часов учёбы',                rarity: 'epic',      check: (p,a,msgs) => (p.timer_seconds||0) >= 36000 },
+    { code: 'workaholic',   icon: '💼', name: 'Трудоголик',     desc: 'Суммарно 24 часа учёбы',                 rarity: 'epic',      check: (p,a,msgs) => (p.timer_seconds||0) >= 86400 },
+    { code: 'pedestal',     icon: '🥇', name: 'Пьедестал',      desc: 'Занял 1-е место в рейтинге',             rarity: 'legendary', check: (p,a,msgs) => false }, // проверяется отдельно
+    { code: 'legend',       icon: '⚡', name: 'Легенда',        desc: 'Суммарно 50 часов учёбы',                rarity: 'legendary', check: (p,a,msgs) => (p.timer_seconds||0) >= 180000 },
+  ];
+
+  function getAchByCode(code) { return ALL_ACHIEVEMENTS.find(a => a.code === code); }
+
+  let toastTimeout = null;
+  function showAchToast(ach) {
+    document.getElementById('toast-icon').textContent = ach.icon;
+    document.getElementById('toast-name').textContent = ach.name;
+    document.getElementById('toast-desc').textContent = ach.desc;
+    const toast = document.getElementById('ach-toast');
+    toast.classList.add('show');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  async function loadMyAchievements() {
+    if (!myId) return;
+    const {data} = await db.from('achievements').select('code').eq('user_id', myId);
+    myUnlockedAchs = new Set((data||[]).map(a => a.code));
+    renderMyAchBadges();
+    renderAchGrid();
+  }
+
+  async function unlockAchievement(code) {
+    if (myUnlockedAchs.has(code) || !myId) return;
+    try {
+      const {error} = await db.from('achievements').insert({user_id: myId, code});
+      if (!error) {
+        myUnlockedAchs.add(code);
+        const ach = getAchByCode(code);
+        if (ach) showAchToast(ach);
+        renderMyAchBadges();
+        renderAchGrid();
+      }
+    } catch(e) {}
+  }
+
+  async function checkAchievements(profile, msgCount) {
+    if (!myId) return;
+    // Топ-1 рейтинга
+    const {data: allProfiles} = await db.from('profiles').select('id, timer_seconds').order('timer_seconds', {ascending: false});
+    const isTop1 = allProfiles && allProfiles[0]?.id === myId;
+    if (isTop1) await unlockAchievement('pedestal');
+
+    for (const ach of ALL_ACHIEVEMENTS) {
+      if (ach.code === 'pedestal') continue;
+      if (ach.check(profile, null, msgCount)) {
+        await unlockAchievement(ach.code);
+      }
+    }
+  }
+
+  function renderMyAchBadges() {
+    const row = document.getElementById('my-ach-row');
+    if (!myUnlockedAchs.size) { row.innerHTML = ''; return; }
+    row.innerHTML = [...myUnlockedAchs].map(code => {
+      const a = getAchByCode(code);
+      if (!a) return '';
+      return `<span class="ach-badge ${a.rarity}">${a.icon} ${a.name}</span>`;
+    }).join('');
+  }
+
+  function renderAchGrid() {
+    const grid = document.getElementById('ach-grid');
+    grid.innerHTML = ALL_ACHIEVEMENTS.map(a => {
+      const unlocked = myUnlockedAchs.has(a.code);
+      return `<div class="ach-card ${unlocked ? 'unlocked ' + a.rarity : 'locked'}">
+        <div class="ach-icon">${a.icon}</div>
+        <div class="ach-name">${a.name}</div>
+        <div class="ach-desc">${a.desc}</div>
+        <div class="ach-rarity ${a.rarity}">${a.rarity === 'common' ? 'Обычное' : a.rarity === 'epic' ? 'Эпическое' : 'Легендарное'}</div>
+        ${!unlocked ? '<div class="ach-locked-icon">🔒</div>' : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // ===== ТАЙМЕР =====
   const TIMER_ACTIVE = ['Online', 'Studying'];
-  let timerSeconds = 0;      // накоплено сек за прошлые сессии (из БД)
-  let timerStartedAt = null; // когда начался текущий отрезок (Date)
+  let timerSeconds = 0;
+  let timerStartedAt = null;
   let timerInterval = null;
+  let sessionStartSeconds = 0; // для марафонца
 
   function timerRunning() { return TIMER_ACTIVE.includes(myStatus); }
 
@@ -255,7 +436,13 @@
   }
 
   function tickTimer() {
-    document.getElementById('my-timer').textContent = formatTime(getTotalSeconds());
+    const total = getTotalSeconds();
+    document.getElementById('my-timer').textContent = formatTime(total);
+    // Марафонец: текущая сессия > 2 часов
+    if (timerRunning() && timerStartedAt) {
+      const sessionSec = Math.floor((Date.now() - timerStartedAt) / 1000);
+      if (sessionSec >= 7200) unlockAchievement('marathoner');
+    }
   }
 
   function startTimerTick() {
@@ -264,18 +451,14 @@
     tickTimer();
   }
 
-  // Вызывается при смене статуса — сохраняет накопленное и перезапускает/останавливает
   async function flushTimer() {
     if (timerStartedAt && TIMER_ACTIVE.includes(myStatus)) {
-      // Текущий статус активный — накапливаем до сейчас
       timerSeconds += Math.floor((Date.now() - timerStartedAt) / 1000);
       timerStartedAt = Date.now();
     } else if (timerStartedAt && !TIMER_ACTIVE.includes(myStatus)) {
-      // Переходим в пассивный — фиксируем время
       timerSeconds += Math.floor((Date.now() - timerStartedAt) / 1000);
       timerStartedAt = null;
     }
-    // Сохраняем в БД
     if (myId) {
       await db.from('profiles').update({
         timer_seconds: timerSeconds,
@@ -284,7 +467,7 @@
     }
   }
 
-  // СТАТУСЫ
+  // ===== СТАТУСЫ =====
   const STATUS_META = {
     'Online':   { label: '🟢 Онлайн',  cls: 'online',   timerOn: true  },
     'Studying': { label: '📚 Учёба',   cls: 'studying', timerOn: true  },
@@ -293,37 +476,32 @@
   };
 
   async function setStatus(status) {
-    const prev = myStatus;
     myStatus = status;
-
-    // Обновить кнопки
     document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
     const map = { Online:'s-online', Studying:'s-studying', Away:'s-away', Offline:'s-offline' };
     document.querySelector('.status-btn.' + map[status]).classList.add('active');
-
-    // Бейдж
     const m = STATUS_META[status];
     const badge = document.getElementById('cur-badge');
     badge.textContent = m.label;
     badge.style.color = m.timerOn ? (status==='Studying' ? '#3b82f6' : '#3ecf8e') : (status==='Away' ? '#f59e0b' : '#6b7280');
     badge.style.borderColor = badge.style.color;
     badge.style.background = badge.style.color + '15';
-
-    // Подсказка под таймером
-    document.getElementById('timer-sub').textContent = m.timerOn
-      ? '⏱ Таймер идёт'
-      : (status === 'Away' ? '⏸ Таймер на паузе' : '⏹ Таймер остановлен');
-
-    // Сохранить время и обновить timerStartedAt
+    document.getElementById('timer-sub').textContent = m.timerOn ? '⏱ Таймер идёт' : (status === 'Away' ? '⏸ Таймер на паузе' : '⏹ Таймер остановлен');
     await flushTimer();
     if (m.timerOn && !timerStartedAt) timerStartedAt = Date.now();
     if (!m.timerOn) timerStartedAt = null;
-
-    // Обновить статус в БД
     await db.from('profiles').update({ status }).eq('id', myId);
+    // Проверяем достижения после смены статуса
+    setTimeout(() => checkAchievementsNow(), 500);
   }
 
-  // ЭКРАНЫ
+  async function checkAchievementsNow() {
+    if (!myId) return;
+    const {data: profile} = await db.from('profiles').select('*').eq('id', myId).single();
+    if (profile) await checkAchievements(profile, myMsgCount);
+  }
+
+  // ===== ЭКРАНЫ =====
   function showLoading() {
     document.getElementById('loading').style.display = 'block';
     document.getElementById('auth-screen').style.display = 'none';
@@ -340,7 +518,7 @@
     document.getElementById('app-screen').style.display = 'block';
   }
 
-  // AUTH UI
+  // ===== ТАБЫ =====
   function switchTab(tab) {
     document.getElementById('login-form').style.display = tab==='login' ? 'block' : 'none';
     document.getElementById('register-form').style.display = tab==='register' ? 'block' : 'none';
@@ -348,9 +526,20 @@
       b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
     hideMsg();
   }
+
+  function switchMainTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.target.classList.add('active');
+    if (name === 'rating') renderRating();
+    if (name === 'achievements') renderAchGrid();
+  }
+
   function showMsg(t,type){const e=document.getElementById('auth-msg');e.textContent=t;e.className='auth-msg '+type;}
   function hideMsg(){document.getElementById('auth-msg').className='auth-msg';}
 
+  // ===== AUTH =====
   async function doLogin() {
     const email = document.getElementById('login-email').value.trim();
     const pass = document.getElementById('login-pass').value;
@@ -392,11 +581,14 @@
     await db.auth.signOut();
   }
 
-  // ВХОД
+  // ===== ВХОД =====
+  let allUsersCache = [];
+
   async function onLogin(user) {
     myId = user.id;
     myName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
     const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+    loginHour = new Date().getHours();
 
     document.getElementById('hdr-name').textContent = myName;
     document.getElementById('hdr-email').textContent = user.email || '';
@@ -404,19 +596,16 @@
     av.innerHTML = avatar ? `<img src="${avatar}" alt="${myName[0]}">` : myName[0].toUpperCase();
     showApp();
 
-    // Загрузить профиль (timer_seconds из БД)
     try {
       const {data} = await db.from('profiles').select('timer_seconds, timer_started_at, status').eq('id', myId).single();
       if (data) {
         timerSeconds = data.timer_seconds || 0;
-        // Если был активный сеанс — прибавить пропущенное время
         if (data.timer_started_at && TIMER_ACTIVE.includes(data.status||'Online')) {
           timerSeconds += Math.floor((Date.now() - new Date(data.timer_started_at).getTime()) / 1000);
         }
       }
     } catch(e) { timerSeconds = 0; }
 
-    // Upsert профиля — Online
     myStatus = 'Online';
     timerStartedAt = Date.now();
     try {
@@ -427,26 +616,42 @@
       }, {onConflict:'id'});
     } catch(e) { console.error('upsert:', e); }
 
+    // Считаем кол-во сообщений пользователя
+    try {
+      const {count} = await db.from('messages').select('*', {count:'exact', head:true}).eq('user_id', myId);
+      myMsgCount = count || 0;
+    } catch(e) {}
+
     startTimerTick();
+    await loadMyAchievements();
     try { await loadUsers(); } catch(e) {}
     try { await loadMessages(); } catch(e) {}
     try { subscribeProfiles(); } catch(e) {}
     try { subscribeMessages(); } catch(e) {}
 
     if (pollTimer) clearInterval(pollTimer);
-    pollTimer = setInterval(loadUsers, 5000);
+    pollTimer = setInterval(async () => {
+      await loadUsers();
+      await checkAchievementsNow();
+    }, 5000);
+
+    // Сразу проверяем достижения
+    setTimeout(() => checkAchievementsNow(), 1000);
+    // Первый шаг - сразу выдаём если зашёл
+    await unlockAchievement('first_step');
+    if (loginHour < 8) await unlockAchievement('early_bird');
   }
 
   function cleanup() {
     myId=null; myName=''; myStatus='Online';
-    timerSeconds=0; timerStartedAt=null;
+    timerSeconds=0; timerStartedAt=null; allUsersCache=[];
     if (timerInterval) { clearInterval(timerInterval); timerInterval=null; }
     if (pollTimer) { clearInterval(pollTimer); pollTimer=null; }
     if (profilesChannel) { db.removeChannel(profilesChannel); profilesChannel=null; }
     if (messagesChannel) { db.removeChannel(messagesChannel); messagesChannel=null; }
   }
 
-  // ПОЛЬЗОВАТЕЛИ
+  // ===== ПОЛЬЗОВАТЕЛИ =====
   function fmtCardTimer(u) {
     let sec = u.timer_seconds || 0;
     if (TIMER_ACTIVE.includes(u.status) && u.timer_started_at) {
@@ -457,7 +662,19 @@
     return Math.floor(sec/3600) + 'ч ' + Math.floor((sec%3600)/60) + 'м';
   }
 
+  function fmtRatingTime(u) {
+    let sec = u.timer_seconds || 0;
+    if (TIMER_ACTIVE.includes(u.status) && u.timer_started_at) {
+      sec += Math.floor((Date.now() - new Date(u.timer_started_at).getTime()) / 1000);
+    }
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    if (h === 0) return m + 'м';
+    return h + 'ч ' + m + 'м';
+  }
+
   function renderUsers(users) {
+    allUsersCache = users;
     const active = users.filter(u => u.status !== 'Offline');
     document.getElementById('online-count').textContent = active.length;
     document.getElementById('online-sub').textContent = `из ${users.length} пользователей`;
@@ -473,7 +690,6 @@
         ? `<img src="${u.avatar_url}" alt="${(u.username||'?')[0]}">`
         : (u.username||'?')[0].toUpperCase();
       const meTag = u.id===myId ? ' <span style="color:#3ecf8e;font-size:.72rem">(я)</span>' : '';
-      const timeStr = fmtCardTimer(u);
       return `<div class="card ${u.id===myId?'me':''}">
         <div class="avatar">${av}</div>
         <div class="info">
@@ -483,7 +699,46 @@
             <span style="color:#aaa">${m.label}</span>
           </div>
         </div>
-        <div class="card-timer" title="Активное время">⏱ ${timeStr}</div>
+        <div class="card-timer" title="Активное время">⏱ ${fmtCardTimer(u)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  async function renderRating() {
+    const list = document.getElementById('rating-list');
+    list.innerHTML = '<div class="msg">Загрузка...</div>';
+    const {data: users, error} = await db.from('profiles').select('*').order('timer_seconds', {ascending: false});
+    if (error || !users) { list.innerHTML = '<div class="msg">Ошибка загрузки</div>'; return; }
+
+    // Загружаем достижения всех пользователей
+    const {data: allAchs} = await db.from('achievements').select('user_id, code');
+    const achByUser = {};
+    (allAchs||[]).forEach(a => {
+      if (!achByUser[a.user_id]) achByUser[a.user_id] = [];
+      achByUser[a.user_id].push(a.code);
+    });
+
+    const rankEmoji = ['🥇','🥈','🥉'];
+    list.innerHTML = users.map((u, i) => {
+      const av = u.avatar_url
+        ? `<img src="${u.avatar_url}" alt="${(u.username||'?')[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+        : (u.username||'?')[0].toUpperCase();
+      const meTag = u.id===myId ? ' <span style="color:#3ecf8e;font-size:.72rem">(я)</span>' : '';
+      const rank = i < 3 ? rankEmoji[i] : `#${i+1}`;
+      const rankCls = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+      const userAchs = achByUser[u.id] || [];
+      const achIcons = userAchs.slice(0,5).map(code => {
+        const a = getAchByCode(code);
+        return a ? `<span class="rating-ach-icon" title="${a.name}">${a.icon}</span>` : '';
+      }).join('');
+      return `<div class="rating-card ${u.id===myId?'me':''}">
+        <div class="rank-num ${rankCls}">${rank}</div>
+        <div class="avatar" style="width:40px;height:40px;font-size:1rem">${av}</div>
+        <div class="rating-info">
+          <div class="rating-name">${u.username||'Без имени'}${meTag}</div>
+          <div class="rating-achs">${achIcons || '<span style="color:#444;font-size:.75rem">нет достижений</span>'}</div>
+        </div>
+        <div class="rating-time">⏱ ${fmtRatingTime(u)}</div>
       </div>`;
     }).join('');
   }
@@ -501,7 +756,7 @@
       .subscribe(s => console.log('Profiles RT:', s));
   }
 
-  // ЧАТ
+  // ===== ЧАТ =====
   const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const timeStr = ts => new Date(ts).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
 
@@ -520,7 +775,7 @@
   async function loadMessages() {
     const {data,error} = await db.from('messages').select('*').order('created_at').limit(100);
     const box = document.getElementById('chat-messages');
-    if (error) { box.innerHTML=`<div class="chat-empty">⚠️ ${error.message}</div>`; return; }
+    if (error) { box.innerHTML=`<div class="chat-empty">- ${error.message}</div>`; return; }
     if (!data?.length) { box.innerHTML='<div class="chat-empty">Сообщений пока нет. Напиши первым! 👋</div>'; return; }
     box.innerHTML = data.map(buildMsg).join('');
     box.scrollTop = box.scrollHeight;
@@ -529,12 +784,18 @@
   function subscribeMessages() {
     if (messagesChannel) return;
     messagesChannel = db.channel('messages-rt')
-      .on('postgres_changes', {event:'INSERT', schema:'public', table:'messages'}, payload => {
+      .on('postgres_changes', {event:'INSERT', schema:'public', table:'messages'}, async payload => {
         const box = document.getElementById('chat-messages');
         const empty = box.querySelector('.chat-empty');
         if (empty) empty.remove();
         box.insertAdjacentHTML('beforeend', buildMsg(payload.new));
         box.scrollTop = box.scrollHeight;
+        // Если это моё сообщение - считаем
+        if (payload.new.user_id === myId) {
+          myMsgCount++;
+          if (myMsgCount >= 20) await unlockAchievement('activist');
+          if (myMsgCount >= 50) await unlockAchievement('company_soul');
+        }
       }).subscribe();
   }
 
@@ -547,7 +808,7 @@
     if (error) { console.error('Send error:', error); input.value=text; }
   }
 
-  // OFFLINE при закрытии вкладки
+  // ===== OFFLINE при закрытии =====
   window.addEventListener('beforeunload', () => {
     if (!myId) return;
     const total = getTotalSeconds();
@@ -559,7 +820,7 @@
     });
   });
 
-  // AUTH STATE
+  // ===== AUTH STATE =====
   db.auth.onAuthStateChange(async (event, session) => {
     console.log('Auth event:', event);
     if (event === 'INITIAL_SESSION') {
