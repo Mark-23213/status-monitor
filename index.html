@@ -542,12 +542,8 @@
     .ach-badge.epic      { background: var(--azure)13; border-color: var(--azure)55; color: var(--azure); }
     .ach-badge.legendary { background: var(--amber-soft); border-color: var(--amber-line); color: var(--amber); }
 
-    /* ================== STATS BAR ================== */
+    /* ================== STATS BAR (dashboard-style) ================== */
     .stats-bar {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 20px;
-      align-items: center;
       padding: 18px 22px;
       background: var(--panel);
       border: 1px solid var(--line);
@@ -555,45 +551,121 @@
       margin-bottom: 32px;
       position: relative;
     }
+    .stats-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .stats-headline {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
     .stats-num {
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: 44px;
-      line-height: 1;
+      font-family: var(--mono);
+      font-size: 20px;
+      font-weight: 600;
       color: var(--amber);
-      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+    .stats-num-sep {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--ink-4);
+      font-weight: 400;
+    }
+    .stats-num-total {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--ink-3);
+      font-weight: 500;
       font-variant-numeric: tabular-nums;
     }
-    .stats-info-main {
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 3px;
-    }
-    .stats-info-sub {
+    .stats-label {
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--ink-4);
+      letter-spacing: 0.2em;
+      color: var(--ink-3);
       text-transform: uppercase;
+      margin-left: 8px;
+      align-self: center;
     }
-    .stats-avatars { display: flex; }
+    .stats-avatars {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
     .stats-avatars .mini-av {
-      width: 26px; height: 26px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       background: var(--panel-3);
-      border: 1.5px solid var(--bg);
+      border: 1.5px solid var(--panel);
       display: flex; align-items: center; justify-content: center;
       font-family: var(--mono);
       font-size: 10px;
       font-weight: 600;
       color: var(--amber);
-      margin-left: -7px;
+      margin-left: -6px;
       flex-shrink: 0;
-      box-shadow: 0 0 0 1px var(--amber-line);
     }
     .stats-avatars .mini-av:first-child { margin-left: 0; }
+
+    /* Тонкий segmented meter */
+    .stats-meter {
+      height: 4px;
+      background: var(--ink-5);
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      gap: 1px;
+      margin-bottom: 14px;
+    }
+    .stats-meter-seg {
+      height: 100%;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stats-meter-seg.online   { background: var(--st-online); }
+    .stats-meter-seg.studying { background: var(--st-studying); }
+    .stats-meter-seg.away     { background: var(--st-away); }
+
+    /* Разбивка по статусам */
+    .stats-breakdown {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 22px;
+    }
+    .sb-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+    .sb-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sb-dot.online   { background: var(--st-online);   box-shadow: 0 0 5px var(--st-online); }
+    .sb-dot.studying { background: var(--st-studying); box-shadow: 0 0 5px var(--st-studying); }
+    .sb-dot.away     { background: var(--st-away);     box-shadow: 0 0 5px var(--st-away); }
+    .sb-dot.offline  { background: var(--st-offline); }
+    .sb-n {
+      color: var(--ink);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .sb-l {
+      color: var(--ink-3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
 
     /* ================== TABS (editorial underline) ================== */
     .tabs {
@@ -1064,7 +1136,336 @@
     .corner-mark.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
     .corner-mark.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
-    /* Adaptive */
+    /* ================== АНИМАЦИОННЫЙ СЛОЙ ================== */
+
+    /* Звёздная карта (декоративные точки в фоне) */
+    .starfield {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--amber);
+      opacity: 0;
+      animation: twinkle 6s ease-in-out infinite, drift 60s linear infinite;
+    }
+    .star.dim {
+      background: var(--ink-3);
+      width: 1px; height: 1px;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; }
+      40%, 60% { opacity: 0.6; }
+    }
+    @keyframes drift {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(40px, -30px); }
+    }
+
+    /* Координатные риски — едва заметные */
+    .compass-tick {
+      position: fixed;
+      pointer-events: none;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--ink-5);
+      letter-spacing: 0.2em;
+      z-index: 0;
+      opacity: 0;
+      animation: compassIn 1.2s ease-out 0.4s forwards;
+    }
+    .compass-tick.tl { top: 14px; left: 14px; }
+    .compass-tick.tr { top: 14px; right: 14px; }
+    .compass-tick.bl { bottom: 14px; left: 14px; }
+    .compass-tick.br { bottom: 14px; right: 14px; }
+    @keyframes compassIn {
+      to { opacity: 0.7; }
+    }
+
+    /* Staggered mount */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stagger > * { opacity: 0; animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.15s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.25s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.35s; }
+    .stagger > *:nth-child(5) { animation-delay: 0.45s; }
+    .stagger > *:nth-child(6) { animation-delay: 0.55s; }
+    .stagger > *:nth-child(7) { animation-delay: 0.65s; }
+
+    /* Топ-бар плавный fade при загрузке */
+    .topbar { animation: fadeDown 0.6s ease-out 0.05s both; }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Тикающие секунды таймера — лёгкий импульс */
+    .timer-display { animation: timerEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
+    @keyframes timerEnter {
+      from { opacity: 0; letter-spacing: 0.1em; }
+      to   { opacity: 1; letter-spacing: -0.045em; }
+    }
+    .timer-display.tick { animation: tickPulse 0.4s ease-out; }
+    @keyframes tickPulse {
+      0%   { text-shadow: none; }
+      30%  { text-shadow: 0 0 24px var(--amber-soft); }
+      100% { text-shadow: none; }
+    }
+
+    /* Status button — активный «дышит» цветом */
+    .status-btn.active {
+      animation: activeBreathe 3.6s ease-in-out infinite;
+    }
+    @keyframes activeBreathe {
+      0%, 100% { box-shadow: inset 0 0 0 0 transparent, 0 0 0 0 transparent; }
+      50%      { box-shadow: inset 0 0 24px -8px currentColor, 0 0 18px -8px currentColor; }
+    }
+    .status-btn .sb-icon {
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .status-btn:hover .sb-icon { transform: scale(1.2); }
+    .status-btn.active .sb-icon {
+      animation: dotPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 currentColor, 0 0 10px currentColor; }
+      50%      { box-shadow: 0 0 0 6px transparent, 0 0 14px currentColor; }
+    }
+
+    /* Stats meter — shimmer */
+    .stats-meter {
+      position: relative;
+    }
+    .stats-meter::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -30%;
+      width: 30%; height: 100%;
+      background: linear-gradient(90deg, transparent, var(--amber-soft), transparent);
+      animation: meterShimmer 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes meterShimmer {
+      0%   { left: -30%; }
+      100% { left: 130%; }
+    }
+    .stats-meter-seg {
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Tabs — underline slide на hover */
+    .tab-btn {
+      position: relative;
+    }
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%; right: 50%;
+      height: 1px;
+      background: var(--amber);
+      transition: left 0.3s ease, right 0.3s ease, opacity 0.2s;
+      opacity: 0;
+    }
+    .tab-btn:hover::after,
+    .tab-btn.active::after {
+      left: 16px; right: 16px;
+      opacity: 1;
+    }
+    .tab-btn.active { border-bottom-color: transparent; }
+
+    /* Rating row — slide-in accent line */
+    .rating-row {
+      position: relative;
+      transition: padding-left 0.25s ease, background 0.2s;
+    }
+    .rating-row::before {
+      content: '';
+      position: absolute;
+      left: -4px; top: 18px; bottom: 18px;
+      width: 2px;
+      background: var(--amber);
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .rating-row:hover::before { transform: scaleY(1); }
+    .rating-row:hover { padding-left: 10px; }
+    .rating-row.me::before {
+      transform: scaleY(1);
+    }
+
+    /* User row hover slide */
+    .row {
+      transition: background 0.2s, padding-left 0.2s;
+    }
+    .row:hover { padding-left: 8px; }
+
+    /* User avatar hover ring */
+    .avatar, .user-avatar {
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .row:hover .avatar,
+    .rating-row:hover .avatar { border-color: var(--amber-line); }
+    .user-avatar:hover { border-color: var(--amber); transform: rotate(-3deg); }
+
+    /* Logout button — slide effect */
+    .logout-btn {
+      position: relative;
+      overflow: hidden;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .logout-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, #c9748a14, transparent);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+    }
+    .logout-btn:hover::before { transform: translateX(100%); }
+
+    /* Submit button shine */
+    .submit-btn, .chat-send-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .submit-btn::after, .chat-send-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.6s ease;
+    }
+    .submit-btn:hover::after, .chat-send-btn:hover::after { left: 150%; }
+
+    /* Corner marks — анимация прорисовки */
+    .corner-mark {
+      transform: scale(0);
+      animation: cornerDraw 0.6s ease-out forwards;
+    }
+    .corner-mark.tl { animation-delay: 0.4s; transform-origin: top left; }
+    .corner-mark.tr { animation-delay: 0.5s; transform-origin: top right; }
+    .corner-mark.bl { animation-delay: 0.6s; transform-origin: bottom left; }
+    .corner-mark.br { animation-delay: 0.7s; transform-origin: bottom right; }
+    @keyframes cornerDraw {
+      to { transform: scale(1); }
+    }
+
+    /* Achievement card — hover lift */
+    .ach-card {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s, box-shadow 0.3s;
+    }
+    .ach-card.unlocked:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px #0008;
+    }
+    .ach-card.unlocked.legendary:hover {
+      box-shadow: 0 8px 32px #e8b04c22, 0 0 0 1px var(--amber-line);
+    }
+    .ach-card.unlocked .ach-icon {
+      transition: transform 0.3s;
+    }
+    .ach-card.unlocked:hover .ach-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    /* Toast — glow ripple */
+    #ach-toast {
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    #ach-toast.show::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--amber);
+      opacity: 0.6;
+      animation: toastRipple 1.4s ease-out;
+      pointer-events: none;
+    }
+    @keyframes toastRipple {
+      0%   { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.06); }
+    }
+    .toast-icon {
+      animation: toastBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+    }
+    @keyframes toastBounce {
+      0%   { transform: scale(0) rotate(-30deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    /* Chat message hover */
+    .chat-msg-bubble {
+      transition: transform 0.2s;
+    }
+    .chat-msg:hover .chat-msg-bubble { transform: translateY(-1px); }
+
+    /* Status pill — soft pulse при онлайн */
+    .status-pill .pill-dot {
+      animation: pillPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pillPulse {
+      0%, 100% { box-shadow: 0 0 0 0 currentColor, 0 0 8px currentColor; }
+      50%      { box-shadow: 0 0 0 4px transparent, 0 0 12px currentColor; }
+    }
+
+    /* Tab panel перехлд */
+    .tab-panel.active { animation: panelEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes panelEnter {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Live dot — более насыщенный pulse */
+    .timer-caption .live-dot {
+      animation: liveDot 1.6s ease-in-out infinite;
+    }
+    @keyframes liveDot {
+      0%, 100% { box-shadow: 0 0 0 0 var(--amber), 0 0 6px var(--amber); opacity: 1; }
+      50%      { box-shadow: 0 0 0 4px transparent, 0 0 10px var(--amber); opacity: 0.5; }
+    }
+
+    /* Section label — линия рисуется при появлении */
+    .section-label::before {
+      animation: lineGrow 0.5s ease-out 0.5s both;
+      transform-origin: left;
+    }
+    @keyframes lineGrow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    /* Бренд — буква O чуть подмигивает */
+    .brand-mark {
+      animation: brandPulse 4s ease-in-out infinite;
+    }
+    @keyframes brandPulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--amber-line); }
+      50%      { box-shadow: 0 0 0 2px var(--amber-soft); }
+    }
+
+    /* Уважение к prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .starfield { display: none; }
+    }
+
     @media (max-width: 560px) {
       .shell { padding: 20px 16px 60px; }
       .auth-title { font-size: 36px; }
@@ -1077,6 +1478,13 @@
 </head>
 
 <body>
+
+<!-- Звёздное поле + координатные метки -->
+<div class="starfield" id="starfield"></div>
+<div class="compass-tick tl">N 43°15′ · W 76°54′</div>
+<div class="compass-tick tr">obs · station 01</div>
+<div class="compass-tick bl">v 2.1 · stable</div>
+<div class="compass-tick br">uplink · ok</div>
 
 <div class="shell">
 
@@ -1155,7 +1563,7 @@
   </section>
 
   <!-- ============ APP SCREEN ============ -->
-  <section id="app-screen">
+  <section id="app-screen" class="stagger">
 
     <!-- USER BAR -->
     <div class="userbar">
@@ -1208,12 +1616,26 @@
 
     <!-- STATS BAR -->
     <div class="stats-bar">
-      <div class="stats-num" id="online-count">0</div>
-      <div>
-        <div class="stats-info-main">Активны прямо сейчас</div>
-        <div class="stats-info-sub" id="online-sub">из 0 пользователей</div>
+      <div class="stats-head">
+        <div class="stats-headline">
+          <span class="stats-num" id="online-count">00</span>
+          <span class="stats-num-sep">/</span>
+          <span class="stats-num-total" id="online-total">00</span>
+          <span class="stats-label">активны сейчас</span>
+        </div>
+        <div class="stats-avatars" id="online-avatars"></div>
       </div>
-      <div class="stats-avatars" id="online-avatars"></div>
+      <div class="stats-meter" id="online-meter">
+        <div class="stats-meter-seg online"   style="width:0%"></div>
+        <div class="stats-meter-seg studying" style="width:0%"></div>
+        <div class="stats-meter-seg away"     style="width:0%"></div>
+      </div>
+      <div class="stats-breakdown" id="online-breakdown">
+        <span class="sb-item"><span class="sb-dot online"></span><span class="sb-n">0</span><span class="sb-l">онлайн</span></span>
+        <span class="sb-item"><span class="sb-dot studying"></span><span class="sb-n">0</span><span class="sb-l">учёба</span></span>
+        <span class="sb-item"><span class="sb-dot away"></span><span class="sb-n">0</span><span class="sb-l">отошли</span></span>
+        <span class="sb-item"><span class="sb-dot offline"></span><span class="sb-n">0</span><span class="sb-l">оффлайн</span></span>
+      </div>
     </div>
 
     <!-- TABS -->
@@ -1278,6 +1700,47 @@
      ВСЯ ЛОГИКА АБСОЛЮТНО ИДЕНТИЧНА ОРИГИНАЛУ
      Изменён только дизайн (HTML/CSS) — поведение сохранено
      ============================================================ */
+
+  // ===== Генерация звёздного поля =====
+  (function genStars() {
+    const field = document.getElementById('starfield');
+    if (!field) return;
+    const N = 60;
+    let html = '';
+    for (let i = 0; i < N; i++) {
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      const delay = (Math.random() * 6).toFixed(2);
+      const driftDur = (40 + Math.random() * 60).toFixed(0);
+      const isDim = Math.random() > 0.3;
+      html += `<div class="star ${isDim ? 'dim' : ''}" style="left:${x}%;top:${y}%;animation-delay:${delay}s, ${(Math.random()*driftDur).toFixed(0)}s;animation-duration:${(4+Math.random()*5).toFixed(1)}s, ${driftDur}s"></div>`;
+    }
+    field.innerHTML = html;
+  })();
+
+  // ===== Number tween (count up) =====
+  function tweenNumber(el, target, opts) {
+    if (!el) return;
+    const pad = opts?.pad || 0;
+    const dur = opts?.duration || 600;
+    const start = parseInt(el.dataset.val || '0', 10);
+    const delta = target - start;
+    if (delta === 0) {
+      el.textContent = pad ? String(target).padStart(pad, '0') : String(target);
+      return;
+    }
+    el.dataset.val = String(target);
+    const t0 = performance.now();
+    function frame(t) {
+      const p = Math.min(1, (t - t0) / dur);
+      // easeOutQuart
+      const eased = 1 - Math.pow(1 - p, 4);
+      const cur = Math.round(start + delta * eased);
+      el.textContent = pad ? String(cur).padStart(pad, '0') : String(cur);
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
 
   const SUPABASE_URL = 'https://lbsnhkenepmhigbofqae.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxic25oa2VuZXBtaGlnYm9mcWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjI0ODgsImV4cCI6MjA5MTE5ODQ4OH0.42Cd7d5v6gVe4dP-LwQbamsu3AC4ghT8x_jfte5SG2I';
@@ -1404,7 +1867,14 @@
 
   function tickTimer() {
     const total = getTotalSeconds();
-    document.getElementById('my-timer').innerHTML = formatTime(total);
+    const el = document.getElementById('my-timer');
+    el.innerHTML = formatTime(total);
+    // Лёгкий импульс на каждой ровной минуте
+    if (total > 0 && total % 60 === 0) {
+      el.classList.remove('tick');
+      void el.offsetWidth;
+      el.classList.add('tick');
+    }
     if (timerRunning() && timerStartedAt) {
       const sessionSec = Math.floor((Date.now() - timerStartedAt) / 1000);
       if (sessionSec >= 7200) unlockAchievement('marathoner');
@@ -1642,21 +2112,59 @@
 
   function renderUsers(users) {
     allUsersCache = users;
+
+    // Подсчёт по статусам
+    const counts = { Online: 0, Studying: 0, Away: 0, Offline: 0 };
+    users.forEach(u => {
+      const s = u.status || 'Offline';
+      counts[s] = (counts[s] || 0) + 1;
+    });
+
     const active = users.filter(u => u.status !== 'Offline');
-    document.getElementById('online-count').textContent = String(active.length).padStart(2, '0');
-    document.getElementById('online-sub').textContent = `из ${users.length} ${pluralize(users.length, 'участника', 'участников', 'участников')}`;
-    document.getElementById('online-avatars').innerHTML = active.slice(0,6).map(u =>
-      `<div class="mini-av" title="${u.username||'?'}">${(u.username||'?')[0].toUpperCase()}</div>`
+    const total = users.length;
+    const safeTotal = total || 1;
+
+    // Заголовок: 02 / 05 активны сейчас (с tween)
+    tweenNumber(document.getElementById('online-count'), active.length, {pad: 2});
+    tweenNumber(document.getElementById('online-total'), total, {pad: 2});
+
+    // Аватары активных
+    document.getElementById('online-avatars').innerHTML = active.slice(0, 6).map(u =>
+      `<div class="mini-av" title="${u.username || '?'}">${(u.username || '?')[0].toUpperCase()}</div>`
     ).join('');
 
+    // Сегментная полоса (без offline)
+    const meter = document.getElementById('online-meter');
+    meter.innerHTML = `
+      <div class="stats-meter-seg online"   style="width:${(counts.Online   / safeTotal) * 100}%"></div>
+      <div class="stats-meter-seg studying" style="width:${(counts.Studying / safeTotal) * 100}%"></div>
+      <div class="stats-meter-seg away"     style="width:${(counts.Away     / safeTotal) * 100}%"></div>
+    `;
+
+    // Разбивка (с tween для чисел)
+    const bd = document.getElementById('online-breakdown');
+    if (!bd.dataset.ready) {
+      bd.innerHTML = `
+        <span class="sb-item"><span class="sb-dot online"></span><span class="sb-n" data-key="Online">0</span><span class="sb-l">онлайн</span></span>
+        <span class="sb-item"><span class="sb-dot studying"></span><span class="sb-n" data-key="Studying">0</span><span class="sb-l">учёба</span></span>
+        <span class="sb-item"><span class="sb-dot away"></span><span class="sb-n" data-key="Away">0</span><span class="sb-l">отошли</span></span>
+        <span class="sb-item"><span class="sb-dot offline"></span><span class="sb-n" data-key="Offline">0</span><span class="sb-l">оффлайн</span></span>
+      `;
+      bd.dataset.ready = '1';
+    }
+    bd.querySelectorAll('[data-key]').forEach(el => {
+      tweenNumber(el, counts[el.dataset.key] || 0);
+    });
+
+    // Список участников
     const list = document.getElementById('users-list');
-    if (!users.length) { list.innerHTML='<div class="msg">Нет участников</div>'; return; }
+    if (!users.length) { list.innerHTML = '<div class="msg">Нет участников</div>'; return; }
     list.innerHTML = users.map(u => {
       const m = STATUS_META[u.status] || STATUS_META['Offline'];
       const av = u.avatar_url
         ? `<img src="${u.avatar_url}" alt="${(u.username||'?')[0]}">`
         : (u.username||'?')[0].toUpperCase();
-      const meTag = u.id===myId ? '<span class="me-tag">это я</span>' : '';
+      const meTag = u.id === myId ? '<span class="me-tag">это я</span>' : '';
       return `<div class="row ${u.id===myId?'me':''}">
         <div class="avatar">${av}</div>
         <div>
@@ -1798,17 +2306,40 @@
   });
 
   // ===== AUTH STATE =====
+  let initialResolved = false;
   db.auth.onAuthStateChange(async (event, session) => {
     console.log('Auth event:', event);
     if (event === 'INITIAL_SESSION') {
+      initialResolved = true;
       if (session?.user) await onLogin(session.user);
       else showAuth();
     } else if (event === 'SIGNED_IN') {
+      initialResolved = true;
       if (session?.user && !myId) await onLogin(session.user);
     } else if (event === 'SIGNED_OUT') {
       cleanup(); showAuth();
+    } else if (event === 'TOKEN_REFRESHED') {
+      initialResolved = true;
     }
   });
+
+  // Fallback: если Supabase недоступен (DNS не резолвится, проект на паузе и т.д.)
+  // или зависли протухшие токены — через 4 сек чистим storage и форсим экран входа.
+  setTimeout(() => {
+    if (initialResolved || myId) return;
+    console.warn('Supabase не ответил за 4с. Очищаю старые токены и показываю auth.');
+    try {
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('sb-') || k.includes('supabase')) localStorage.removeItem(k);
+      });
+    } catch(e) {}
+    const loadingEl = document.getElementById('loading');
+    if (loadingEl) {
+      loadingEl.innerHTML = 'Сервер недоступен · открываю экран входа';
+      loadingEl.style.color = 'var(--rose)';
+    }
+    setTimeout(() => showAuth(), 800);
+  }, 4000);
 </script>
 
 </body>
