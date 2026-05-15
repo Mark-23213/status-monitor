@@ -1187,19 +1187,21 @@
       to { opacity: 0.7; }
     }
 
-    /* Staggered mount */
+    /* Staggered mount — применяется ТОЛЬКО к верхним блокам app-screen */
     @keyframes rise {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .stagger > * { opacity: 0; animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .stagger > *:nth-child(1) { animation-delay: 0.05s; }
-    .stagger > *:nth-child(2) { animation-delay: 0.15s; }
-    .stagger > *:nth-child(3) { animation-delay: 0.25s; }
-    .stagger > *:nth-child(4) { animation-delay: 0.35s; }
-    .stagger > *:nth-child(5) { animation-delay: 0.45s; }
-    .stagger > *:nth-child(6) { animation-delay: 0.55s; }
-    .stagger > *:nth-child(7) { animation-delay: 0.65s; }
+    .stagger > .userbar,
+    .stagger > .hero,
+    .stagger > .stats-bar,
+    .stagger > .tabs {
+      animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .stagger > .userbar  { animation-delay: 0.05s; }
+    .stagger > .hero     { animation-delay: 0.18s; }
+    .stagger > .stats-bar{ animation-delay: 0.32s; }
+    .stagger > .tabs     { animation-delay: 0.46s; }
 
     /* Топ-бар плавный fade при загрузке */
     .topbar { animation: fadeDown 0.6s ease-out 0.05s both; }
@@ -1213,12 +1215,6 @@
     @keyframes timerEnter {
       from { opacity: 0; letter-spacing: 0.1em; }
       to   { opacity: 1; letter-spacing: -0.045em; }
-    }
-    .timer-display.tick { animation: tickPulse 0.4s ease-out; }
-    @keyframes tickPulse {
-      0%   { text-shadow: none; }
-      30%  { text-shadow: 0 0 24px var(--amber-soft); }
-      100% { text-shadow: none; }
     }
 
     /* Status button — активный «дышит» цветом */
@@ -1422,10 +1418,10 @@
     }
 
     /* Tab panel перехлд */
-    .tab-panel.active { animation: panelEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+    .tab-panel.active { animation: panelEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
     @keyframes panelEnter {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(8px); filter: blur(2px); }
+      to   { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
 
     /* Live dot — более насыщенный pulse */
@@ -1456,7 +1452,187 @@
       50%      { box-shadow: 0 0 0 2px var(--amber-soft); }
     }
 
-    /* Уважение к prefers-reduced-motion */
+    /* ================== WOW-ЭФФЕКТЫ ================== */
+
+    /* Cursor glow — янтарное пятно идёт за курсором */
+    .cursor-glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,176,76,0.08) 0%, rgba(232,176,76,0.03) 30%, transparent 60%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      mix-blend-mode: screen;
+      will-change: left, top;
+    }
+    .cursor-glow.show { opacity: 1; }
+
+    /* Flip-clock цифры таймера */
+    .timer-display { perspective: 800px; }
+    .ts-d {
+      display: inline-block;
+      min-width: 0.58em;
+      text-align: center;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+    .ts-d.flip {
+      animation: digitFlip 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes digitFlip {
+      0%   { transform: rotateX(-90deg) translateY(-30%); opacity: 0; filter: blur(2px); }
+      60%  { transform: rotateX(10deg) translateY(8%); opacity: 1; filter: blur(0); }
+      100% { transform: rotateX(0) translateY(0); opacity: 1; }
+    }
+
+    /* Magnetic кнопки статусов */
+    .status-btn {
+      will-change: transform;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .status-btn.magnetic-active {
+      transition: transform 0.1s linear, border-color 0.2s, background 0.2s, color 0.2s;
+    }
+
+    /* 3D tilt на карточках достижений */
+    .ach-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .ach-card.tilt {
+      transition: transform 0.15s linear, border-color 0.2s, box-shadow 0.3s;
+    }
+    .ach-card.tilt .ach-icon,
+    .ach-card.tilt .ach-name {
+      transform: translateZ(20px);
+      transition: transform 0.2s;
+    }
+
+    /* Confetti салют */
+    .confetti {
+      position: fixed;
+      width: 8px; height: 4px;
+      pointer-events: none;
+      z-index: 10000;
+      animation: confettiFly 1.6s cubic-bezier(0.22, 0.6, 0.36, 1) forwards;
+      border-radius: 1px;
+    }
+    @keyframes confettiFly {
+      0%   { transform: translate(0, 0) rotate(0); opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translate(var(--dx), calc(var(--dy) + 280px)) rotate(720deg); opacity: 0; }
+    }
+
+    /* Звёзды — поддержка parallax */
+    .star {
+      will-change: transform;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .starfield {
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Achievement unlock — золотой взрыв вокруг toast */
+    #ach-toast.show {
+      animation: toastEntry 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes toastEntry {
+      0%   { transform: translateX(-50%) translateY(140%) scale(0.6); }
+      60%  { transform: translateX(-50%) translateY(-8%) scale(1.04); }
+      100% { transform: translateX(-50%) translateY(0) scale(1); }
+    }
+
+    /* Радар-sweep вокруг активного статуса */
+    .status-btn.active::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--radius);
+      border: 1px solid currentColor;
+      opacity: 0;
+      animation: radarSweep 2.8s ease-out infinite;
+      pointer-events: none;
+    }
+    .status-btn { position: relative; overflow: visible; }
+    @keyframes radarSweep {
+      0%   { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.12); }
+    }
+
+    /* Брендовая буква — глитч на ховер */
+    .brand-name {
+      cursor: default;
+      position: relative;
+      transition: letter-spacing 0.3s;
+    }
+    .brand-name:hover { letter-spacing: 0.02em; }
+
+    /* Live-индикатор статуса — расходящееся кольцо */
+    .topbar-meta .dot {
+      position: relative;
+    }
+    .topbar-meta .dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1px solid var(--sage);
+      opacity: 0.5;
+      animation: ringRipple 2.4s ease-out infinite;
+    }
+    @keyframes ringRipple {
+      0%   { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+
+    /* Pulse glow на аватарах активных пользователей */
+    .stats-avatars .mini-av {
+      position: relative;
+      animation: avPulse 3s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * 0.4s);
+    }
+    @keyframes avPulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--amber-line); }
+      50%      { box-shadow: 0 0 0 3px var(--amber-soft); }
+    }
+
+    /* Hero — добавим спот-лайт сверху над таймером */
+    .timer-stage::before {
+      content: '';
+      position: absolute;
+      top: -20px; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 200px;
+      background: radial-gradient(ellipse at top, var(--amber-soft) 0%, transparent 60%);
+      pointer-events: none;
+      opacity: 0.6;
+      animation: spotPulse 5s ease-in-out infinite;
+    }
+    .timer-stage { position: relative; }
+    @keyframes spotPulse {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 0.7; }
+    }
+
+    /* Скан-линии лёгкие на стилях панелей при ховере */
+    .ach-card.unlocked.legendary::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(110deg, transparent 30%, rgba(232,176,76,0.1) 50%, transparent 70%);
+      animation: legendaryShine 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes legendaryShine {
+      0%   { left: -100%; }
+      60%  { left: 100%; }
+      100% { left: 100%; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -1478,6 +1654,9 @@
 </head>
 
 <body>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursor-glow"></div>
 
 <!-- Звёздное поле + координатные метки -->
 <div class="starfield" id="starfield"></div>
@@ -1588,7 +1767,7 @@
 
       <div class="timer-stage">
         <div class="timer-prefix">время в активном статусе</div>
-        <div class="timer-display" id="my-timer">00<span class="ts-sep">:</span>00<span class="ts-sep">:</span>00</div>
+        <div class="timer-display" id="my-timer"></div>
         <div class="timer-caption" id="timer-sub"><span class="live-dot"></span>таймер идёт</div>
       </div>
 
@@ -1713,10 +1892,109 @@
       const delay = (Math.random() * 6).toFixed(2);
       const driftDur = (40 + Math.random() * 60).toFixed(0);
       const isDim = Math.random() > 0.3;
-      html += `<div class="star ${isDim ? 'dim' : ''}" style="left:${x}%;top:${y}%;animation-delay:${delay}s, ${(Math.random()*driftDur).toFixed(0)}s;animation-duration:${(4+Math.random()*5).toFixed(1)}s, ${driftDur}s"></div>`;
+      const depth = (Math.random() * 0.8 + 0.2).toFixed(2); // для parallax
+      html += `<div class="star ${isDim ? 'dim' : ''}" data-depth="${depth}" style="left:${x}%;top:${y}%;animation-delay:${delay}s, ${(Math.random()*driftDur).toFixed(0)}s;animation-duration:${(4+Math.random()*5).toFixed(1)}s, ${driftDur}s"></div>`;
     }
     field.innerHTML = html;
   })();
+
+  // ===== Cursor glow =====
+  (function setupCursorGlow() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none)').matches) return; // тач — не нужен
+    const glow = document.getElementById('cursor-glow');
+    if (!glow) return;
+    let raf = null, x = 0, y = 0;
+    document.addEventListener('mousemove', e => {
+      x = e.clientX; y = e.clientY;
+      glow.classList.add('show');
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          glow.style.left = x + 'px';
+          glow.style.top = y + 'px';
+          raf = null;
+        });
+      }
+    });
+    document.addEventListener('mouseleave', () => glow.classList.remove('show'));
+  })();
+
+  // ===== Parallax звёзд (мышь смещает звёзды) =====
+  (function setupParallax() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const field = document.getElementById('starfield');
+    if (!field) return;
+    let raf = null, mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+      mx = (e.clientX / window.innerWidth - 0.5) * 30;
+      my = (e.clientY / window.innerHeight - 0.5) * 30;
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          field.style.transform = `translate(${mx}px, ${my}px)`;
+          raf = null;
+        });
+      }
+    });
+  })();
+
+  // ===== Magnetic кнопки статусов =====
+  function attachMagnetic(btn) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none)').matches) return;
+    btn.addEventListener('mouseenter', () => btn.classList.add('magnetic-active'));
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.classList.remove('magnetic-active');
+      btn.style.transform = '';
+    });
+  }
+
+  // ===== 3D tilt на карточках достижений =====
+  function attachTilt(card) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none)').matches) return;
+    card.addEventListener('mouseenter', () => card.classList.add('tilt'));
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.classList.remove('tilt');
+      card.style.transform = '';
+    });
+  }
+
+  // ===== Confetti салют =====
+  function spawnConfetti(originX, originY, count) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const colors = ['#e8b04c', '#d97757', '#8fb56b', '#7aa6d4', '#f5c160', '#c9748a'];
+    const N = count || 36;
+    for (let i = 0; i < N; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = originX + 'px';
+      c.style.top = originY + 'px';
+      const angle = (Math.PI * 2 * i) / N + (Math.random() - 0.5) * 0.5;
+      const vel = 90 + Math.random() * 180;
+      const dx = Math.cos(angle) * vel;
+      const dy = Math.sin(angle) * vel - 80;
+      c.style.setProperty('--dx', dx + 'px');
+      c.style.setProperty('--dy', dy + 'px');
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.width = (4 + Math.random() * 6) + 'px';
+      c.style.height = (2 + Math.random() * 4) + 'px';
+      c.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2200);
+    }
+  }
 
   // ===== Number tween (count up) =====
   function tweenNumber(el, target, opts) {
@@ -1775,8 +2053,13 @@
     document.getElementById('toast-desc').textContent = ach.desc;
     const toast = document.getElementById('ach-toast');
     toast.classList.add('show');
+    // Конфетти-салют из центра нижнего тоста
+    setTimeout(() => {
+      const rect = toast.getBoundingClientRect();
+      spawnConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, ach.rarity === 'legendary' ? 50 : 32);
+    }, 150);
     if (toastTimeout) clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => toast.classList.remove('show'), 3800);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 4200);
   }
 
   async function loadMyAchievements() {
@@ -1839,6 +2122,8 @@
         ${!unlocked ? '<div class="ach-locked-icon">[ locked ]</div>' : ''}
       </div>`;
     }).join('');
+    // 3D tilt только на разблокированных
+    grid.querySelectorAll('.ach-card.unlocked').forEach(attachTilt);
   }
 
   // ===== ТАЙМЕР =====
@@ -1865,16 +2150,56 @@
     return `${pad(h)}<span class="ts-sep">:</span>${pad(m)}<span class="ts-sep">:</span>${pad(s)}`;
   }
 
+  // Полная отрисовка таймера: каждая цифра — отдельный span с flip-анимацией при изменении
+  function renderTimerDom(secTotal) {
+    const el = document.getElementById('my-timer');
+    if (!el) return;
+    const h = Math.floor(secTotal / 3600);
+    const m = Math.floor((secTotal % 3600) / 60);
+    const s = secTotal % 60;
+    const pad = n => String(n).padStart(2, '0');
+    const digits = (pad(h) + pad(m) + pad(s)).split('');
+
+    if (!el.dataset.flipReady) {
+      // Первая отрисовка — собираем DOM из 6 цифр + 2 разделителей
+      el.innerHTML = '';
+      const positions = [0, 1, 'sep', 2, 3, 'sep', 4, 5];
+      let digitIdx = 0;
+      positions.forEach(pos => {
+        if (pos === 'sep') {
+          const sep = document.createElement('span');
+          sep.className = 'ts-sep';
+          sep.textContent = ':';
+          el.appendChild(sep);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'ts-d';
+          span.textContent = digits[digitIdx++];
+          el.appendChild(span);
+        }
+      });
+      el.dataset.flipReady = '1';
+      return;
+    }
+
+    // Обновление — flip только тех цифр, которые изменились
+    const digitSpans = el.querySelectorAll('.ts-d');
+    digits.forEach((d, i) => {
+      const span = digitSpans[i];
+      if (!span) return;
+      if (span.textContent !== d) {
+        span.classList.remove('flip');
+        // Перезапуск анимации через reflow
+        void span.offsetWidth;
+        span.textContent = d;
+        span.classList.add('flip');
+      }
+    });
+  }
+
   function tickTimer() {
     const total = getTotalSeconds();
-    const el = document.getElementById('my-timer');
-    el.innerHTML = formatTime(total);
-    // Лёгкий импульс на каждой ровной минуте
-    if (total > 0 && total % 60 === 0) {
-      el.classList.remove('tick');
-      void el.offsetWidth;
-      el.classList.add('tick');
-    }
+    renderTimerDom(total);
     if (timerRunning() && timerStartedAt) {
       const sessionSec = Math.floor((Date.now() - timerStartedAt) / 1000);
       if (sessionSec >= 7200) unlockAchievement('marathoner');
@@ -1956,6 +2281,8 @@
     document.getElementById('loading').style.display = 'none';
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('app-screen').style.display = 'block';
+    // Magnetic кнопки статусов
+    document.querySelectorAll('.status-btn').forEach(attachMagnetic);
   }
 
   // ===== ТАБЫ =====
