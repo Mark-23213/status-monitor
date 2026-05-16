@@ -1828,14 +1828,14 @@
     <!-- USERS -->
     <div class="tab-panel active" id="panel-users">
       <div class="row-list" id="users-list">
-        <div class="msg">Загрузка...</div>
+        <div class="msg">Загрузка участников…</div>
       </div>
     </div>
 
     <!-- RATING -->
     <div class="tab-panel" id="panel-rating">
       <div class="rating-list" id="rating-list">
-        <div class="msg">Загрузка...</div>
+        <div class="msg">Откройте вкладку для загрузки рейтинга</div>
       </div>
     </div>
 
@@ -2351,6 +2351,17 @@
   // ===== ВХОД =====
   let allUsersCache = [];
 
+  // Helper: запрос с таймаутом, не падает на зависании
+  function withTimeout(promise, ms, label) {
+    return Promise.race([
+      Promise.resolve(promise).then(r => ({ok: true, r})).catch(e => ({ok: false, e})),
+      new Promise(resolve => setTimeout(() => {
+        console.warn(`[timeout ${ms}ms] ${label || 'request'}`);
+        resolve({ok: false, e: 'timeout'});
+      }, ms))
+    ]);
+  }
+
   async function onLogin(user) {
     myId = user.id;
     myName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
@@ -2363,47 +2374,87 @@
     av.innerHTML = avatar ? `<img src="${avatar}" alt="${myName[0]}">` : myName[0].toUpperCase();
     showApp();
 
-    try {
-      const {data} = await db.from('profiles').select('timer_seconds, timer_started_at, status').eq('id', myId).single();
-      if (data) {
-        timerSeconds = data.timer_seconds || 0;
-        if (data.timer_started_at && TIMER_ACTIVE.includes(data.status||'Online')) {
-          timerSeconds += Math.floor((Date.now() - new Date(data.timer_started_at).getTime()) / 1000);
-        }
-      }
-    } catch(e) { timerSeconds = 0; }
-
+    // ===== КРИТИЧНО: запускаем UI немедленно, без блокирующих awaits =====
     myStatus = 'Online';
     timerStartedAt = Date.now();
-    try {
-      await db.from('profiles').upsert({
-        id:myId, username:myName, status:'Online',
-        avatar_url:avatar, timer_seconds:timerSeconds,
+    timerSeconds = 0;
+    startTimerTick();              // таймер тикает с нуля сразу
+    renderAchGrid();               // сетка достижений (locked) отрисована сразу
+    setStatusUIOnly('Online');     // UI кнопки/бейдж — без обращения к БД
+
+    // ===== Все БД-запросы параллельно с таймаутами =====
+
+    // 1) Загрузка прежнего таймера из профиля
+    withTimeout(
+      db.from('profiles').select('timer_seconds, timer_started_at, status').eq('id', myId).single(),
+      6000, 'profile-load'
+    ).then(res => {
+      if (res.ok && res.r?.data) {
+        const data = res.r.data;
+        let cur = data.timer_seconds || 0;
+        if (data.timer_started_at && TIMER_ACTIVE.includes(data.status || 'Online')) {
+          cur += Math.floor((Date.now() - new Date(data.timer_started_at).getTime()) / 1000);
+        }
+        timerSeconds = cur;
+      }
+    });
+
+    // 2) Upsert текущего профиля (online + время начала)
+    withTimeout(
+      db.from('profiles').upsert({
+        id: myId, username: myName, status: 'Online',
+        avatar_url: avatar, timer_seconds: 0,
         timer_started_at: new Date().toISOString()
-      }, {onConflict:'id'});
-    } catch(e) { console.error('upsert:', e); }
+      }, {onConflict: 'id'}),
+      6000, 'profile-upsert'
+    );
 
-    try {
-      const {count} = await db.from('messages').select('*', {count:'exact', head:true}).eq('user_id', myId);
-      myMsgCount = count || 0;
-    } catch(e) {}
+    // 3) Счётчик сообщений (для достижений Активист/Душа компании)
+    withTimeout(
+      db.from('messages').select('*', {count: 'exact', head: true}).eq('user_id', myId),
+      6000, 'msg-count'
+    ).then(res => { if (res.ok) myMsgCount = res.r?.count || 0; });
 
-    startTimerTick();
-    await loadMyAchievements();
-    try { await loadUsers(); } catch(e) {}
-    try { await loadMessages(); } catch(e) {}
+    // 4) Достижения
+    withTimeout(loadMyAchievements(), 6000, 'achievements');
+
+    // 5) Список пользователей + чат
+    withTimeout(loadUsers(),    6000, 'users');
+    withTimeout(loadMessages(), 6000, 'messages');
+
+    // 6) Realtime-подписки
     try { subscribeProfiles(); } catch(e) {}
     try { subscribeMessages(); } catch(e) {}
 
+    // 7) Периодический поллинг
     if (pollTimer) clearInterval(pollTimer);
-    pollTimer = setInterval(async () => {
-      await loadUsers();
-      await checkAchievementsNow();
+    pollTimer = setInterval(() => {
+      loadUsers().catch(() => {});
+      checkAchievementsNow().catch(() => {});
     }, 5000);
 
-    setTimeout(() => checkAchievementsNow(), 1000);
-    await unlockAchievement('first_step');
-    if (loginHour < 8) await unlockAchievement('early_bird');
+    // 8) Авто-достижения с задержкой (чтобы дать БД прогреться)
+    setTimeout(() => checkAchievementsNow().catch(() => {}), 1800);
+    setTimeout(() => unlockAchievement('first_step').catch?.(() => {}), 2200);
+    if (loginHour < 8) setTimeout(() => unlockAchievement('early_bird').catch?.(() => {}), 2400);
+  }
+
+  // UI-only переключение статуса (без обращения к БД) — для начального состояния
+  function setStatusUIOnly(status) {
+    document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+    const map = { Online:'s-online', Studying:'s-studying', Away:'s-away', Offline:'s-offline' };
+    const btn = document.querySelector('.status-btn.' + map[status]);
+    if (btn) btn.classList.add('active');
+    const m = STATUS_META[status];
+    const badge = document.getElementById('cur-badge');
+    if (badge && m) {
+      badge.innerHTML = `<span class="pill-dot" style="background:${m.color}"></span>${m.label}`;
+      badge.style.color = m.color;
+      badge.style.borderColor = m.color;
+      badge.style.background = m.color + '15';
+    }
+    const sub = document.getElementById('timer-sub');
+    if (sub && m) sub.innerHTML = `<span class="live-dot ${m.timerOn ? '' : 'off'}"></span>${m.sub}`;
   }
 
   function cleanup() {
@@ -2515,16 +2566,29 @@
 
   async function renderRating() {
     const list = document.getElementById('rating-list');
-    list.innerHTML = '<div class="msg">Загрузка...</div>';
-    const {data: users, error} = await db.from('profiles').select('*').order('timer_seconds', {ascending: false});
-    if (error || !users) { list.innerHTML = '<div class="msg">Ошибка загрузки</div>'; return; }
+    list.innerHTML = '<div class="msg">Загрузка рейтинга…</div>';
 
-    const {data: allAchs} = await db.from('achievements').select('user_id, code');
+    const usersRes = await withTimeout(
+      db.from('profiles').select('*').order('timer_seconds', {ascending: false}),
+      6000, 'rating-users'
+    );
+    if (!usersRes.ok || !usersRes.r?.data) {
+      list.innerHTML = '<div class="msg">Не удалось загрузить рейтинг</div>';
+      return;
+    }
+    const users = usersRes.r.data;
+
+    const achRes = await withTimeout(
+      db.from('achievements').select('user_id, code'),
+      6000, 'rating-achievements'
+    );
     const achByUser = {};
-    (allAchs||[]).forEach(a => {
-      if (!achByUser[a.user_id]) achByUser[a.user_id] = [];
-      achByUser[a.user_id].push(a.code);
-    });
+    if (achRes.ok && achRes.r?.data) {
+      achRes.r.data.forEach(a => {
+        if (!achByUser[a.user_id]) achByUser[a.user_id] = [];
+        achByUser[a.user_id].push(a.code);
+      });
+    }
 
     list.innerHTML = users.map((u, i) => {
       const av = u.avatar_url
@@ -2557,9 +2621,19 @@
   }
 
   async function loadUsers() {
-    const {data,error} = await db.from('profiles').select('*').order('username');
-    if (error) { console.error('loadUsers:', error); return; }
-    if (data) renderUsers(data);
+    const res = await withTimeout(
+      db.from('profiles').select('*').order('username'),
+      6000, 'loadUsers'
+    );
+    if (!res.ok) {
+      const list = document.getElementById('users-list');
+      if (list && list.querySelector('.msg')) {
+        list.innerHTML = '<div class="msg">Сервер не отвечает</div>';
+      }
+      return;
+    }
+    if (res.r?.error) { console.error('loadUsers:', res.r.error); return; }
+    if (res.r?.data) renderUsers(res.r.data);
   }
 
   function subscribeProfiles() {
@@ -2586,9 +2660,17 @@
   }
 
   async function loadMessages() {
-    const {data,error} = await db.from('messages').select('*').order('created_at').limit(100);
     const box = document.getElementById('chat-messages');
-    if (error) { box.innerHTML=`<div class="chat-empty">— ${error.message}</div>`; return; }
+    const res = await withTimeout(
+      db.from('messages').select('*').order('created_at').limit(100),
+      6000, 'loadMessages'
+    );
+    if (!res.ok) {
+      box.innerHTML = '<div class="chat-empty">Чат недоступен. Попробуй позже.</div>';
+      return;
+    }
+    if (res.r?.error) { box.innerHTML=`<div class="chat-empty">— ${res.r.error.message}</div>`; return; }
+    const data = res.r?.data;
     if (!data?.length) { box.innerHTML='<div class="chat-empty">Тишина в эфире. Напиши первым.</div>'; return; }
     box.innerHTML = data.map(buildMsg).join('');
     box.scrollTop = box.scrollHeight;
