@@ -14,7 +14,6 @@
   <style>
     /* ================== ДИЗАЙН-ТОКЕНЫ ================== */
     :root {
-      /* Палитра — тёплый антрацит + янтарь */
       --bg:           #0c0a08;
       --bg-grain:    rgba(255, 240, 220, 0.012);
       --panel:        #15110d;
@@ -37,13 +36,11 @@
       --azure:        #7aa6d4;
       --rose:         #c9748a;
 
-      /* Статусы */
       --st-online:   #8fb56b;
       --st-studying: #7aa6d4;
       --st-away:     #e8b04c;
       --st-offline:  #6b6358;
 
-      /* Типографика */
       --serif: 'Fraunces', Georgia, serif;
       --sans:  'Geist', system-ui, sans-serif;
       --mono:  'JetBrains Mono', ui-monospace, monospace;
@@ -53,7 +50,6 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html, body { height: 100%; }
 
     body {
@@ -68,7 +64,6 @@
       overflow-x: hidden;
     }
 
-    /* Зернистость + тёплое свечение в углу */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -87,7 +82,6 @@
       z-index: 0;
     }
 
-    /* ================== СЕТКА КОНТЕЙНЕРА ================== */
     .shell {
       position: relative;
       z-index: 1;
@@ -96,7 +90,6 @@
       padding: 32px 24px 80px;
     }
 
-    /* ================== ТОП-БАР (Observatory) ================== */
     .topbar {
       display: flex;
       align-items: center;
@@ -105,9 +98,7 @@
       border-bottom: 1px solid var(--line);
       margin-bottom: 28px;
     }
-    .brand {
-      display: flex; align-items: baseline; gap: 10px;
-    }
+    .brand { display: flex; align-items: baseline; gap: 10px; }
     .brand-mark {
       font-family: var(--mono);
       font-size: 10px;
@@ -142,32 +133,18 @@
     }
     @keyframes breathe { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-    /* ================== AUTH ================== */
     #auth-screen { display: none; }
-    .auth-wrap {
-      max-width: 420px;
-      margin: 48px auto 0;
-    }
-    .auth-hero {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+    .auth-wrap { max-width: 420px; margin: 48px auto 0; }
+    .auth-hero { text-align: center; margin-bottom: 40px; }
     .auth-eyebrow {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      color: var(--amber);
-      text-transform: uppercase;
-      margin-bottom: 14px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.22em; color: var(--amber);
+      text-transform: uppercase; margin-bottom: 14px;
     }
     .auth-title {
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: 44px;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-      margin-bottom: 8px;
+      font-family: var(--serif); font-weight: 300;
+      font-size: 44px; line-height: 1;
+      letter-spacing: -0.03em; color: var(--ink); margin-bottom: 8px;
     }
     .auth-title em {
       font-style: italic;
@@ -175,11 +152,8 @@
       color: var(--amber);
     }
     .auth-sub {
-      font-size: 13px;
-      color: var(--ink-3);
-      max-width: 280px;
-      margin: 0 auto;
-      line-height: 1.5;
+      font-size: 13px; color: var(--ink-3);
+      max-width: 280px; margin: 0 auto; line-height: 1.5;
     }
     .auth-card {
       background: var(--panel);
@@ -202,35 +176,22 @@
       border-bottom: 1px solid var(--line);
     }
     .auth-tab {
-      background: transparent;
-      border: none;
+      background: transparent; border: none;
       border-bottom: 1px solid transparent;
       color: var(--ink-3);
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      padding: 10px 0 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-bottom: -1px;
+      font-family: var(--sans); font-size: 13px;
+      font-weight: 500; letter-spacing: 0.02em;
+      padding: 10px 0 14px; cursor: pointer;
+      transition: all 0.2s; margin-bottom: -1px;
     }
     .auth-tab:hover { color: var(--ink-2); }
-    .auth-tab.active {
-      color: var(--ink);
-      border-bottom-color: var(--amber);
-    }
-    .form-group {
-      margin-bottom: 14px;
-    }
+    .auth-tab.active { color: var(--ink); border-bottom-color: var(--amber); }
+    .form-group { margin-bottom: 14px; }
     .form-group label {
       display: block;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      margin-bottom: 6px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; color: var(--ink-3);
+      text-transform: uppercase; margin-bottom: 6px;
     }
     .form-group input {
       width: 100%;
@@ -244,132 +205,86 @@
       outline: none;
       transition: all 0.2s;
     }
-    .form-group input:focus {
-      border-color: var(--amber);
-      background: var(--panel-2);
-    }
+    .form-group input:focus { border-color: var(--amber); background: var(--panel-2); }
     .submit-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--amber);
-      color: #1a1408;
-      border: none;
-      border-radius: var(--radius);
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 6px;
+      width: 100%; padding: 12px;
+      background: var(--amber); color: #1a1408;
+      border: none; border-radius: var(--radius);
+      font-family: var(--sans); font-size: 13px;
+      font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; margin-top: 6px;
     }
     .submit-btn:hover { background: #f5c160; transform: translateY(-1px); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .divider {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 22px 0 18px;
-      color: var(--ink-4);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      display: flex; align-items: center; gap: 14px;
+      margin: 22px 0 18px; color: var(--ink-4);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
     }
     .divider::before, .divider::after {
       content: ''; flex: 1; height: 1px; background: var(--line);
     }
     .google-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 11px;
-      background: transparent;
-      color: var(--ink-2);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; width: 100%; padding: 11px;
+      background: transparent; color: var(--ink-2);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      font-family: var(--sans); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
     }
     .google-btn:hover { border-color: var(--ink-3); color: var(--ink); background: var(--panel-2); }
     .google-btn svg { width: 16px; height: 16px; }
     .auth-msg {
-      border-radius: var(--radius);
-      padding: 10px 12px;
-      font-size: 12px;
-      margin-bottom: 14px;
-      display: none;
-      font-family: var(--mono);
-      letter-spacing: 0.02em;
+      border-radius: var(--radius); padding: 10px 12px;
+      font-size: 12px; margin-bottom: 14px; display: none;
+      font-family: var(--mono); letter-spacing: 0.02em;
     }
     .auth-msg.error { background: #c9748a14; border: 1px solid #c9748a44; color: var(--rose); display: block; }
     .auth-msg.success { background: var(--amber-soft); border: 1px solid var(--amber-line); color: var(--amber); display: block; }
 
-    /* ================== APP ================== */
     #app-screen { display: none; }
 
-    /* USER BAR (тонкая, editorial) */
     .userbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 14px;
       padding: 14px 0;
       border-bottom: 1px solid var(--line);
       margin-bottom: 32px;
     }
-    .userbar-id {
-      display: flex; align-items: center; gap: 12px;
-    }
+    .userbar-id { display: flex; align-items: center; gap: 12px; }
     .user-avatar {
       width: 36px; height: 36px;
       border-radius: 50%;
       background: var(--panel-2);
       border: 1px solid var(--line-strong);
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--amber);
-      overflow: hidden;
-      flex-shrink: 0;
+      font-family: var(--serif); font-size: 14px;
+      font-weight: 500; color: var(--amber);
+      overflow: hidden; flex-shrink: 0;
     }
     .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .user-info-block .user-name {
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--ink);
+      font-family: var(--sans); font-size: 14px;
+      font-weight: 500; color: var(--ink);
       letter-spacing: -0.005em;
     }
     .user-info-block .user-email {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--ink-4);
-      letter-spacing: 0.04em;
+      font-family: var(--mono); font-size: 10px;
+      color: var(--ink-4); letter-spacing: 0.04em;
     }
     .logout-btn {
       background: transparent;
       border: 1px solid var(--line);
       color: var(--ink-3);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 7px 12px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: all 0.2s;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 7px 12px; border-radius: var(--radius);
+      cursor: pointer; transition: all 0.2s;
     }
     .logout-btn:hover { border-color: var(--rose); color: var(--rose); }
 
-    /* ================== HERO: STATUS + TIMER ================== */
     .hero {
       position: relative;
       padding: 36px 0 32px;
@@ -377,82 +292,58 @@
       border-bottom: 1px solid var(--line);
     }
     .hero-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 24px;
     }
     .section-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      color: var(--ink-3);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.22em; color: var(--ink-3);
       text-transform: uppercase;
       display: flex; align-items: center; gap: 8px;
     }
     .section-label::before {
-      content: '';
-      width: 14px; height: 1px;
-      background: var(--amber);
-      display: inline-block;
+      content: ''; width: 14px; height: 1px;
+      background: var(--amber); display: inline-block;
     }
     .status-pill {
-      display: inline-flex;
-      align-items: center;
+      display: inline-flex; align-items: center;
       gap: 8px;
-      font-family: var(--mono);
-      font-size: 11px;
+      font-family: var(--mono); font-size: 11px;
       letter-spacing: 0.1em;
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid;
-      text-transform: uppercase;
+      padding: 5px 11px; border-radius: 999px;
+      border: 1px solid; text-transform: uppercase;
     }
     .status-pill .pill-dot {
       width: 7px; height: 7px; border-radius: 50%;
       box-shadow: 0 0 8px currentColor;
     }
 
-    /* TIMER — главное произведение */
     .timer-stage {
-      position: relative;
-      text-align: center;
+      position: relative; text-align: center;
       padding: 12px 0 8px;
     }
     .timer-prefix {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.24em;
-      color: var(--ink-4);
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.24em; color: var(--ink-4);
+      text-transform: uppercase; margin-bottom: 10px;
     }
     .timer-display {
-      font-family: var(--serif);
-      font-weight: 300;
+      font-family: var(--serif); font-weight: 300;
       font-size: clamp(64px, 13vw, 104px);
-      line-height: 0.95;
-      letter-spacing: -0.045em;
-      color: var(--ink);
-      font-variant-numeric: tabular-nums;
+      line-height: 0.95; letter-spacing: -0.045em;
+      color: var(--ink); font-variant-numeric: tabular-nums;
       font-feature-settings: "ss01";
-      display: inline-block;
-      position: relative;
+      display: inline-block; position: relative;
     }
     .timer-display .ts-sep {
-      color: var(--amber);
-      font-style: italic;
+      color: var(--amber); font-style: italic;
       font-variation-settings: "SOFT" 50;
-      opacity: 0.7;
-      margin: 0 -0.04em;
+      opacity: 0.7; margin: 0 -0.04em;
     }
     .timer-caption {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      margin-top: 14px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.18em; color: var(--ink-3);
+      text-transform: uppercase; margin-top: 14px;
       display: inline-flex; align-items: center; gap: 8px;
     }
     .timer-caption .live-dot {
@@ -463,7 +354,33 @@
     }
     .timer-caption .live-dot.off { background: var(--ink-4); box-shadow: none; animation: none; }
 
-    /* Status switcher */
+    /* === Маленькая кнопка-действие (Сбросить таймер / Очистить чат) === */
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink-3);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 6px 10px; border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+    .action-btn.danger:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+      background: #c9748a14;
+    }
+    .reset-row {
+      margin-top: 16px;
+      text-align: center;
+    }
+
     .status-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -475,10 +392,8 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 14px 8px 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-      font-family: var(--sans);
+      cursor: pointer; transition: all 0.2s;
+      text-align: center; font-family: var(--sans);
       color: var(--ink-3);
       display: flex; flex-direction: column; align-items: center; gap: 6px;
     }
@@ -494,22 +409,16 @@
       transition: box-shadow 0.2s;
     }
     .status-btn .sb-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
     }
     .status-btn.s-online    { color: var(--st-online); }
     .status-btn.s-studying  { color: var(--st-studying); }
     .status-btn.s-away      { color: var(--st-away); }
     .status-btn.s-offline   { color: var(--st-offline); }
-    .status-btn.active {
-      background: var(--panel-3);
-      border-color: currentColor;
-    }
+    .status-btn.active { background: var(--panel-3); border-color: currentColor; }
     .status-btn.active .sb-icon { box-shadow: 0 0 10px currentColor; }
     .status-btn.active .sb-label { color: var(--ink); }
 
-    /* Мини-достижения под героем */
     .my-ach-row {
       margin-top: 24px;
       padding-top: 22px;
@@ -518,21 +427,15 @@
     }
     .my-ach-row::before {
       content: 'ACHIEVEMENTS';
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      color: var(--ink-4);
-      margin-right: 6px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; color: var(--ink-4); margin-right: 6px;
     }
     .ach-badge {
       display: inline-flex; align-items: center; gap: 5px;
-      font-family: var(--mono);
-      font-size: 11px;
+      font-family: var(--mono); font-size: 11px;
       font-weight: 500;
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid;
-      animation: achPop 0.4s ease-out;
+      padding: 4px 9px; border-radius: 999px;
+      border: 1px solid; animation: achPop 0.4s ease-out;
     }
     @keyframes achPop {
       from { transform: scale(0.7); opacity: 0; }
@@ -542,7 +445,6 @@
     .ach-badge.epic      { background: var(--azure)13; border-color: var(--azure)55; color: var(--azure); }
     .ach-badge.legendary { background: var(--amber-soft); border-color: var(--amber-line); color: var(--amber); }
 
-    /* ================== STATS BAR (dashboard-style) ================== */
     .stats-bar {
       padding: 18px 22px;
       background: var(--panel);
@@ -552,77 +454,53 @@
       position: relative;
     }
     .stats-head {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 14px;
+      gap: 14px; margin-bottom: 14px;
     }
     .stats-headline {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      flex-wrap: wrap;
+      display: flex; align-items: baseline;
+      gap: 8px; flex-wrap: wrap;
     }
     .stats-num {
-      font-family: var(--mono);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--amber);
+      font-family: var(--mono); font-size: 20px;
+      font-weight: 600; color: var(--amber);
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0;
-      line-height: 1;
+      letter-spacing: 0; line-height: 1;
     }
     .stats-num-sep {
-      font-family: var(--mono);
-      font-size: 16px;
-      color: var(--ink-4);
-      font-weight: 400;
+      font-family: var(--mono); font-size: 16px;
+      color: var(--ink-4); font-weight: 400;
     }
     .stats-num-total {
-      font-family: var(--mono);
-      font-size: 16px;
-      color: var(--ink-3);
-      font-weight: 500;
+      font-family: var(--mono); font-size: 16px;
+      color: var(--ink-3); font-weight: 500;
       font-variant-numeric: tabular-nums;
     }
     .stats-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      color: var(--ink-3);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; color: var(--ink-3);
       text-transform: uppercase;
-      margin-left: 8px;
-      align-self: center;
+      margin-left: 8px; align-self: center;
     }
-    .stats-avatars {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
+    .stats-avatars { display: flex; align-items: center; flex-shrink: 0; }
     .stats-avatars .mini-av {
-      width: 24px; height: 24px;
-      border-radius: 50%;
+      width: 24px; height: 24px; border-radius: 50%;
       background: var(--panel-3);
       border: 1.5px solid var(--panel);
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--amber);
-      margin-left: -6px;
-      flex-shrink: 0;
+      font-family: var(--mono); font-size: 10px;
+      font-weight: 600; color: var(--amber);
+      margin-left: -6px; flex-shrink: 0;
     }
     .stats-avatars .mini-av:first-child { margin-left: 0; }
 
-    /* Тонкий segmented meter */
     .stats-meter {
       height: 4px;
       background: var(--ink-5);
       border-radius: 2px;
       overflow: hidden;
-      display: flex;
-      gap: 1px;
+      display: flex; gap: 1px;
       margin-bottom: 14px;
     }
     .stats-meter-seg {
@@ -633,93 +511,61 @@
     .stats-meter-seg.studying { background: var(--st-studying); }
     .stats-meter-seg.away     { background: var(--st-away); }
 
-    /* Разбивка по статусам */
     .stats-breakdown {
-      display: flex;
-      flex-wrap: wrap;
+      display: flex; flex-wrap: wrap;
       gap: 16px 22px;
     }
     .sb-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
     }
-    .sb-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      flex-shrink: 0;
-    }
+    .sb-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
     .sb-dot.online   { background: var(--st-online);   box-shadow: 0 0 5px var(--st-online); }
     .sb-dot.studying { background: var(--st-studying); box-shadow: 0 0 5px var(--st-studying); }
     .sb-dot.away     { background: var(--st-away);     box-shadow: 0 0 5px var(--st-away); }
     .sb-dot.offline  { background: var(--st-offline); }
-    .sb-n {
-      color: var(--ink);
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
+    .sb-n { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
     .sb-l {
-      color: var(--ink-3);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 10px;
+      color: var(--ink-3); letter-spacing: 0.12em;
+      text-transform: uppercase; font-size: 10px;
     }
 
-    /* ================== TABS (editorial underline) ================== */
     .tabs {
-      display: flex;
-      gap: 0;
+      display: flex; gap: 0;
       border-bottom: 1px solid var(--line);
       margin-bottom: 24px;
-      overflow-x: auto;
-      scrollbar-width: none;
+      overflow-x: auto; scrollbar-width: none;
     }
     .tabs::-webkit-scrollbar { display: none; }
     .tab-btn {
-      background: transparent;
-      border: none;
+      background: transparent; border: none;
       border-bottom: 1px solid transparent;
       color: var(--ink-3);
-      font-family: var(--sans);
-      font-size: 13px;
+      font-family: var(--sans); font-size: 13px;
       font-weight: 500;
-      padding: 12px 16px 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-bottom: -1px;
-      white-space: nowrap;
-      letter-spacing: -0.005em;
+      padding: 12px 16px 14px; cursor: pointer;
+      transition: all 0.2s; margin-bottom: -1px;
+      white-space: nowrap; letter-spacing: -0.005em;
       display: inline-flex; align-items: center; gap: 8px;
     }
     .tab-btn::before {
       content: attr(data-num);
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      color: var(--ink-4);
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.08em; color: var(--ink-4);
     }
     .tab-btn:hover { color: var(--ink-2); }
-    .tab-btn.active {
-      color: var(--ink);
-      border-bottom-color: var(--amber);
-    }
+    .tab-btn.active { color: var(--ink); border-bottom-color: var(--amber); }
     .tab-btn.active::before { color: var(--amber); }
 
     .tab-panel { display: none; animation: fadeIn 0.3s ease-out; }
     .tab-panel.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ================== USERS (table-like rows) ================== */
-    .row-list {
-      border-top: 1px solid var(--line);
-    }
+    .row-list { border-top: 1px solid var(--line); }
     .row {
       display: grid;
       grid-template-columns: 36px 1fr auto;
-      gap: 14px;
-      align-items: center;
+      gap: 14px; align-items: center;
       padding: 14px 4px;
       border-bottom: 1px solid var(--line);
       transition: background 0.15s;
@@ -727,68 +573,50 @@
     .row:hover { background: var(--panel); }
     .row.me { background: linear-gradient(to right, var(--amber-soft) 0%, transparent 30%); }
     .row .avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
+      width: 36px; height: 36px; border-radius: 50%;
       background: var(--panel-2);
       border: 1px solid var(--line-strong);
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--amber);
-      overflow: hidden;
-      flex-shrink: 0;
+      font-family: var(--serif); font-size: 13px;
+      font-weight: 500; color: var(--amber);
+      overflow: hidden; flex-shrink: 0;
     }
     .row .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .row .uname {
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--ink);
+      font-family: var(--sans); font-size: 14px;
+      font-weight: 500; color: var(--ink);
       margin-bottom: 3px;
       display: flex; align-items: center; gap: 6px;
     }
     .row .me-tag {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.14em;
-      color: var(--amber);
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.14em; color: var(--amber);
       background: var(--amber-soft);
-      padding: 2px 5px;
-      border-radius: 2px;
+      padding: 2px 5px; border-radius: 2px;
       text-transform: uppercase;
     }
     .row .status-line {
       display: flex; align-items: center; gap: 6px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      color: var(--ink-3);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.06em; color: var(--ink-3);
       text-transform: uppercase;
     }
-    .row .sdot {
-      width: 7px; height: 7px; border-radius: 50%;
-    }
+    .row .sdot { width: 7px; height: 7px; border-radius: 50%; }
     .row .sdot.online   { background: var(--st-online); box-shadow: 0 0 5px var(--st-online); }
     .row .sdot.studying { background: var(--st-studying); box-shadow: 0 0 5px var(--st-studying); }
     .row .sdot.away     { background: var(--st-away); box-shadow: 0 0 5px var(--st-away); }
     .row .sdot.offline  { background: var(--st-offline); }
     .row .row-time {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--ink-3);
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--ink-3); font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em; white-space: nowrap;
     }
 
-    /* ================== RATING ================== */
     .rating-list { border-top: 1px solid var(--line); }
     .rating-row {
       display: grid;
       grid-template-columns: 44px 36px 1fr auto;
-      gap: 14px;
-      align-items: center;
+      gap: 14px; align-items: center;
       padding: 16px 4px;
       border-bottom: 1px solid var(--line);
       transition: background 0.15s;
@@ -796,10 +624,8 @@
     .rating-row:hover { background: var(--panel); }
     .rating-row.me { background: linear-gradient(to right, var(--amber-soft) 0%, transparent 30%); }
     .rank-num {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 300;
-      font-variant-numeric: tabular-nums;
+      font-family: var(--serif); font-size: 22px;
+      font-weight: 300; font-variant-numeric: tabular-nums;
       letter-spacing: -0.03em;
     }
     .rank-num.r1 { color: var(--amber); font-size: 28px; font-style: italic; }
@@ -808,56 +634,36 @@
     .rank-num.other { color: var(--ink-4); font-size: 16px; font-family: var(--mono); font-weight: 400; }
     .rating-info { min-width: 0; }
     .rating-name {
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--ink);
+      font-family: var(--sans); font-size: 14px;
+      font-weight: 500; color: var(--ink);
       margin-bottom: 4px;
       display: flex; align-items: center; gap: 6px;
     }
-    .rating-achs {
-      display: flex; gap: 6px; flex-wrap: wrap;
-    }
-    .rating-achs .rai {
-      font-size: 13px;
-      opacity: 0.9;
-    }
+    .rating-achs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .rating-achs .rai { font-size: 13px; opacity: 0.9; }
     .rating-achs .rai-empty {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--ink-4);
-      letter-spacing: 0.05em;
+      font-family: var(--mono); font-size: 10px;
+      color: var(--ink-4); letter-spacing: 0.05em;
     }
     .rating-time {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--amber);
+      font-family: var(--mono); font-size: 13px;
+      font-weight: 600; color: var(--amber);
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
+      letter-spacing: 0.02em; white-space: nowrap;
     }
 
-    /* ================== ACHIEVEMENTS GRID ================== */
-    .ach-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .ach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .ach-card {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       padding: 18px 16px;
-      position: relative;
-      transition: all 0.2s;
-      overflow: hidden;
+      position: relative; transition: all 0.2s; overflow: hidden;
     }
     .ach-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--line);
-      transition: background 0.2s;
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: var(--line); transition: background 0.2s;
     }
     .ach-card.unlocked.common::before    { background: var(--sage); }
     .ach-card.unlocked.epic::before      { background: var(--azure); }
@@ -868,46 +674,33 @@
     }
     .ach-card.locked { opacity: 0.4; }
     .ach-icon {
-      font-size: 22px;
-      line-height: 1;
-      margin-bottom: 10px;
-      filter: saturate(0.9);
+      font-size: 22px; line-height: 1;
+      margin-bottom: 10px; filter: saturate(0.9);
     }
     .ach-card.locked .ach-icon { filter: grayscale(1); }
     .ach-name {
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin-bottom: 4px;
+      font-family: var(--serif); font-weight: 400;
+      font-size: 16px; letter-spacing: -0.01em;
+      color: var(--ink); margin-bottom: 4px;
     }
     .ach-desc {
-      font-size: 12px;
-      color: var(--ink-3);
-      line-height: 1.4;
-      margin-bottom: 10px;
+      font-size: 12px; color: var(--ink-3);
+      line-height: 1.4; margin-bottom: 10px;
     }
     .ach-rarity {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.18em; text-transform: uppercase;
       font-weight: 600;
     }
     .ach-rarity.common    { color: var(--sage); }
     .ach-rarity.epic      { color: var(--azure); }
     .ach-rarity.legendary { color: var(--amber); }
     .ach-locked-icon {
-      position: absolute;
-      top: 12px; right: 12px;
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--ink-4);
-      letter-spacing: 0.1em;
+      position: absolute; top: 12px; right: 12px;
+      font-family: var(--mono); font-size: 10px;
+      color: var(--ink-4); letter-spacing: 0.1em;
     }
 
-    /* ================== CHAT ================== */
     .chat-box {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -927,22 +720,17 @@
       animation: breathe 2s ease-in-out infinite;
     }
     .chat-title {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      color: var(--ink-2);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; color: var(--ink-2);
       text-transform: uppercase;
     }
     .chat-title-sub {
       margin-left: auto;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--ink-4);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.1em; color: var(--ink-4);
     }
     .chat-messages {
-      height: 340px;
-      overflow-y: auto;
+      height: 340px; overflow-y: auto;
       padding: 18px;
       display: flex; flex-direction: column; gap: 14px;
     }
@@ -960,47 +748,35 @@
       background: var(--panel-3);
       border: 1px solid var(--line-strong);
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--amber);
+      font-family: var(--serif); font-size: 12px;
+      font-weight: 500; color: var(--amber);
       flex-shrink: 0;
     }
     .chat-msg-body { max-width: 75%; }
     .chat-msg-name {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      color: var(--ink-4);
-      margin-bottom: 4px;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.08em; color: var(--ink-4);
+      margin-bottom: 4px; text-transform: uppercase;
     }
     .chat-msg.mine .chat-msg-name { text-align: right; color: var(--amber); }
     .chat-msg-bubble {
       padding: 9px 13px;
       border-radius: var(--radius-lg);
-      font-size: 14px;
-      line-height: 1.45;
-      word-break: break-word;
-      font-family: var(--sans);
+      font-size: 14px; line-height: 1.45;
+      word-break: break-word; font-family: var(--sans);
     }
     .chat-msg.mine .chat-msg-bubble {
-      background: var(--amber);
-      color: #1a1408;
+      background: var(--amber); color: #1a1408;
       border-bottom-right-radius: 2px;
     }
     .chat-msg.theirs .chat-msg-bubble {
-      background: var(--panel-3);
-      color: var(--ink);
+      background: var(--panel-3); color: var(--ink);
       border: 1px solid var(--line);
       border-bottom-left-radius: 2px;
     }
     .chat-msg-time {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      color: var(--ink-4);
-      margin-top: 4px;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.08em; color: var(--ink-4); margin-top: 4px;
     }
     .chat-msg.mine .chat-msg-time { text-align: right; }
     .chat-input-row {
@@ -1016,38 +792,28 @@
       border-radius: var(--radius);
       color: var(--ink);
       padding: 10px 13px;
-      font-size: 14px;
-      font-family: var(--sans);
-      outline: none;
-      transition: border 0.2s;
+      font-size: 14px; font-family: var(--sans);
+      outline: none; transition: border 0.2s;
     }
     .chat-input:focus { border-color: var(--amber); }
     .chat-input::placeholder { color: var(--ink-4); }
     .chat-send-btn {
       padding: 10px 16px;
-      background: var(--amber);
-      color: #1a1408;
-      border: none;
-      border-radius: var(--radius);
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
+      background: var(--amber); color: #1a1408;
+      border: none; border-radius: var(--radius);
+      font-family: var(--mono); font-size: 11px;
+      font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
       transition: background 0.2s;
     }
     .chat-send-btn:hover { background: #f5c160; }
     .chat-empty {
-      text-align: center;
-      color: var(--ink-4);
+      text-align: center; color: var(--ink-4);
       padding: 60px 20px;
-      font-family: var(--serif);
-      font-style: italic;
+      font-family: var(--serif); font-style: italic;
       font-size: 14px;
     }
 
-    /* ================== TOAST ================== */
     #ach-toast {
       position: fixed;
       bottom: 28px; left: 50%;
@@ -1060,587 +826,55 @@
       z-index: 9999;
       transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 12px 48px #0008, 0 0 0 1px var(--amber-soft);
-      min-width: 280px;
-      max-width: 360px;
+      min-width: 280px; max-width: 360px;
     }
     #ach-toast.show { transform: translateX(-50%) translateY(0); }
     #ach-toast::before {
-      content: '';
-      position: absolute;
+      content: ''; position: absolute;
       top: 0; left: 0; right: 0; height: 2px;
       background: var(--amber);
       border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     }
     .toast-icon { font-size: 28px; line-height: 1; }
     .toast-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      color: var(--amber);
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 3px;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.22em; color: var(--amber);
+      text-transform: uppercase; font-weight: 600; margin-bottom: 3px;
     }
     .toast-name {
-      font-family: var(--serif);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--ink);
+      font-family: var(--serif); font-size: 16px;
+      font-weight: 400; color: var(--ink);
       letter-spacing: -0.01em;
     }
-    .toast-desc {
-      font-size: 12px;
-      color: var(--ink-3);
-      margin-top: 2px;
-    }
+    .toast-desc { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
 
-    /* ================== LOADING ================== */
     #loading {
-      text-align: center;
-      padding: 120px 20px;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--ink-3);
-      letter-spacing: 0.18em;
+      text-align: center; padding: 120px 20px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--ink-3); letter-spacing: 0.18em;
       text-transform: uppercase;
     }
     #loading::after {
-      content: '';
-      display: inline-block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--amber);
-      margin-left: 8px;
-      animation: breathe 1.4s infinite;
-      vertical-align: middle;
+      content: ''; display: inline-block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--amber); margin-left: 8px;
+      animation: breathe 1.4s infinite; vertical-align: middle;
     }
-
     .msg {
-      text-align: center;
-      color: var(--ink-4);
+      text-align: center; color: var(--ink-4);
       padding: 40px 20px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase;
     }
 
-    /* Декоративные угловые метки */
     .corner-mark {
-      position: absolute;
-      width: 10px; height: 10px;
+      position: absolute; width: 10px; height: 10px;
       border: 1px solid var(--amber-line);
     }
     .corner-mark.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
     .corner-mark.tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
     .corner-mark.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
     .corner-mark.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
-
-    /* ================== АНИМАЦИОННЫЙ СЛОЙ ================== */
-
-    /* Звёздная карта (декоративные точки в фоне) */
-    .starfield {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .star {
-      position: absolute;
-      width: 2px; height: 2px;
-      border-radius: 50%;
-      background: var(--amber);
-      opacity: 0;
-      animation: twinkle 6s ease-in-out infinite, drift 60s linear infinite;
-    }
-    .star.dim {
-      background: var(--ink-3);
-      width: 1px; height: 1px;
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; }
-      40%, 60% { opacity: 0.6; }
-    }
-    @keyframes drift {
-      from { transform: translate(0, 0); }
-      to   { transform: translate(40px, -30px); }
-    }
-
-    /* Координатные риски — едва заметные */
-    .compass-tick {
-      position: fixed;
-      pointer-events: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--ink-5);
-      letter-spacing: 0.2em;
-      z-index: 0;
-      opacity: 0;
-      animation: compassIn 1.2s ease-out 0.4s forwards;
-    }
-    .compass-tick.tl { top: 14px; left: 14px; }
-    .compass-tick.tr { top: 14px; right: 14px; }
-    .compass-tick.bl { bottom: 14px; left: 14px; }
-    .compass-tick.br { bottom: 14px; right: 14px; }
-    @keyframes compassIn {
-      to { opacity: 0.7; }
-    }
-
-    /* Staggered mount — применяется ТОЛЬКО к верхним блокам app-screen */
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .stagger > .userbar,
-    .stagger > .hero,
-    .stagger > .stats-bar,
-    .stagger > .tabs {
-      animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .stagger > .userbar  { animation-delay: 0.05s; }
-    .stagger > .hero     { animation-delay: 0.18s; }
-    .stagger > .stats-bar{ animation-delay: 0.32s; }
-    .stagger > .tabs     { animation-delay: 0.46s; }
-
-    /* Топ-бар плавный fade при загрузке */
-    .topbar { animation: fadeDown 0.6s ease-out 0.05s both; }
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Тикающие секунды таймера — лёгкий импульс */
-    .timer-display { animation: timerEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
-    @keyframes timerEnter {
-      from { opacity: 0; letter-spacing: 0.1em; }
-      to   { opacity: 1; letter-spacing: -0.045em; }
-    }
-
-    /* Status button — активный «дышит» цветом */
-    .status-btn.active {
-      animation: activeBreathe 3.6s ease-in-out infinite;
-    }
-    @keyframes activeBreathe {
-      0%, 100% { box-shadow: inset 0 0 0 0 transparent, 0 0 0 0 transparent; }
-      50%      { box-shadow: inset 0 0 24px -8px currentColor, 0 0 18px -8px currentColor; }
-    }
-    .status-btn .sb-icon {
-      transition: box-shadow 0.3s, transform 0.3s;
-    }
-    .status-btn:hover .sb-icon { transform: scale(1.2); }
-    .status-btn.active .sb-icon {
-      animation: dotPulse 2.2s ease-in-out infinite;
-    }
-    @keyframes dotPulse {
-      0%, 100% { box-shadow: 0 0 0 0 currentColor, 0 0 10px currentColor; }
-      50%      { box-shadow: 0 0 0 6px transparent, 0 0 14px currentColor; }
-    }
-
-    /* Stats meter — shimmer */
-    .stats-meter {
-      position: relative;
-    }
-    .stats-meter::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -30%;
-      width: 30%; height: 100%;
-      background: linear-gradient(90deg, transparent, var(--amber-soft), transparent);
-      animation: meterShimmer 4s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes meterShimmer {
-      0%   { left: -30%; }
-      100% { left: 130%; }
-    }
-    .stats-meter-seg {
-      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* Tabs — underline slide на hover */
-    .tab-btn {
-      position: relative;
-    }
-    .tab-btn::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 50%; right: 50%;
-      height: 1px;
-      background: var(--amber);
-      transition: left 0.3s ease, right 0.3s ease, opacity 0.2s;
-      opacity: 0;
-    }
-    .tab-btn:hover::after,
-    .tab-btn.active::after {
-      left: 16px; right: 16px;
-      opacity: 1;
-    }
-    .tab-btn.active { border-bottom-color: transparent; }
-
-    /* Rating row — slide-in accent line */
-    .rating-row {
-      position: relative;
-      transition: padding-left 0.25s ease, background 0.2s;
-    }
-    .rating-row::before {
-      content: '';
-      position: absolute;
-      left: -4px; top: 18px; bottom: 18px;
-      width: 2px;
-      background: var(--amber);
-      transform: scaleY(0);
-      transform-origin: center;
-      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .rating-row:hover::before { transform: scaleY(1); }
-    .rating-row:hover { padding-left: 10px; }
-    .rating-row.me::before {
-      transform: scaleY(1);
-    }
-
-    /* User row hover slide */
-    .row {
-      transition: background 0.2s, padding-left 0.2s;
-    }
-    .row:hover { padding-left: 8px; }
-
-    /* User avatar hover ring */
-    .avatar, .user-avatar {
-      transition: border-color 0.25s, transform 0.25s;
-    }
-    .row:hover .avatar,
-    .rating-row:hover .avatar { border-color: var(--amber-line); }
-    .user-avatar:hover { border-color: var(--amber); transform: rotate(-3deg); }
-
-    /* Logout button — slide effect */
-    .logout-btn {
-      position: relative;
-      overflow: hidden;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .logout-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, #c9748a14, transparent);
-      transform: translateX(-100%);
-      transition: transform 0.4s ease;
-    }
-    .logout-btn:hover::before { transform: translateX(100%); }
-
-    /* Submit button shine */
-    .submit-btn, .chat-send-btn {
-      position: relative;
-      overflow: hidden;
-    }
-    .submit-btn::after, .chat-send-btn::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 50%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transition: left 0.6s ease;
-    }
-    .submit-btn:hover::after, .chat-send-btn:hover::after { left: 150%; }
-
-    /* Corner marks — анимация прорисовки */
-    .corner-mark {
-      transform: scale(0);
-      animation: cornerDraw 0.6s ease-out forwards;
-    }
-    .corner-mark.tl { animation-delay: 0.4s; transform-origin: top left; }
-    .corner-mark.tr { animation-delay: 0.5s; transform-origin: top right; }
-    .corner-mark.bl { animation-delay: 0.6s; transform-origin: bottom left; }
-    .corner-mark.br { animation-delay: 0.7s; transform-origin: bottom right; }
-    @keyframes cornerDraw {
-      to { transform: scale(1); }
-    }
-
-    /* Achievement card — hover lift */
-    .ach-card {
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s, box-shadow 0.3s;
-    }
-    .ach-card.unlocked:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px #0008;
-    }
-    .ach-card.unlocked.legendary:hover {
-      box-shadow: 0 8px 32px #e8b04c22, 0 0 0 1px var(--amber-line);
-    }
-    .ach-card.unlocked .ach-icon {
-      transition: transform 0.3s;
-    }
-    .ach-card.unlocked:hover .ach-icon {
-      transform: scale(1.15) rotate(-5deg);
-    }
-
-    /* Toast — glow ripple */
-    #ach-toast {
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    #ach-toast.show::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--amber);
-      opacity: 0.6;
-      animation: toastRipple 1.4s ease-out;
-      pointer-events: none;
-    }
-    @keyframes toastRipple {
-      0%   { opacity: 0.7; transform: scale(1); }
-      100% { opacity: 0; transform: scale(1.06); }
-    }
-    .toast-icon {
-      animation: toastBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
-    }
-    @keyframes toastBounce {
-      0%   { transform: scale(0) rotate(-30deg); }
-      100% { transform: scale(1) rotate(0); }
-    }
-
-    /* Chat message hover */
-    .chat-msg-bubble {
-      transition: transform 0.2s;
-    }
-    .chat-msg:hover .chat-msg-bubble { transform: translateY(-1px); }
-
-    /* Status pill — soft pulse при онлайн */
-    .status-pill .pill-dot {
-      animation: pillPulse 2.4s ease-in-out infinite;
-    }
-    @keyframes pillPulse {
-      0%, 100% { box-shadow: 0 0 0 0 currentColor, 0 0 8px currentColor; }
-      50%      { box-shadow: 0 0 0 4px transparent, 0 0 12px currentColor; }
-    }
-
-    /* Tab panel перехлд */
-    .tab-panel.active { animation: panelEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
-    @keyframes panelEnter {
-      from { opacity: 0; transform: translateY(8px); filter: blur(2px); }
-      to   { opacity: 1; transform: translateY(0); filter: blur(0); }
-    }
-
-    /* Live dot — более насыщенный pulse */
-    .timer-caption .live-dot {
-      animation: liveDot 1.6s ease-in-out infinite;
-    }
-    @keyframes liveDot {
-      0%, 100% { box-shadow: 0 0 0 0 var(--amber), 0 0 6px var(--amber); opacity: 1; }
-      50%      { box-shadow: 0 0 0 4px transparent, 0 0 10px var(--amber); opacity: 0.5; }
-    }
-
-    /* Section label — линия рисуется при появлении */
-    .section-label::before {
-      animation: lineGrow 0.5s ease-out 0.5s both;
-      transform-origin: left;
-    }
-    @keyframes lineGrow {
-      from { transform: scaleX(0); }
-      to   { transform: scaleX(1); }
-    }
-
-    /* Бренд — буква O чуть подмигивает */
-    .brand-mark {
-      animation: brandPulse 4s ease-in-out infinite;
-    }
-    @keyframes brandPulse {
-      0%, 100% { box-shadow: 0 0 0 0 var(--amber-line); }
-      50%      { box-shadow: 0 0 0 2px var(--amber-soft); }
-    }
-
-    /* ================== WOW-ЭФФЕКТЫ ================== */
-
-    /* Cursor glow — янтарное пятно идёт за курсором */
-    .cursor-glow {
-      position: fixed;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,176,76,0.08) 0%, rgba(232,176,76,0.03) 30%, transparent 60%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      mix-blend-mode: screen;
-      will-change: left, top;
-    }
-    .cursor-glow.show { opacity: 1; }
-
-    /* Flip-clock цифры таймера */
-    .timer-display { perspective: 800px; }
-    .ts-d {
-      display: inline-block;
-      min-width: 0.58em;
-      text-align: center;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-    }
-    .ts-d.flip {
-      animation: digitFlip 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    @keyframes digitFlip {
-      0%   { transform: rotateX(-90deg) translateY(-30%); opacity: 0; filter: blur(2px); }
-      60%  { transform: rotateX(10deg) translateY(8%); opacity: 1; filter: blur(0); }
-      100% { transform: rotateX(0) translateY(0); opacity: 1; }
-    }
-
-    /* Magnetic кнопки статусов */
-    .status-btn {
-      will-change: transform;
-      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s, background 0.2s, color 0.2s;
-    }
-    .status-btn.magnetic-active {
-      transition: transform 0.1s linear, border-color 0.2s, background 0.2s, color 0.2s;
-    }
-
-    /* 3D tilt на карточках достижений */
-    .ach-card {
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-    .ach-card.tilt {
-      transition: transform 0.15s linear, border-color 0.2s, box-shadow 0.3s;
-    }
-    .ach-card.tilt .ach-icon,
-    .ach-card.tilt .ach-name {
-      transform: translateZ(20px);
-      transition: transform 0.2s;
-    }
-
-    /* Confetti салют */
-    .confetti {
-      position: fixed;
-      width: 8px; height: 4px;
-      pointer-events: none;
-      z-index: 10000;
-      animation: confettiFly 1.6s cubic-bezier(0.22, 0.6, 0.36, 1) forwards;
-      border-radius: 1px;
-    }
-    @keyframes confettiFly {
-      0%   { transform: translate(0, 0) rotate(0); opacity: 1; }
-      80%  { opacity: 1; }
-      100% { transform: translate(var(--dx), calc(var(--dy) + 280px)) rotate(720deg); opacity: 0; }
-    }
-
-    /* Звёзды — поддержка parallax */
-    .star {
-      will-change: transform;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .starfield {
-      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* Achievement unlock — золотой взрыв вокруг toast */
-    #ach-toast.show {
-      animation: toastEntry 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    @keyframes toastEntry {
-      0%   { transform: translateX(-50%) translateY(140%) scale(0.6); }
-      60%  { transform: translateX(-50%) translateY(-8%) scale(1.04); }
-      100% { transform: translateX(-50%) translateY(0) scale(1); }
-    }
-
-    /* Радар-sweep вокруг активного статуса */
-    .status-btn.active::after {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: var(--radius);
-      border: 1px solid currentColor;
-      opacity: 0;
-      animation: radarSweep 2.8s ease-out infinite;
-      pointer-events: none;
-    }
-    .status-btn { position: relative; overflow: visible; }
-    @keyframes radarSweep {
-      0%   { opacity: 0.6; transform: scale(1); }
-      100% { opacity: 0; transform: scale(1.12); }
-    }
-
-    /* Брендовая буква — глитч на ховер */
-    .brand-name {
-      cursor: default;
-      position: relative;
-      transition: letter-spacing 0.3s;
-    }
-    .brand-name:hover { letter-spacing: 0.02em; }
-
-    /* Live-индикатор статуса — расходящееся кольцо */
-    .topbar-meta .dot {
-      position: relative;
-    }
-    .topbar-meta .dot::after {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border-radius: 50%;
-      border: 1px solid var(--sage);
-      opacity: 0.5;
-      animation: ringRipple 2.4s ease-out infinite;
-    }
-    @keyframes ringRipple {
-      0%   { transform: scale(1); opacity: 0.7; }
-      100% { transform: scale(2.4); opacity: 0; }
-    }
-
-    /* Pulse glow на аватарах активных пользователей */
-    .stats-avatars .mini-av {
-      position: relative;
-      animation: avPulse 3s ease-in-out infinite;
-      animation-delay: calc(var(--i, 0) * 0.4s);
-    }
-    @keyframes avPulse {
-      0%, 100% { box-shadow: 0 0 0 0 var(--amber-line); }
-      50%      { box-shadow: 0 0 0 3px var(--amber-soft); }
-    }
-
-    /* Hero — добавим спот-лайт сверху над таймером */
-    .timer-stage::before {
-      content: '';
-      position: absolute;
-      top: -20px; left: 50%;
-      transform: translateX(-50%);
-      width: 400px; height: 200px;
-      background: radial-gradient(ellipse at top, var(--amber-soft) 0%, transparent 60%);
-      pointer-events: none;
-      opacity: 0.6;
-      animation: spotPulse 5s ease-in-out infinite;
-    }
-    .timer-stage { position: relative; }
-    @keyframes spotPulse {
-      0%, 100% { opacity: 0.4; }
-      50%      { opacity: 0.7; }
-    }
-
-    /* Скан-линии лёгкие на стилях панелей при ховере */
-    .ach-card.unlocked.legendary::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(110deg, transparent 30%, rgba(232,176,76,0.1) 50%, transparent 70%);
-      animation: legendaryShine 4s ease-in-out infinite;
-      pointer-events: none;
-    }
-    @keyframes legendaryShine {
-      0%   { left: -100%; }
-      60%  { left: 100%; }
-      100% { left: 100%; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      .starfield { display: none; }
-    }
 
     @media (max-width: 560px) {
       .shell { padding: 20px 16px 60px; }
@@ -1655,16 +889,6 @@
 
 <body>
 
-<!-- Cursor glow -->
-<div class="cursor-glow" id="cursor-glow"></div>
-
-<!-- Звёздное поле + координатные метки -->
-<div class="starfield" id="starfield"></div>
-<div class="compass-tick tl">N 43°15′ · W 76°54′</div>
-<div class="compass-tick tr">obs · station 01</div>
-<div class="compass-tick bl">v 2.1 · stable</div>
-<div class="compass-tick br">uplink · ok</div>
-
 <div class="shell">
 
   <!-- TOPBAR -->
@@ -1678,10 +902,9 @@
     </div>
   </header>
 
-  <!-- LOADING -->
   <div id="loading">Установка соединения</div>
 
-  <!-- ============ AUTH SCREEN ============ -->
+  <!-- AUTH SCREEN -->
   <section id="auth-screen">
     <div class="auth-wrap">
       <div class="auth-hero">
@@ -1741,10 +964,9 @@
     </div>
   </section>
 
-  <!-- ============ APP SCREEN ============ -->
-  <section id="app-screen" class="stagger">
+  <!-- APP SCREEN -->
+  <section id="app-screen">
 
-    <!-- USER BAR -->
     <div class="userbar">
       <div class="userbar-id">
         <div class="user-avatar" id="hdr-avatar">?</div>
@@ -1756,7 +978,6 @@
       <button class="logout-btn" onclick="doLogout()">Выход</button>
     </div>
 
-    <!-- HERO: STATUS + TIMER -->
     <div class="hero">
       <div class="hero-meta">
         <span class="section-label">мой статус</span>
@@ -1769,6 +990,13 @@
         <div class="timer-prefix">время в активном статусе</div>
         <div class="timer-display" id="my-timer"></div>
         <div class="timer-caption" id="timer-sub"><span class="live-dot"></span>таймер идёт</div>
+
+        <!-- НОВОЕ: Кнопка сброса таймера (Функция #1) -->
+        <div class="reset-row">
+          <button class="action-btn danger" onclick="resetMyTimer()" title="Обнулить накопленное время">
+            ↻ Сбросить таймер
+          </button>
+        </div>
       </div>
 
       <div class="status-grid">
@@ -1793,7 +1021,6 @@
       <div class="my-ach-row" id="my-ach-row"></div>
     </div>
 
-    <!-- STATS BAR -->
     <div class="stats-bar">
       <div class="stats-head">
         <div class="stats-headline">
@@ -1817,7 +1044,6 @@
       </div>
     </div>
 
-    <!-- TABS -->
     <div class="tabs">
       <button class="tab-btn active" data-num="01" onclick="switchMainTab('users', event)">Участники</button>
       <button class="tab-btn" data-num="02" onclick="switchMainTab('rating', event)">Рейтинг</button>
@@ -1825,32 +1051,32 @@
       <button class="tab-btn" data-num="04" onclick="switchMainTab('chat', event)">Чат</button>
     </div>
 
-    <!-- USERS -->
     <div class="tab-panel active" id="panel-users">
       <div class="row-list" id="users-list">
         <div class="msg">Загрузка участников…</div>
       </div>
     </div>
 
-    <!-- RATING -->
     <div class="tab-panel" id="panel-rating">
       <div class="rating-list" id="rating-list">
         <div class="msg">Откройте вкладку для загрузки рейтинга</div>
       </div>
     </div>
 
-    <!-- ACHIEVEMENTS -->
     <div class="tab-panel" id="panel-achievements">
       <div class="ach-grid" id="ach-grid"></div>
     </div>
 
-    <!-- CHAT -->
     <div class="tab-panel" id="panel-chat">
       <div class="chat-box">
         <div class="chat-header">
           <div class="ch-pulse"></div>
           <div class="chat-title">общий канал</div>
           <div class="chat-title-sub">live · #general</div>
+          <!-- НОВОЕ: Кнопка очистки чата (Функция #2) -->
+          <button class="action-btn danger" style="margin-left:10px" onclick="clearChat()" title="Удалить все сообщения">
+            ✕ Очистить
+          </button>
         </div>
         <div class="chat-messages" id="chat-messages">
           <div class="chat-empty">Тишина в эфире. Напиши первым.</div>
@@ -1864,7 +1090,6 @@
   </section>
 </div>
 
-<!-- ACHIEVEMENT TOAST -->
 <div id="ach-toast">
   <div class="toast-icon" id="toast-icon">🏆</div>
   <div>
@@ -1875,151 +1100,6 @@
 </div>
 
 <script>
-  /* ============================================================
-     ВСЯ ЛОГИКА АБСОЛЮТНО ИДЕНТИЧНА ОРИГИНАЛУ
-     Изменён только дизайн (HTML/CSS) — поведение сохранено
-     ============================================================ */
-
-  // ===== Генерация звёздного поля =====
-  (function genStars() {
-    const field = document.getElementById('starfield');
-    if (!field) return;
-    const N = 60;
-    let html = '';
-    for (let i = 0; i < N; i++) {
-      const x = Math.random() * 100;
-      const y = Math.random() * 100;
-      const delay = (Math.random() * 6).toFixed(2);
-      const driftDur = (40 + Math.random() * 60).toFixed(0);
-      const isDim = Math.random() > 0.3;
-      const depth = (Math.random() * 0.8 + 0.2).toFixed(2); // для parallax
-      html += `<div class="star ${isDim ? 'dim' : ''}" data-depth="${depth}" style="left:${x}%;top:${y}%;animation-delay:${delay}s, ${(Math.random()*driftDur).toFixed(0)}s;animation-duration:${(4+Math.random()*5).toFixed(1)}s, ${driftDur}s"></div>`;
-    }
-    field.innerHTML = html;
-  })();
-
-  // ===== Cursor glow =====
-  (function setupCursorGlow() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(hover: none)').matches) return; // тач — не нужен
-    const glow = document.getElementById('cursor-glow');
-    if (!glow) return;
-    let raf = null, x = 0, y = 0;
-    document.addEventListener('mousemove', e => {
-      x = e.clientX; y = e.clientY;
-      glow.classList.add('show');
-      if (!raf) {
-        raf = requestAnimationFrame(() => {
-          glow.style.left = x + 'px';
-          glow.style.top = y + 'px';
-          raf = null;
-        });
-      }
-    });
-    document.addEventListener('mouseleave', () => glow.classList.remove('show'));
-  })();
-
-  // ===== Parallax звёзд (мышь смещает звёзды) =====
-  (function setupParallax() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const field = document.getElementById('starfield');
-    if (!field) return;
-    let raf = null, mx = 0, my = 0;
-    document.addEventListener('mousemove', e => {
-      mx = (e.clientX / window.innerWidth - 0.5) * 30;
-      my = (e.clientY / window.innerHeight - 0.5) * 30;
-      if (!raf) {
-        raf = requestAnimationFrame(() => {
-          field.style.transform = `translate(${mx}px, ${my}px)`;
-          raf = null;
-        });
-      }
-    });
-  })();
-
-  // ===== Magnetic кнопки статусов =====
-  function attachMagnetic(btn) {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(hover: none)').matches) return;
-    btn.addEventListener('mouseenter', () => btn.classList.add('magnetic-active'));
-    btn.addEventListener('mousemove', e => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.classList.remove('magnetic-active');
-      btn.style.transform = '';
-    });
-  }
-
-  // ===== 3D tilt на карточках достижений =====
-  function attachTilt(card) {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(hover: none)').matches) return;
-    card.addEventListener('mouseenter', () => card.classList.add('tilt'));
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px) scale(1.02)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.classList.remove('tilt');
-      card.style.transform = '';
-    });
-  }
-
-  // ===== Confetti салют =====
-  function spawnConfetti(originX, originY, count) {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const colors = ['#e8b04c', '#d97757', '#8fb56b', '#7aa6d4', '#f5c160', '#c9748a'];
-    const N = count || 36;
-    for (let i = 0; i < N; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = originX + 'px';
-      c.style.top = originY + 'px';
-      const angle = (Math.PI * 2 * i) / N + (Math.random() - 0.5) * 0.5;
-      const vel = 90 + Math.random() * 180;
-      const dx = Math.cos(angle) * vel;
-      const dy = Math.sin(angle) * vel - 80;
-      c.style.setProperty('--dx', dx + 'px');
-      c.style.setProperty('--dy', dy + 'px');
-      c.style.background = colors[Math.floor(Math.random() * colors.length)];
-      c.style.width = (4 + Math.random() * 6) + 'px';
-      c.style.height = (2 + Math.random() * 4) + 'px';
-      c.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 2200);
-    }
-  }
-
-  // ===== Number tween (count up) =====
-  function tweenNumber(el, target, opts) {
-    if (!el) return;
-    const pad = opts?.pad || 0;
-    const dur = opts?.duration || 600;
-    const start = parseInt(el.dataset.val || '0', 10);
-    const delta = target - start;
-    if (delta === 0) {
-      el.textContent = pad ? String(target).padStart(pad, '0') : String(target);
-      return;
-    }
-    el.dataset.val = String(target);
-    const t0 = performance.now();
-    function frame(t) {
-      const p = Math.min(1, (t - t0) / dur);
-      // easeOutQuart
-      const eased = 1 - Math.pow(1 - p, 4);
-      const cur = Math.round(start + delta * eased);
-      el.textContent = pad ? String(cur).padStart(pad, '0') : String(cur);
-      if (p < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  }
-
   const SUPABASE_URL = 'https://lbsnhkenepmhigbofqae.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxic25oa2VuZXBtaGlnYm9mcWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjI0ODgsImV4cCI6MjA5MTE5ODQ4OH0.42Cd7d5v6gVe4dP-LwQbamsu3AC4ghT8x_jfte5SG2I';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -2030,7 +1110,6 @@
   let myMsgCount = 0;
   let loginHour = new Date().getHours();
 
-  // ===== ДОСТИЖЕНИЯ =====
   const ALL_ACHIEVEMENTS = [
     { code: 'first_step',   icon: '🌱', name: 'Первый шаг',     desc: 'Провёл первую учебную сессию',          rarity: 'common',    check: (p,a,msgs) => (p.timer_seconds||0) > 0 },
     { code: 'early_bird',   icon: '🌅', name: 'Ранняя пташка',  desc: 'Зашёл в систему до 8:00',                rarity: 'common',    check: (p,a,msgs) => loginHour < 8 },
@@ -2053,11 +1132,6 @@
     document.getElementById('toast-desc').textContent = ach.desc;
     const toast = document.getElementById('ach-toast');
     toast.classList.add('show');
-    // Конфетти-салют из центра нижнего тоста
-    setTimeout(() => {
-      const rect = toast.getBoundingClientRect();
-      spawnConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, ach.rarity === 'legendary' ? 50 : 32);
-    }, 150);
     if (toastTimeout) clearTimeout(toastTimeout);
     toastTimeout = setTimeout(() => toast.classList.remove('show'), 4200);
   }
@@ -2122,11 +1196,8 @@
         ${!unlocked ? '<div class="ach-locked-icon">[ locked ]</div>' : ''}
       </div>`;
     }).join('');
-    // 3D tilt только на разблокированных
-    grid.querySelectorAll('.ach-card.unlocked').forEach(attachTilt);
   }
 
-  // ===== ТАЙМЕР =====
   const TIMER_ACTIVE = ['Online', 'Studying'];
   let timerSeconds = 0;
   let timerStartedAt = null;
@@ -2142,15 +1213,6 @@
     return total;
   }
 
-  function formatTime(sec) {
-    const h = Math.floor(sec / 3600);
-    const m = Math.floor((sec % 3600) / 60);
-    const s = sec % 60;
-    const pad = n => String(n).padStart(2, '0');
-    return `${pad(h)}<span class="ts-sep">:</span>${pad(m)}<span class="ts-sep">:</span>${pad(s)}`;
-  }
-
-  // Полная отрисовка таймера: каждая цифра — отдельный span с flip-анимацией при изменении
   function renderTimerDom(secTotal) {
     const el = document.getElementById('my-timer');
     if (!el) return;
@@ -2158,43 +1220,7 @@
     const m = Math.floor((secTotal % 3600) / 60);
     const s = secTotal % 60;
     const pad = n => String(n).padStart(2, '0');
-    const digits = (pad(h) + pad(m) + pad(s)).split('');
-
-    if (!el.dataset.flipReady) {
-      // Первая отрисовка — собираем DOM из 6 цифр + 2 разделителей
-      el.innerHTML = '';
-      const positions = [0, 1, 'sep', 2, 3, 'sep', 4, 5];
-      let digitIdx = 0;
-      positions.forEach(pos => {
-        if (pos === 'sep') {
-          const sep = document.createElement('span');
-          sep.className = 'ts-sep';
-          sep.textContent = ':';
-          el.appendChild(sep);
-        } else {
-          const span = document.createElement('span');
-          span.className = 'ts-d';
-          span.textContent = digits[digitIdx++];
-          el.appendChild(span);
-        }
-      });
-      el.dataset.flipReady = '1';
-      return;
-    }
-
-    // Обновление — flip только тех цифр, которые изменились
-    const digitSpans = el.querySelectorAll('.ts-d');
-    digits.forEach((d, i) => {
-      const span = digitSpans[i];
-      if (!span) return;
-      if (span.textContent !== d) {
-        span.classList.remove('flip');
-        // Перезапуск анимации через reflow
-        void span.offsetWidth;
-        span.textContent = d;
-        span.classList.add('flip');
-      }
-    });
+    el.innerHTML = `${pad(h)}<span class="ts-sep">:</span>${pad(m)}<span class="ts-sep">:</span>${pad(s)}`;
   }
 
   function tickTimer() {
@@ -2228,7 +1254,48 @@
     }
   }
 
-  // ===== СТАТУСЫ =====
+  // ============================================================
+  // ===== ФУНКЦИЯ #1: СБРОС ТАЙМЕРА (вызов SQL-функции в БД) =====
+  // ============================================================
+  async function resetMyTimer() {
+    if (!myId) return;
+    if (!confirm('Сбросить накопленное время? Это действие нельзя отменить.')) return;
+
+    // Вызываем хранимую функцию reset_my_timer в Supabase
+    const { error } = await db.rpc('reset_my_timer', { p_user_id: myId });
+
+    if (error) {
+      alert('Ошибка: ' + error.message);
+      return;
+    }
+
+    // Обнуляем локальные значения и перезапускаем таймер
+    timerSeconds = 0;
+    timerStartedAt = timerRunning() ? Date.now() : null;
+    renderTimerDom(0);
+    alert('Таймер сброшен!');
+  }
+
+  // ============================================================
+  // ===== ФУНКЦИЯ #2: ОЧИСТКА ЧАТА (вызов SQL-функции в БД) =====
+  // ============================================================
+  async function clearChat() {
+    if (!myId) return;
+    if (!confirm('Удалить все сообщения из чата? Это действие нельзя отменить.')) return;
+
+    // Вызываем хранимую функцию clear_all_messages в Supabase
+    const { data, error } = await db.rpc('clear_all_messages');
+
+    if (error) {
+      alert('Ошибка: ' + error.message);
+      return;
+    }
+
+    // Очищаем чат на экране и показываем сколько удалили
+    document.getElementById('chat-messages').innerHTML =
+      `<div class="chat-empty">Чат очищен. Удалено сообщений: ${data}</div>`;
+  }
+
   const STATUS_META = {
     'Online':   { label: 'Online',   color: 'var(--st-online)',   cls: 'online',   timerOn: true,  sub: 'таймер идёт' },
     'Studying': { label: 'Studying', color: 'var(--st-studying)', cls: 'studying', timerOn: true,  sub: 'таймер идёт' },
@@ -2266,7 +1333,6 @@
     if (profile) await checkAchievements(profile, myMsgCount);
   }
 
-  // ===== ЭКРАНЫ =====
   function showLoading() {
     document.getElementById('loading').style.display = 'block';
     document.getElementById('auth-screen').style.display = 'none';
@@ -2281,11 +1347,8 @@
     document.getElementById('loading').style.display = 'none';
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('app-screen').style.display = 'block';
-    // Magnetic кнопки статусов
-    document.querySelectorAll('.status-btn').forEach(attachMagnetic);
   }
 
-  // ===== ТАБЫ =====
   function switchTab(tab) {
     document.getElementById('login-form').style.display = tab==='login' ? 'block' : 'none';
     document.getElementById('register-form').style.display = tab==='register' ? 'block' : 'none';
@@ -2306,7 +1369,6 @@
   function showMsg(t,type){const e=document.getElementById('auth-msg');e.textContent=t;e.className='auth-msg '+type;}
   function hideMsg(){document.getElementById('auth-msg').className='auth-msg';}
 
-  // ===== AUTH =====
   async function doLogin() {
     const email = document.getElementById('login-email').value.trim();
     const pass = document.getElementById('login-pass').value;
@@ -2348,10 +1410,8 @@
     await db.auth.signOut();
   }
 
-  // ===== ВХОД =====
   let allUsersCache = [];
 
-  // Helper: запрос с таймаутом, не падает на зависании
   function withTimeout(promise, ms, label) {
     return Promise.race([
       Promise.resolve(promise).then(r => ({ok: true, r})).catch(e => ({ok: false, e})),
@@ -2374,17 +1434,13 @@
     av.innerHTML = avatar ? `<img src="${avatar}" alt="${myName[0]}">` : myName[0].toUpperCase();
     showApp();
 
-    // ===== КРИТИЧНО: запускаем UI немедленно, без блокирующих awaits =====
     myStatus = 'Online';
     timerStartedAt = Date.now();
     timerSeconds = 0;
-    startTimerTick();              // таймер тикает с нуля сразу
-    renderAchGrid();               // сетка достижений (locked) отрисована сразу
-    setStatusUIOnly('Online');     // UI кнопки/бейдж — без обращения к БД
+    startTimerTick();
+    renderAchGrid();
+    setStatusUIOnly('Online');
 
-    // ===== Все БД-запросы параллельно с таймаутами =====
-
-    // 1) Загрузка прежнего таймера из профиля
     withTimeout(
       db.from('profiles').select('timer_seconds, timer_started_at, status').eq('id', myId).single(),
       6000, 'profile-load'
@@ -2399,7 +1455,6 @@
       }
     });
 
-    // 2) Upsert текущего профиля (online + время начала)
     withTimeout(
       db.from('profiles').upsert({
         id: myId, username: myName, status: 'Online',
@@ -2409,37 +1464,29 @@
       6000, 'profile-upsert'
     );
 
-    // 3) Счётчик сообщений (для достижений Активист/Душа компании)
     withTimeout(
       db.from('messages').select('*', {count: 'exact', head: true}).eq('user_id', myId),
       6000, 'msg-count'
     ).then(res => { if (res.ok) myMsgCount = res.r?.count || 0; });
 
-    // 4) Достижения
     withTimeout(loadMyAchievements(), 6000, 'achievements');
-
-    // 5) Список пользователей + чат
     withTimeout(loadUsers(),    6000, 'users');
     withTimeout(loadMessages(), 6000, 'messages');
 
-    // 6) Realtime-подписки
     try { subscribeProfiles(); } catch(e) {}
     try { subscribeMessages(); } catch(e) {}
 
-    // 7) Периодический поллинг
     if (pollTimer) clearInterval(pollTimer);
     pollTimer = setInterval(() => {
       loadUsers().catch(() => {});
       checkAchievementsNow().catch(() => {});
     }, 5000);
 
-    // 8) Авто-достижения с задержкой (чтобы дать БД прогреться)
     setTimeout(() => checkAchievementsNow().catch(() => {}), 1800);
     setTimeout(() => unlockAchievement('first_step').catch?.(() => {}), 2200);
     if (loginHour < 8) setTimeout(() => unlockAchievement('early_bird').catch?.(() => {}), 2400);
   }
 
-  // UI-only переключение статуса (без обращения к БД) — для начального состояния
   function setStatusUIOnly(status) {
     document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
     const map = { Online:'s-online', Studying:'s-studying', Away:'s-away', Offline:'s-offline' };
@@ -2466,7 +1513,6 @@
     if (messagesChannel) { db.removeChannel(messagesChannel); messagesChannel=null; }
   }
 
-  // ===== ПОЛЬЗОВАТЕЛИ =====
   function fmtCardTimer(u) {
     let sec = u.timer_seconds || 0;
     if (TIMER_ACTIVE.includes(u.status) && u.timer_started_at) {
@@ -2490,28 +1536,22 @@
 
   function renderUsers(users) {
     allUsersCache = users;
-
-    // Подсчёт по статусам
     const counts = { Online: 0, Studying: 0, Away: 0, Offline: 0 };
     users.forEach(u => {
       const s = u.status || 'Offline';
       counts[s] = (counts[s] || 0) + 1;
     });
-
     const active = users.filter(u => u.status !== 'Offline');
     const total = users.length;
     const safeTotal = total || 1;
 
-    // Заголовок: 02 / 05 активны сейчас (с tween)
-    tweenNumber(document.getElementById('online-count'), active.length, {pad: 2});
-    tweenNumber(document.getElementById('online-total'), total, {pad: 2});
+    document.getElementById('online-count').textContent = String(active.length).padStart(2, '0');
+    document.getElementById('online-total').textContent = String(total).padStart(2, '0');
 
-    // Аватары активных
     document.getElementById('online-avatars').innerHTML = active.slice(0, 6).map(u =>
       `<div class="mini-av" title="${u.username || '?'}">${(u.username || '?')[0].toUpperCase()}</div>`
     ).join('');
 
-    // Сегментная полоса (без offline)
     const meter = document.getElementById('online-meter');
     meter.innerHTML = `
       <div class="stats-meter-seg online"   style="width:${(counts.Online   / safeTotal) * 100}%"></div>
@@ -2519,22 +1559,14 @@
       <div class="stats-meter-seg away"     style="width:${(counts.Away     / safeTotal) * 100}%"></div>
     `;
 
-    // Разбивка (с tween для чисел)
     const bd = document.getElementById('online-breakdown');
-    if (!bd.dataset.ready) {
-      bd.innerHTML = `
-        <span class="sb-item"><span class="sb-dot online"></span><span class="sb-n" data-key="Online">0</span><span class="sb-l">онлайн</span></span>
-        <span class="sb-item"><span class="sb-dot studying"></span><span class="sb-n" data-key="Studying">0</span><span class="sb-l">учёба</span></span>
-        <span class="sb-item"><span class="sb-dot away"></span><span class="sb-n" data-key="Away">0</span><span class="sb-l">отошли</span></span>
-        <span class="sb-item"><span class="sb-dot offline"></span><span class="sb-n" data-key="Offline">0</span><span class="sb-l">оффлайн</span></span>
-      `;
-      bd.dataset.ready = '1';
-    }
-    bd.querySelectorAll('[data-key]').forEach(el => {
-      tweenNumber(el, counts[el.dataset.key] || 0);
-    });
+    bd.innerHTML = `
+      <span class="sb-item"><span class="sb-dot online"></span><span class="sb-n">${counts.Online}</span><span class="sb-l">онлайн</span></span>
+      <span class="sb-item"><span class="sb-dot studying"></span><span class="sb-n">${counts.Studying}</span><span class="sb-l">учёба</span></span>
+      <span class="sb-item"><span class="sb-dot away"></span><span class="sb-n">${counts.Away}</span><span class="sb-l">отошли</span></span>
+      <span class="sb-item"><span class="sb-dot offline"></span><span class="sb-n">${counts.Offline}</span><span class="sb-l">оффлайн</span></span>
+    `;
 
-    // Список участников
     const list = document.getElementById('users-list');
     if (!users.length) { list.innerHTML = '<div class="msg">Нет участников</div>'; return; }
     list.innerHTML = users.map(u => {
@@ -2555,13 +1587,6 @@
         <div class="row-time">⏱ ${fmtCardTimer(u)}</div>
       </div>`;
     }).join('');
-  }
-
-  function pluralize(n, one, few, many) {
-    const mod10 = n % 10, mod100 = n % 100;
-    if (mod10 === 1 && mod100 !== 11) return one;
-    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
-    return many;
   }
 
   async function renderRating() {
@@ -2643,7 +1668,6 @@
       .subscribe(s => console.log('Profiles RT:', s));
   }
 
-  // ===== ЧАТ =====
   const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const timeStr = ts => new Date(ts).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
 
@@ -2690,7 +1714,12 @@
           if (myMsgCount >= 20) await unlockAchievement('activist');
           if (myMsgCount >= 50) await unlockAchievement('company_soul');
         }
-      }).subscribe();
+      })
+      // Слушаем удаления: когда clear_all_messages чистит таблицу — экран обновляется у всех
+      .on('postgres_changes', {event:'DELETE', schema:'public', table:'messages'}, () => {
+        loadMessages();
+      })
+      .subscribe();
   }
 
   async function sendMsg() {
@@ -2702,7 +1731,6 @@
     if (error) { console.error('Send error:', error); input.value=text; }
   }
 
-  // ===== OFFLINE при закрытии =====
   window.addEventListener('beforeunload', () => {
     if (!myId) return;
     const total = getTotalSeconds();
@@ -2714,7 +1742,6 @@
     });
   });
 
-  // ===== AUTH STATE =====
   let initialResolved = false;
   db.auth.onAuthStateChange(async (event, session) => {
     console.log('Auth event:', event);
@@ -2732,8 +1759,6 @@
     }
   });
 
-  // Fallback: если Supabase недоступен (DNS не резолвится, проект на паузе и т.д.)
-  // или зависли протухшие токены — через 4 сек чистим storage и форсим экран входа.
   setTimeout(() => {
     if (initialResolved || myId) return;
     console.warn('Supabase не ответил за 4с. Очищаю старые токены и показываю auth.');
